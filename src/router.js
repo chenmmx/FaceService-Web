@@ -29,8 +29,8 @@ export default function AppRouter() {
 
   return (
   // <Router>
-    <div className="routes">
-      <Redirect to="/application" />
+    <div className="routes" style={{ minHeight: 857 }}>
+      <Redirect to="/record" />
       {
         routeConfig.map((item) => (
           <Route
