@@ -11,7 +11,7 @@ import Record from './pages/record';
 export default function AppRouter() {
   const routeConfig = [
     {
-      id: '0', path: '/application', title: '应用管理', exact: true, component: Application
+      id: '0', path: '/application', title: '应用管理', exact: false, component: Application
     },
     {
       id: '1', path: '/callback', title: '回调管理', exact: false, component: Callback
