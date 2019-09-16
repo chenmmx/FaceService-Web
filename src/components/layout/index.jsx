@@ -29,7 +29,7 @@ class BasicLayout extends Component {
             <div className="logo" />
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
               <Menu.Item key="1">
-                <Link to="/">
+                <Link to="/application">
                   <Icon type="appstore" />
                   <span>应用管理</span>
                 </Link>
