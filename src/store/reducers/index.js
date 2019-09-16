@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import application from '../actions/application';
+import application from './application';
 
 // reducer过滤器
 function createFilteredReducer(reducerFunction, reducerPredicate) {
