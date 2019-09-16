@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ApplicationCreateForm extends Component {
+class ApplicationDeleteForm extends Component {
   constructor(props) {
     super(props);
     this.state = { };
@@ -13,4 +13,4 @@ class ApplicationCreateForm extends Component {
   }
 }
 
-export default ApplicationCreateForm;
+export default ApplicationDeleteForm;

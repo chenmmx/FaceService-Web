@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Application from './pages/application';
-import ApplicationCreateForm from './pages/application/form/createForm';
+import ApplicationCreateForm from './pages/application/form/create';
 import Callback from './pages/callback';
 import Device from './pages/device';
 import Person from './pages/person';
