@@ -36,11 +36,14 @@ module.exports = {
       "comma-dangle": ["error", "never"], // 要求或禁止末尾逗号：不允许逗号
       'react/jsx-one-expression-per-line': 'off', // 禁用强制换行
       "no-console": 'off', // 禁用console
+      "linebreak-style": [0 ,"error", "windows"], //允许windows开发环境
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "react/destructuring-assignment": 'off',
       "react/jsx-no-bind": 'off',
       "react/no-array-index-key": 'off',
       "react/forbid-prop-types": 'off',
-      "class-methods-use-this": "off"
+      "class-methods-use-this": "off",
+      "react/prop-types": "off",
+      "react/jsx-props-no-spreading": "off"
     }
   };
