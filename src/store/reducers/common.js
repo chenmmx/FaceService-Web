@@ -1,7 +1,7 @@
 import { LOGIN, LOGOUT } from '../actions/common';
 
 const defaultState = {
-  isLogin: window.localStorage.getItem('isLogin') || false
+  isLogin: (window.localStorage.getItem('isLogin') === 'true') || false
 };
 
 export default (state = defaultState, action) => {
