@@ -42,6 +42,8 @@ module.exports = {
       "react/jsx-no-bind": 'off',
       "react/no-array-index-key": 'off',
       "react/forbid-prop-types": 'off',
-      "class-methods-use-this": "off"
+      "class-methods-use-this": "off",
+      "react/prop-types": "off",
+      "react/jsx-props-no-spreading": "off"
     }
   };

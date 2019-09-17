@@ -1,26 +1,41 @@
 import React, { Component } from 'react';
+import { Spin } from 'antd';
 import FsTitle from '../../components/common/fs-title';
+import ApplicationCreate from './components/create';
+import ApplicationList from './components/list';
+import ApplicationBottom from './components/bottom';
+import './style.less';
 
 class Application extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    //   dataList: []
+      dataList: [1, 2, 3],
+      loading: false
     };
+  }
+
+  componentDidMount() {
+    // console.log(this.context);
   }
 
 
   render() {
-    // const { dataList } = this.state;
+    const { dataList, loading } = this.state;
+    const { history } = this.props;
     return (
       <div id="application">
         <FsTitle title="应用管理" />
-        <div className="application-content">
-          <div className="application-content-create">
-            <div className="application-content-create--title">您还没有创建应用，立即开始</div>
-            <div className="application-content-create--add">1232</div>
-          </div>
-        </div>
+        <Spin spinning={loading}>
+          {
+                dataList.length === 0
+                  ? <ApplicationCreate history={history} />
+                  : dataList.map((item, index) => <ApplicationList key={item + index} />)
+            }
+          {
+                dataList.length === 0 ? null : <ApplicationBottom history={history} />
+            }
+        </Spin>
       </div>
     );
   }

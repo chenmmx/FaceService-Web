@@ -2,14 +2,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Application from './pages/application';
-import ApplicationCreateForm from './pages/application/form/createForm';
+import ApplicationCreateForm from './pages/application/form/create';
 import Callback from './pages/callback';
 import Device from './pages/device';
 import Person from './pages/person';
 import Record from './pages/record';
 
 
-export default function AppRouter() {
+const AppRouter = () => {
   const routeConfig = [
     {
       id: '0', path: '/application', title: '应用管理', exact: true, component: Application
@@ -32,7 +32,6 @@ export default function AppRouter() {
   ];
 
   return (
-  // <Router>
     <div className="routes">
       {
         routeConfig.map((item) => (
@@ -45,6 +44,7 @@ export default function AppRouter() {
         ))
         }
     </div>
-  // </Router>
   );
-}
+};
+
+export default AppRouter;
