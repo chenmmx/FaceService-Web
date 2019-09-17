@@ -16,10 +16,6 @@ class App extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-
-  }
-
   render() {
     const { isLogin } = this.props;
     return (
