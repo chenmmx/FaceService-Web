@@ -1,25 +1,77 @@
 import React, { Component } from 'react';
-import { Input, Button, DatePicker } from 'antd';
+import {
+  Input, Button, DatePicker, Select
+} from 'antd';
 import './style.less';
 
 const { Search } = Input;
+const InputGroup = Input.Group;
+const { Option } = Select;
 
 class Record extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rightSure: true,
-      width: 145
+      startValue: null,
+      endValue: null,
+      endOpen: false,
+      open: false,
+      rightSure: true
     };
   }
 
-  onChange(value, dateString) {
-    console.log('Selected Time: ', value);
-    console.log('Formatted Selected Time: ', dateString);
+  disabledStartDate = (startValue) => {
+    const { endValue } = this.state;
+    if (!startValue || !endValue) {
+      return false;
+    }
+    return startValue.valueOf() > endValue.valueOf();
+  };
+
+  disabledEndDate = (endValue) => {
+    const { startValue } = this.state;
+    if (!endValue || !startValue) {
+      return false;
+    }
+    return endValue.valueOf() <= startValue.valueOf();
+  };
+
+  onChange = (field, value) => {
+    this.setState({
+      [field]: value
+    });
+  };
+
+  onStartChange = (value) => {
+    this.onChange('startValue', value);
+  };
+
+  onEndChange = (value) => {
+    this.onChange('endValue', value);
+  };
+
+  handleStartOpenChange = (open) => {
+    if (!open) {
+      this.setState({ endOpen: true });
+    }
+  };
+
+  handleEndOpenChange = (open) => {
+    this.setState({ endOpen: open });
+  };
+
+  enter=() => {
+    const { open } = this.state;
+    this.setState({
+      open: !open
+    });
   }
 
-  onOk(value) {
-    console.log('onOk: ', value);
+  leave=() => {
+    const { open } = this.state;
+    this.setState({
+      open: !open
+    });
   }
 
   render() {
@@ -93,8 +145,35 @@ class Record extends Component {
                 <li>识别失败(陌生人)</li>
               </ul>
             </div>
-            <div>
-              <DatePicker showTime placeholder="Select Time" onChange={this.onChange} onOk={this.onOk} />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <DatePicker
+                disabledDate={this.disabledStartDate}
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                value={this.state.startValue}
+                placeholder="Start"
+                onChange={this.onStartChange}
+                onOpenChange={this.handleStartOpenChange}
+              />-
+              <DatePicker
+                disabledDate={this.disabledEndDate}
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                value={this.state.endValue}
+                placeholder="End"
+                onChange={this.onEndChange}
+                open={this.state.endOpen}
+                onOpenChange={this.handleEndOpenChange}
+              />
+              <InputGroup compact style={{ marginLeft: 20 }}>
+                <Select style={{ width: 120 }} defaultValue="设备序列号" onMouseEnter={this.enter} onSelect={this.leave} open={this.state.open}>
+                  <Option value="设备序列号">设备序列号</Option>
+                  <Option value="设备名称">设备名称</Option>
+                  <Option value="姓名">姓名</Option>
+                  <Option value="guid">guid</Option>
+                </Select>
+                <Input style={{ width: 200 }} defaultValue="请输入对应搜索条件" />
+              </InputGroup>
             </div>
           </div>
           <div>content</div>
