@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Icon } from 'antd';
 import { BrowserRouter as Router } from 'react-router-dom';
-import LeftMenu from '../common/menu';
+import FsMenu from '../common/fs-menu';
 import './style.less';
 import AppRouter from '../../router';
 
@@ -32,7 +32,7 @@ class BasicLayout extends Component {
         <Layout id="layout">
           <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
             <div className="logo" />
-            <LeftMenu />
+            <FsMenu />
           </Sider>
           <Layout>
             <Header style={{ background: '#fff', padding: 0 }}>

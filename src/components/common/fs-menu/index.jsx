@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Menu, Icon } from 'antd';
 
-class LeftMenu extends Component {
+class FsMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -48,4 +48,4 @@ class LeftMenu extends Component {
   }
 }
 
-export default withRouter(LeftMenu);
+export default withRouter(FsMenu);
