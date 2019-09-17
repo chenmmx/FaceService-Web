@@ -1,0 +1,20 @@
+.application-form {
+    .application-form-main {
+        width: 30%;
+        margin-top: 60px;
+        // margin: 50px auto;
+        .personType{
+            position: relative;
+            &::before{
+            position: absolute;
+			right: -520px;
+            top: 10px;
+            width: 500px;
+            height: 30px;
+            font-size: 12px;
+            color: #C8CDD6;
+			content: "*非必填，小于8位(千万级)的整数，默认0，用于人员归类，如不同职位/部门的人员";
+            }
+        }
+    }
+}

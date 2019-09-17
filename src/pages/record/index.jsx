@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Input, Button, DatePicker, Select
+  Input, DatePicker, Select
 } from 'antd';
 import './style.less';
 import RecordTable from './table/Table';
@@ -13,11 +13,16 @@ class Record extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      list: [
+        { name: '全部' },
+        { name: 'xx', appid: '4ABB802B0769438DA04EB1A3D616B035', check: '/' }
+      ],
+      siderStyle: '全部',
+      checkApp: { name: '全部' },
       startValue: null,
       endValue: null,
       endOpen: false,
       open: false,
-      rightSure: true,
       dataSource: [
         {
           key: '1',
@@ -215,6 +220,12 @@ class Record extends Component {
     });
   }
 
+  chooseApply=(e) => {
+    this.setState({
+      siderStyle: e.target.innerText
+    });
+  }
+
   render() {
     console.log(this.props);
     return (
@@ -222,52 +233,28 @@ class Record extends Component {
         <div
           className="contentLeft"
           style={{
-            padding: '20px 0px', width: this.state.width, transition: 'all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)', backgroundColor: '#E1E7EC'
+            padding: '20px 0px', width: 145, backgroundColor: '#E1E7EC'
           }}
         >
-          {this.state.rightSure === true ? (
-            <div><Button
-              style={{ position: 'absolute', top: 10, left: 121 }}
-              size="small"
-              icon="backward"
-              onClick={() => {
-                const { rightSure } = this.state; this.setState(
-                  {
-                    rightSure: !rightSure,
-                    width: 40
-                  }
-                );
-              }}
-            />
-              <p style={{ fontSize: 12, color: 'black', margin: '0px 10px' }}>请选择应用</p>
-              <Search style={{ margin: '0px 10px', width: 125 }} placeholder="搜索应用" onSearch={(value) => console.log(value)} />
-              <ul style={{ marginTop: 10, listStyle: 'none' }}>
-                <li style={{
-                  backgroundColor: '#fff', textAlign: 'center', padding: 10, cursor: 'pointer', color: '#0F9EE9'
-                }}
-                >全部
+          <div>
+            <p style={{ fontSize: 12, color: 'black', margin: '0px 10px' }}>请选择应用</p>
+            <Search style={{ margin: '0px 10px', width: 125 }} placeholder="搜索应用" onSearch={(value) => console.log(value)} />
+            <ul style={{ marginTop: 10, listStyle: 'none' }} onClick={this.chooseApply}>
+              {this.state.list.map((item, index) => (
+                <li
+                  key={index}
+                  style={this.state.siderStyle === item.name ? {
+                    backgroundColor: '#fff', textAlign: 'center', padding: 10, cursor: 'pointer', color: '#0F9EE9'
+                  } : {
+                    textAlign: 'center', padding: 10, cursor: 'pointer', color: 'black'
+                  }}
+                >{item.name}
                 </li>
-              </ul>
-            </div>
-          ) : (
-            <div>
-              <Button
-                style={{ position: 'absolute', top: 10, left: 16 }}
-                size="small"
-                icon="forward"
-                onClick={() => {
-                  const { rightSure } = this.state; this.setState(
-                    {
-                      rightSure: !rightSure,
-                      width: 145
-                    }
-                  );
-                }}
-              />
-            </div>
-          )}
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className="contentRight" style={{ marginLeft: 20, flexGrow: 2 }}>
+        <div className="contentRight" style={{ marginLeft: 20, flexGrow: 2, marginRight: 20 }}>
           <div
             className="contentRight-title"
             style={{
@@ -280,8 +267,13 @@ class Record extends Component {
             }}
           >识别记录管理
           </div>
-          <div className="contentRight-search" style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div>
+          <div
+            className="contentRight-search"
+            style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20
+            }}
+          >
+            <div style={{ height: 30 }}>
               <ul className="underline-navbar">
                 <li onClick={this.success}>识别成功</li>
                 <li onClick={this.loser}>识别失败(陌生人)</li>
@@ -318,6 +310,18 @@ class Record extends Component {
               </InputGroup>
             </div>
           </div>
+          {this.state.checkApp.name === '全部' ? '' : (
+            <div
+              className="appName"
+              style={{
+                backgroundColor: '#fff', padding: 20, display: 'flex', flexWrap: 'wrap'
+              }}
+            >
+              <div>应用名:{this.chooseApply.name}</div>
+              <div>appid:{this.chooseApply.appid}</div>
+              <div>应用钩子:{this.chooseApply.name}</div>
+            </div>
+          )}
           <div><RecordTable dataSource={this.state.dataSource} columns={this.state.columns} /></div>
         </div>
       </div>

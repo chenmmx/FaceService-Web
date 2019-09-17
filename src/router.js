@@ -6,6 +6,7 @@ import ApplicationCreateForm from './pages/application/form/create';
 import Callback from './pages/callback';
 import Device from './pages/device';
 import Person from './pages/person';
+import AddPerson from './pages/person/form/create';
 import Record from './pages/record';
 
 
@@ -24,7 +25,10 @@ const AppRouter = () => {
       id: '2', path: '/device', title: '设备管理', exact: false, component: Device
     },
     {
-      id: '3', path: '/person', title: '人员管理', exact: false, component: Person
+      id: '3', path: '/person', title: '人员管理', exact: true, component: Person
+    },
+    {
+      id: '6', path: '/person/addPerson', title: '添加人员', exact: false, component: AddPerson
     },
     {
       id: '4', path: '/record', title: '识别记录管理', exact: false, component: Record
