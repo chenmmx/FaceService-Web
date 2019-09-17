@@ -148,6 +148,68 @@ class Record extends Component {
           title: '应用名称',
           dataIndex: 'address',
           key: '1'
+        },
+        {
+          title: '设备序列号',
+          dataIndex: 'address',
+          key: '2'
+        },
+        {
+          title: '设备名称',
+          dataIndex: 'address',
+          key: '3'
+        },
+        {
+          title: '识别模式',
+          dataIndex: 'address',
+          key: '4'
+        },
+        {
+          title: '识别时间',
+          dataIndex: 'address',
+          key: '5'
+        },
+        {
+          title: '人脸抓拍',
+          dataIndex: 'address',
+          key: 'address'
+        }
+      ]
+    });
+  }
+
+  loser=() => {
+    this.setState({
+      columns: [
+        {
+          title: '姓名',
+          dataIndex: 'name',
+          key: 'name'
+        },
+        {
+          title: '设备序列号',
+          dataIndex: 'age',
+          key: 'age'
+        },
+        {
+          title: '设备名称',
+          dataIndex: 'address',
+          key: '1'
+        },
+        {
+          title: '识别模式',
+          dataIndex: 'address',
+          key: '2'
+        },
+        {
+          title: '识别时间',
+          dataIndex: 'address',
+          key: '3'
+        },
+        {
+          title: '人脸抓拍',
+          dataIndex: 'address',
+          key: '4'
         }
       ]
     });
@@ -221,8 +283,8 @@ class Record extends Component {
           <div className="contentRight-search" style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <ul className="underline-navbar">
-                <li>识别成功</li>
-                <li>识别失败(陌生人)</li>
+                <li onClick={this.success}>识别成功</li>
+                <li onClick={this.loser}>识别失败(陌生人)</li>
               </ul>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
