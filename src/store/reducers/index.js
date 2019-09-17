@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import application from './application';
+import common from './common';
 
 // reducer过滤器
 function createFilteredReducer(reducerFunction, reducerPredicate) {
@@ -11,6 +12,7 @@ function createFilteredReducer(reducerFunction, reducerPredicate) {
 }
 
 const rootReducer = combineReducers({
+  common: createFilteredReducer(common, (action) => action.name === 'common'),
   application: createFilteredReducer(application, (action) => action.name === 'application')
 });
 
