@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
+import PropTypes from 'prop-types';
 import './index.less';
 
-export default class Notice extends Component {
+class Notice extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,6 +11,7 @@ export default class Notice extends Component {
     };
   }
 
+  // 关闭notice
   hideNotice() {
     const show = 'none';
     this.setState({
@@ -18,10 +20,11 @@ export default class Notice extends Component {
   }
 
   render() {
+    const { message } = this.props;
     return (
       <div className="notice" style={{ display: this.state.isShow }}>
         <p>
-          温馨提示：注册照片接口新增照片质量检测功能，您可在人员管理模块添加照片进行体验。
+          {message}
           <Button type="link">查看</Button>
           <Icon type="close" onClick={this.hideNotice.bind(this)} />
         </p>
@@ -29,3 +32,9 @@ export default class Notice extends Component {
     );
   }
 }
+
+Notice.propTypes = {
+  message: PropTypes.string.isRequired
+};
+
+export default Notice;
