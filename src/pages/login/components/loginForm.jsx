@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Form, Icon, Input, Button, Checkbox
@@ -18,7 +19,9 @@ class LoginForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        const { handleLogin } = this.props;
+        console.log(this.props);
+        const { handleLogin, history } = this.props;
+        history.push('/application');
         handleLogin();
       }
     });
@@ -90,4 +93,4 @@ const mapDispatchToProps = (dispatch, props) => {
 
 const wrappedLoginForm = Form.create({ name: 'login_form' })(LoginForm);
 
-export default connect(mapStateToProps, mapDispatchToProps)(wrappedLoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(wrappedLoginForm));

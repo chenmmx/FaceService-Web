@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Layout, Icon } from 'antd';
-import { BrowserRouter as Router } from 'react-router-dom';
 import FsMenu from '../common/fs-menu';
 import './style.less';
 import AppRouter from '../../router';
@@ -28,35 +27,33 @@ class BasicLayout extends Component {
 
   render() {
     return (
-      <Router>
-        <Layout id="layout">
-          <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-            <div className="logo" />
-            <FsMenu />
-          </Sider>
-          <Layout>
-            <Header style={{ background: '#fff', padding: 0 }}>
-              <Icon
-                className="trigger"
-                type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                onClick={this.toggle}
-              />
-            </Header>
-            <Content
-              className="content"
-              style={{
-                margin: '24px 16px',
-                padding: 24,
-                background: '#fff',
-                minHeight: 857
-              }}
-            >
-              {/* Container */}
-              <AppRouter />
-            </Content>
-          </Layout>
+      <Layout id="layout">
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+          <div className="logo" />
+          <FsMenu />
+        </Sider>
+        <Layout>
+          <Header style={{ background: '#fff', padding: 0 }}>
+            <Icon
+              className="trigger"
+              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={this.toggle}
+            />
+          </Header>
+          <Content
+            className="content"
+            style={{
+              margin: '24px 16px',
+              padding: 24,
+              background: '#fff',
+              minHeight: 857
+            }}
+          >
+            {/* Container */}
+            <AppRouter />
+          </Content>
         </Layout>
-      </Router>
+      </Layout>
     );
   }
 }

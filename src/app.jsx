@@ -3,6 +3,7 @@ import { ConfigProvider } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import zhCN from 'antd/es/locale/zh_CN';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import moment from 'moment';
 import BasicLayout from './components/layout';
 import Login from './pages/login';
@@ -18,11 +19,22 @@ class App extends Component {
 
   render() {
     const { isLogin } = this.props;
+    console.log(isLogin);
     return (
       <ConfigProvider locale={zhCN}>
-        {
-              isLogin ? <BasicLayout /> : <Login />
-          }
+        <Router>
+          <Switch>
+            <Route
+              component={Login}
+              exact
+              path="/login"
+            />
+            <Route
+              component={BasicLayout}
+              path="/"
+            />
+          </Switch>
+        </Router>
       </ConfigProvider>
     );
   }
