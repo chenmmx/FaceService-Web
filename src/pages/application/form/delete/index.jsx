@@ -10,6 +10,10 @@ class ApplicationDeleteForm extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log(this.props);
+  }
+
   handleSubmit = () => {
     const { handleClose } = this.props;
     notification.success({

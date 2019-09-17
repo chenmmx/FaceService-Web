@@ -9,7 +9,7 @@ import Person from './pages/person';
 import Record from './pages/record';
 
 
-export default function AppRouter() {
+const AppRouter = () => {
   const routeConfig = [
     {
       id: '0', path: '/application', title: '应用管理', exact: true, component: Application
@@ -32,7 +32,6 @@ export default function AppRouter() {
   ];
 
   return (
-  // <Router>
     <div className="routes">
       {
         routeConfig.map((item) => (
@@ -45,6 +44,7 @@ export default function AppRouter() {
         ))
         }
     </div>
-  // </Router>
   );
-}
+};
+
+export default AppRouter;
