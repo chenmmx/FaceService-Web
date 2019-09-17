@@ -3,6 +3,7 @@ import {
   Input, Button, DatePicker, Select
 } from 'antd';
 import './style.less';
+import RecordTable from './table/Table';
 
 const { Search } = Input;
 const InputGroup = Input.Group;
@@ -16,7 +17,63 @@ class Record extends Component {
       endValue: null,
       endOpen: false,
       open: false,
-      rightSure: true
+      rightSure: true,
+      dataSource: [
+        {
+          key: '1',
+          name: '胡彦斌',
+          age: 32,
+          address: '西湖区湖底公园1号'
+        },
+        {
+          key: '2',
+          name: '胡彦祖',
+          age: 42,
+          address: '西湖区湖底公园1号'
+        }
+      ],
+      columns: [
+        {
+          title: '姓名',
+          dataIndex: 'name',
+          key: 'name'
+        },
+        {
+          title: 'guid',
+          dataIndex: 'age',
+          key: 'age'
+        },
+        {
+          title: '应用名称',
+          dataIndex: 'address',
+          key: '1'
+        },
+        {
+          title: '设备序列号',
+          dataIndex: 'address',
+          key: '2'
+        },
+        {
+          title: '设备名称',
+          dataIndex: 'address',
+          key: '3'
+        },
+        {
+          title: '识别模式',
+          dataIndex: 'address',
+          key: '4'
+        },
+        {
+          title: '识别时间',
+          dataIndex: 'address',
+          key: '5'
+        },
+        {
+          title: '人脸抓拍',
+          dataIndex: 'address',
+          key: 'address'
+        }
+      ]
     };
   }
 
@@ -74,7 +131,92 @@ class Record extends Component {
     });
   }
 
+  success=() => {
+    this.setState({
+      columns: [
+        {
+          title: '姓名',
+          dataIndex: 'name',
+          key: 'name'
+        },
+        {
+          title: 'guid',
+          dataIndex: 'age',
+          key: 'age'
+        },
+        {
+          title: '应用名称',
+          dataIndex: 'address',
+          key: '1'
+        },
+        {
+          title: '设备序列号',
+          dataIndex: 'address',
+          key: '2'
+        },
+        {
+          title: '设备名称',
+          dataIndex: 'address',
+          key: '3'
+        },
+        {
+          title: '识别模式',
+          dataIndex: 'address',
+          key: '4'
+        },
+        {
+          title: '识别时间',
+          dataIndex: 'address',
+          key: '5'
+        },
+        {
+          title: '人脸抓拍',
+          dataIndex: 'address',
+          key: 'address'
+        }
+      ]
+    });
+  }
+
+  loser=() => {
+    this.setState({
+      columns: [
+        {
+          title: '姓名',
+          dataIndex: 'name',
+          key: 'name'
+        },
+        {
+          title: '设备序列号',
+          dataIndex: 'age',
+          key: 'age'
+        },
+        {
+          title: '设备名称',
+          dataIndex: 'address',
+          key: '1'
+        },
+        {
+          title: '识别模式',
+          dataIndex: 'address',
+          key: '2'
+        },
+        {
+          title: '识别时间',
+          dataIndex: 'address',
+          key: '3'
+        },
+        {
+          title: '人脸抓拍',
+          dataIndex: 'address',
+          key: '4'
+        }
+      ]
+    });
+  }
+
   render() {
+    console.log(this.props);
     return (
       <div style={{ display: 'flex', minHeight: 857, position: 'relative' }}>
         <div
@@ -141,8 +283,8 @@ class Record extends Component {
           <div className="contentRight-search" style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <ul className="underline-navbar">
-                <li>识别成功</li>
-                <li>识别失败(陌生人)</li>
+                <li onClick={this.success}>识别成功</li>
+                <li onClick={this.loser}>识别失败(陌生人)</li>
               </ul>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -176,7 +318,7 @@ class Record extends Component {
               </InputGroup>
             </div>
           </div>
-          <div>content</div>
+          <div><RecordTable dataSource={this.state.dataSource} columns={this.state.columns} /></div>
         </div>
       </div>
     );
