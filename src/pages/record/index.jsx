@@ -118,7 +118,7 @@ class Record extends Component {
       >
         <div style={{ display: 'flex' }}>
           <div style={{ width: 400 }}>应用名:{this.state.checkApp.name}</div>
-          <div style={{ flexGrow: 3 }}>appid:{this.state.checkApp.appid}</div>
+          <div style={{ flexGrow: 2 }}>appid:{this.state.checkApp.appid}</div>
         </div>
         <div style={{ display: 'flex' }}>
           <div style={{ width: 400 }}>应用钩子:{this.state.checkApp.check}</div>
@@ -272,16 +272,15 @@ class Record extends Component {
             >识别记录管理
             </div>
             <div>
+              {this.app()}
               <Tabs defaultActiveKey="success" onChange={this.onTabChange} tabBarExtraContent={operations}>
                 <TabPane tab="识别成功" key="success">
                   <Spin spinning={this.state.loading} delay={100}>
-                    {this.app()}
                     <SuccessTable dataSource={this.state.successList} />
                   </Spin>
                 </TabPane>
                 <TabPane tab="识别失败(陌生人)" key="failed">
                   <Spin spinning={this.state.loading} delay={100}>
-                    {this.app()}
                     <FailedTable dataSource={this.state.fieldList} />
                   </Spin>
                 </TabPane>
