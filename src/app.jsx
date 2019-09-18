@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { ConfigProvider } from 'antd';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import zhCN from 'antd/es/locale/zh_CN';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import moment from 'moment';
@@ -18,8 +16,6 @@ class App extends Component {
   }
 
   render() {
-    const { isLogin } = this.props;
-    console.log(isLogin);
     return (
       <ConfigProvider locale={zhCN}>
         <Router>
@@ -40,15 +36,4 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  isLogin: PropTypes.bool.isRequired
-};
-
-const mapStateToProps = (state) => {
-  const { common } = state;
-  return {
-    isLogin: common.isLogin
-  };
-};
-
-export default connect(mapStateToProps, null)(App);
+export default App;
