@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PageHeader } from 'antd';
 import PropTypes from 'prop-types';
+import './style.less';
 
 class FsTitle extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class FsTitle extends Component {
     const { title } = this.props;
     return (
       <div className="fs-title">
-        <PageHeader title={title} subTitle="" />
+        <PageHeader className="herad" title={title} subTitle="" />
       </div>
     );
   }
