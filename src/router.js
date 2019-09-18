@@ -5,6 +5,8 @@ import Application from './pages/application';
 import ApplicationCreateForm from './pages/application/form/create';
 import Callback from './pages/callback';
 import Device from './pages/device';
+import DeviceFormAdd from './pages/device/form/add';
+import DeviceFormUpdate from './pages/device/form/update';
 import Person from './pages/person';
 import AddPerson from './pages/person/form/create';
 import Record from './pages/record';
@@ -23,7 +25,13 @@ const AppRouter = () => {
       id: '1', path: '/callback', title: '回调管理', exact: false, component: Callback
     },
     {
-      id: '2', path: '/device', title: '设备管理', exact: false, component: Device
+      id: '2', path: '/device', title: '设备管理', exact: true, component: Device
+    },
+    {
+      id: '8', path: '/device/add/:data', title: '绑定设备', exact: false, component: DeviceFormAdd
+    },
+    {
+      id: '9', path: '/device/update/:id', title: '编辑设备', exact: false, component: DeviceFormUpdate
     },
     {
       id: '3', path: '/person', title: '人员管理', exact: true, component: Person

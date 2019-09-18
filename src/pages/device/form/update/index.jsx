@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-class TerminalUpdateForm extends Component {
+class DeviceFormUpdate extends Component {
   constructor(props) {
     super(props);
     this.state = { };
   }
 
+  componentDidMount() {
+    const data = this.props.match;
+    console.log(data);
+  }
+
   render() {
     return (
-      <div>123</div>
+      <div>编辑</div>
     );
   }
 }
 
-export default TerminalUpdateForm;
+export default withRouter(DeviceFormUpdate);
