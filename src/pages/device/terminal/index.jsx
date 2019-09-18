@@ -20,7 +20,7 @@ class Terminal extends Component {
     handleUpdate =(id) => {
       console.log(id);
       const { history } = this.props;
-      history.push('/device/update');
+      history.push(`/device/update/${id}`);
     }
 
     // 删除
