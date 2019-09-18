@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Button, Divider } from 'antd';
+import { withRouter } from 'react-router-dom';
+import {
+  Table, Button, Divider, Pagination
+} from 'antd';
 
 const columns = [
   {
@@ -22,7 +25,7 @@ const columns = [
     key: 'action',
     render: (text, record) => (
       <span>
-        <Button type="primary">编辑 {record.name}</Button>
+        <Button type="primary">绑定 {record.name}</Button>
         <Divider type="vertical" />
         <Button>删除</Button>
       </span>
@@ -36,14 +39,23 @@ class UnboundTerminal extends Component {
     this.state = { };
   }
 
-  render() {
-    const { unboundList } = this.props;
-    return (
-      <div className="unboundTerminal">
-        <Table columns={columns} dataSource={unboundList} rowKey="id" />
+  // 页码改变
+onPageChange = (pageIndex, pageSize) => {
+  console.log('pageIndex', pageIndex);
+  console.log('pageSize', pageSize);
+};
+
+render() {
+  const { unboundList } = this.props;
+  return (
+    <div className="unboundTerminal">
+      <Table columns={columns} dataSource={unboundList} rowKey="id" pagination={false} />
+      <div className="terminal-pagination" style={{ paddingTop: 30, textAlign: 'right' }}>
+        <Pagination total={200} defaultCurrent={1} onChange={this.onPageChange} />
       </div>
-    );
-  }
+    </div>
+  );
+}
 }
 
-export default UnboundTerminal;
+export default withRouter(UnboundTerminal);

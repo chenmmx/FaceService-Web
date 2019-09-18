@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Button, Divider } from 'antd';
+import {
+  Table, Button, Divider, Pagination
+} from 'antd';
+import { withRouter } from 'react-router-dom';
 
 const columns = [
   {
@@ -51,14 +54,23 @@ class Terminal extends Component {
     this.state = { };
   }
 
-  render() {
-    const { bindList } = this.props;
-    return (
-      <div className="terminal">
-        <Table columns={columns} dataSource={bindList} rowKey="id" />
+  // 页码改变
+onPageChange = (pageIndex, pageSize) => {
+  console.log('pageIndex', pageIndex);
+  console.log('pageSize', pageSize);
+};
+
+render() {
+  const { bindList } = this.props;
+  return (
+    <div className="terminal">
+      <Table columns={columns} dataSource={bindList} rowKey="id" pagination={false} />
+      <div className="terminal-pagination" style={{ paddingTop: 30, textAlign: 'right' }}>
+        <Pagination total={200} defaultCurrent={1} onChange={this.onPageChange} />
       </div>
-    );
-  }
+    </div>
+  );
+}
 }
 
-export default Terminal;
+export default withRouter(Terminal);
