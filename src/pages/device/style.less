@@ -1,0 +1,29 @@
+#device {
+  .content-left {
+    .content-left-list {
+      margin-top: 10px;
+      list-style: none;
+      overflow-y: scroll;
+      .content-left-list-item {
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        &:hover {
+            transition: all .3s ease-in-out;
+            color: #1890ff;
+        }
+      }
+      .active {
+        transition: all .2s ease-in-out;
+        color: #1890ff;
+        background-color: #fff;   
+      }
+    }
+  }
+  .content-right {
+      padding: 20px;
+      width: 100%;
+  }
+}

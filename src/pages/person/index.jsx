@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Input, DatePicker, Select
+  Input, DatePicker, Select, Modal,
+  Button
 } from 'antd';
 import './style.less';
 import PersonTable from './table/Table';
@@ -14,6 +15,14 @@ class Person extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      confirmLoading: false,
+      deleteModal: false,
+      list: [
+        { name: '全部' },
+        { name: 'xx', appid: '4ABB802B0769438DA04EB1A3D616B035', check: '/' }
+      ],
+      siderStyle: '全部',
+      checkApp: { name: '全部' },
       startValue: null,
       endValue: null,
       endOpen: false,
@@ -23,13 +32,15 @@ class Person extends Component {
           key: '1',
           name: '胡彦斌',
           age: 32,
-          address: '西湖区湖底公园1号'
+          address: '西湖区湖底公园1号',
+          id: 123
         },
         {
           key: '2',
           name: '胡彦祖',
           age: 42,
-          address: '西湖区湖底公园1号'
+          address: '西湖区湖底公园1号',
+          id: 13
         }
       ],
       columns: [
@@ -71,7 +82,16 @@ class Person extends Component {
         {
           title: '操作',
           dataIndex: 'address',
-          key: 'address'
+          key: 'address',
+          render: (text, row) => (
+            this.state.dataSource.length >= 1 ? (
+              <>
+                <Button style={{ marginRight: 10 }}>编辑</Button>
+                <Button style={{ marginRight: 10 }} onClick={this.accredit.bind(this, row.id)}>授权</Button>
+                <Button onClick={this.handleDelete.bind(this, row.id)}>删除</Button>
+              </>
+            ) : null
+          )
         }
       ]
     };
@@ -131,9 +151,52 @@ class Person extends Component {
     });
   }
 
+  // 选择应用
+  chooseApply=(e) => {
+    const { list } = this.state;
+    const a = list.filter((item) => item.name === e.target.innerText);
+    this.setState({
+      siderStyle: e.target.innerText,
+      checkApp: a[0]
+    });
+  }
+
+  accredit(id) {
+    console.log(this.props, id);
+    this.props.history.push(`/person/accredit/${id}`);
+  }
+
+  // 删除行
+  handleDelete(id) {
+    this.setState({
+      deleteModal: true
+    });
+    console.log(id);
+  }
+
+  // 弹框取消
+  handleCancel() {
+    this.setState({
+      deleteModal: false
+    });
+  }
+
+  // 弹框确认删除
+  handleOk() {
+    this.setState({
+      confirmLoading: true
+    });
+    setTimeout(() => {
+      this.setState({
+        deleteModal: false,
+        confirmLoading: false
+      });
+    }, 2000);
+  }
+
   render() {
     return (
-      <div style={{ display: 'flex', minHeight: 857, position: 'relative' }}>
+      <div id="person" style={{ display: 'flex', minHeight: 857, position: 'relative' }}>
         <div
           className="contentLeft"
           style={{
@@ -143,12 +206,18 @@ class Person extends Component {
           <div>
             <p style={{ fontSize: 12, color: 'black', margin: '0px 10px' }}>请选择应用</p>
             <Search style={{ margin: '0px 10px', width: 125 }} placeholder="搜索应用" onSearch={(value) => console.log(value)} />
-            <ul style={{ marginTop: 10, listStyle: 'none' }}>
-              <li style={{
-                backgroundColor: '#fff', textAlign: 'center', padding: 10, cursor: 'pointer', color: '#0F9EE9'
-              }}
-              >全部
-              </li>
+            <ul style={{ marginTop: 10, listStyle: 'none' }} onClick={this.chooseApply}>
+              {this.state.list.map((item, index) => (
+                <li
+                  key={index}
+                  style={this.state.siderStyle === item.name ? {
+                    backgroundColor: '#fff', textAlign: 'center', padding: 10, cursor: 'pointer', color: '#0F9EE9'
+                  } : {
+                    textAlign: 'center', padding: 10, cursor: 'pointer', color: 'black'
+                  }}
+                >{item.name}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -208,8 +277,36 @@ class Person extends Component {
               </InputGroup>
             </div>
           </div>
+          {this.state.checkApp.name === '全部' ? '' : (
+            <div
+              className="appName"
+              style={{
+                backgroundColor: '#e1e7ec', padding: 20, marginBottom: 20
+              }}
+            >
+              <div style={{ display: 'flex' }}>
+                <div style={{ width: 400 }}>应用名:{this.state.checkApp.name}</div>
+                <div style={{ flexGrow: 3 }}>appid:{this.state.checkApp.appid}</div>
+              </div>
+              <div style={{ display: 'flex' }}>
+                <div style={{ width: 400 }}>应用状态:{this.state.checkApp.check}</div>
+                <div style={{ flexGrow: 3 }}>应用回调:{this.state.checkApp.appid}</div>
+              </div>
+            </div>
+          )}
           <div><PersonTable dataSource={this.state.dataSource} columns={this.state.columns} /></div>
         </div>
+        {/* 删除提示框 */}
+        <Modal
+          title="提示"
+          centered
+          visible={this.state.deleteModal}
+          onOk={this.handleOk.bind(this)}
+          confirmLoading={this.state.confirmLoading}
+          onCancel={this.handleCancel.bind(this)}
+        >
+          <p>删除后人员数据信息不可恢复，是否删除？</p>
+        </Modal>
       </div>
     );
   }

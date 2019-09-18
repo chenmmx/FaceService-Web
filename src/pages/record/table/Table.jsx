@@ -9,7 +9,6 @@ export default class recordTable extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Table dataSource={this.props.dataSource} columns={this.props.columns} />
     );
