@@ -136,6 +136,7 @@ class Record extends Component {
     });
   }
 
+  // 识别成功
   success=() => {
     this.setState({
       columns: [
@@ -183,6 +184,7 @@ class Record extends Component {
     });
   }
 
+  // 识别失败
   loser=() => {
     this.setState({
       columns: [
@@ -220,16 +222,19 @@ class Record extends Component {
     });
   }
 
+  // 选择应用
   chooseApply=(e) => {
+    const { list } = this.state;
+    const a = list.filter((item) => item.name === e.target.innerText);
     this.setState({
-      siderStyle: e.target.innerText
+      siderStyle: e.target.innerText,
+      checkApp: a[0]
     });
   }
 
   render() {
-    console.log(this.props);
     return (
-      <div style={{ display: 'flex', minHeight: 857, position: 'relative' }}>
+      <div id="record" style={{ display: 'flex', minHeight: 857, position: 'relative' }}>
         <div
           className="contentLeft"
           style={{
@@ -314,12 +319,16 @@ class Record extends Component {
             <div
               className="appName"
               style={{
-                backgroundColor: '#fff', padding: 20, display: 'flex', flexWrap: 'wrap'
+                backgroundColor: '#e1e7ec', padding: 20, marginBottom: 20
               }}
             >
-              <div>应用名:{this.chooseApply.name}</div>
-              <div>appid:{this.chooseApply.appid}</div>
-              <div>应用钩子:{this.chooseApply.name}</div>
+              <div style={{ display: 'flex' }}>
+                <div style={{ width: 400 }}>应用名:{this.state.checkApp.name}</div>
+                <div style={{ flexGrow: 3 }}>appid:{this.state.checkApp.appid}</div>
+              </div>
+              <div style={{ display: 'flex' }}>
+                <div style={{ width: 400 }}>应用钩子:{this.state.checkApp.check}</div>
+              </div>
             </div>
           )}
           <div><RecordTable dataSource={this.state.dataSource} columns={this.state.columns} /></div>

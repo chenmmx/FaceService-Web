@@ -8,6 +8,7 @@ import Device from './pages/device';
 import Person from './pages/person';
 import AddPerson from './pages/person/form/create';
 import Record from './pages/record';
+import Accredit from './pages/person/components/accredit';
 
 
 const AppRouter = () => {
@@ -29,6 +30,9 @@ const AppRouter = () => {
     },
     {
       id: '6', path: '/person/addPerson', title: '添加人员', exact: false, component: AddPerson
+    },
+    {
+      id: '7', path: '/person/accredit/:id', title: '人员授权', exact: false, component: Accredit
     },
     {
       id: '4', path: '/record', title: '识别记录管理', exact: false, component: Record
