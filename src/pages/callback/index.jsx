@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Button, Icon, Table, Modal
+  Button, Icon, Table, Modal, Form
 } from 'antd';
 import MyNotice from '../../components/common/notice';
 import MyTitle from '../../components/common/title';
@@ -15,7 +15,8 @@ class Callback extends Component {
       deleteModal: false,
       confirmLoading: false,
       modelType: 'add',
-      modelTitle: '提示'
+      modelTitle: '提示',
+      callbackId: ''
     };
   }
 
@@ -44,9 +45,9 @@ class Callback extends Component {
     this.setState({
       deleteModal: true,
       modelType: 'delete',
-      modelTitle: '提示'
+      modelTitle: '提示',
+      callbackId: id
     });
-    console.log(id);
   }
 
   // 添加回调
@@ -75,26 +76,6 @@ class Callback extends Component {
     });
   }
 
-  // 弹框确认
-  handleOk() {
-    this.setState({
-      confirmLoading: true
-    });
-    if (this.state.modelType === 'delete') {
-      this.deleteOK();
-    } else if (this.state.modelType === 'add') {
-      this.addOK();
-    } else if (this.state.modelType === 'edit') {
-      this.editOK();
-    }
-    setTimeout(() => {
-      this.setState({
-        deleteModal: false,
-        confirmLoading: false
-      });
-    }, 2000);
-  }
-
   // 添加请求
   addOK() {
     console.log('add');
@@ -106,12 +87,21 @@ class Callback extends Component {
   }
 
   // 删除请求
-  deleteOK() {
-    console.log('delete');
+  deleteOK(id) {
+    this.setState({
+      confirmLoading: true
+    });
+    this.setState({
+      deleteModal: false,
+      confirmLoading: false
+    });
+    console.log(id);
   }
 
   render() {
-    const { deleteModal, confirmLoading, modelTitle } = this.state;
+    const {
+      deleteModal, confirmLoading, modelTitle, callbackId, modelType
+    } = this.state;
     const columns = [
       {
         title: '回调名称',
@@ -140,13 +130,15 @@ class Callback extends Component {
         )
       }
     ];
-    // 模态框内容
-    let modelContent;
-    if (this.state.modelType === 'delete') {
-      modelContent = <p>您确定要删除该回调吗？</p>;
-    } else if (this.state.modelType === 'add' || this.state.modelType === 'edit') {
-      modelContent = <MyForm1 />;
-    }
+    const deleteContent = (
+      <>
+        <p style={{ fontSize: 18 }}>您确定要删除该回调吗？</p>
+        <div style={{ marginTop: 50, textAlign: 'center' }}>
+          <Button onClick={this.handleCancel.bind(this)} style={{ marginRight: 20 }}>取消</Button>
+          <Button type="primary" onClick={this.deleteOK.bind(this, callbackId)}>确定</Button>
+        </div>
+      </>
+    );
     return (
       <div className="callback">
         <MyNotice message="温馨提示：注册照片接口新增照片质量检测功能，您可在人员管理模块添加照片进行体验。" />
@@ -162,15 +154,15 @@ class Callback extends Component {
           title={modelTitle}
           centered
           visible={deleteModal}
-          onOk={this.handleOk.bind(this)}
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel.bind(this)}
+          footer={false}
         >
-          { modelContent }
+          {modelType === 'delete' ? deleteContent : <MyForm1 handleCancel={this.handleCancel.bind(this)} />}
         </Modal>
       </div>
     );
   }
 }
 
-export default Callback;
+export default Form.create({ name: 'callback' })(Callback);
