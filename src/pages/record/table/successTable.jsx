@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Button } from 'antd';
+import { Table } from 'antd';
 
-export default class recordTable extends React.Component {
+export default class successTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,47 +13,38 @@ export default class recordTable extends React.Component {
         },
         {
           title: 'guid',
-          dataIndex: 'age',
-          key: 'age'
+          dataIndex: 'guid',
+          key: 'guid'
         },
         {
-          title: '人员类型',
+          title: '应用名称',
           dataIndex: 'address',
           key: '1'
         },
         {
-          title: '卡号(idNo)',
+          title: '设备序列号',
           dataIndex: 'address',
           key: '2'
         },
         {
-          title: '创建时间',
+          title: '设备名称',
           dataIndex: 'address',
           key: '3'
         },
         {
-          title: '注册照片',
+          title: '识别模式',
           dataIndex: 'address',
           key: '4'
         },
         {
-          title: '照片授权状态',
+          title: '识别时间',
           dataIndex: 'address',
           key: '5'
         },
         {
-          title: '操作',
+          title: '人脸抓拍',
           dataIndex: 'address',
-          key: 'address',
-          render: (text, row) => (
-            this.props.dataSource.length >= 1 ? (
-              <>
-                <Button style={{ marginRight: 10 }}>编辑</Button>
-                <Button style={{ marginRight: 10 }} onClick={() => { this.props.accredit(row.id); }}>授权</Button>
-                <Button onClick={() => { this.props.handleDelete(row.id); }}>删除</Button>
-              </>
-            ) : null
-          )
+          key: 'address'
         }
       ]
     };

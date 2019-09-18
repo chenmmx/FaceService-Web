@@ -49,7 +49,7 @@ class AddPerson extends Component {
     return (
       <div className="application-form">
         <FsTitle title="人员管理" />
-        <div style={{ padding: 24, fontSize: 14, color: 'black' }}>基本信息</div>
+        <div style={{ padding: '0px 24px 0px', fontSize: 14, color: 'black' }}>基本信息</div>
         <Form {...formItemLayout} onSubmit={this.handleSubmit} className="application-form-main">
           <Form.Item label="应用名称">
             {getFieldDecorator('name', {
