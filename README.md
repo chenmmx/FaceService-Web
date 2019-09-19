@@ -2,8 +2,8 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-12 16:41:04
- * @LastEditTime: 2019-09-12 16:41:04
- * @LastEditors: your name
+ * @LastEditTime: 2019-09-19 17:07:01
+ * @LastEditors: Please set LastEditors
  -->
 # 第六镜人脸服务开放平台
 
@@ -16,7 +16,7 @@
 
 ## 技术栈
 - [React](https://reactjs.org/)
-- [Vue Router](https://reacttraining.com/react-router/)
+- [React Router](https://reacttraining.com/react-router/)
 - [Redux](https://www.redux.org.cn/)
 - [Ant Design](https://ant.design/index-cn)
 - [axios](https://github.com/axios/axios)
