@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 import LoginForm from './components/loginForm';
+import RegisterForm from './components/registerForm';
 import './style.less';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {
+      isRegister: true
+    };
+  }
+
+  changeState = () => {
+    const { isRegister } = this.state;
+    this.setState({
+      isRegister: !isRegister
+    });
   }
 
   render() {
+    const { isRegister } = this.state;
     return (
       <div id="login">
         <div className="login-header">
@@ -16,7 +27,9 @@ class Login extends Component {
         </div>
         <div className="login-main">
           <div className="login-main-form">
-            <LoginForm />
+            {
+                isRegister ? <RegisterForm changeState={this.changeState} /> : <LoginForm changeState={this.changeState} />
+            }
           </div>
         </div>
       </div>

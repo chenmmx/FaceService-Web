@@ -29,6 +29,7 @@ class LoginForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { changeState } = this.props;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
@@ -60,10 +61,10 @@ class LoginForm extends Component {
           <a className="login-form-forgot" href="">
                 忘记密码
           </a>
-          <Button type="primary" htmlType="submit" className="login-form-button">
+          <Button size="large" type="primary" htmlType="submit" className="login-form-button">
                 登录
           </Button>
-          <a href="" className="login-form-register">立即注册</a>
+          <Button onClick={() => { changeState(); }} type="link" className="login-form-register">立即注册</Button>
         </Form.Item>
       </Form>
     );
