@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-12 16:41:04
+ * @LastEditTime: 2019-09-12 16:41:04
+ * @LastEditors: your name
+ -->
 # 第六镜人脸服务开放平台
 
 ## 页面完成情况
@@ -10,7 +17,7 @@
 ## 技术栈
 - [React](https://reactjs.org/)
 - [Vue Router](https://reacttraining.com/react-router/)
-- [Vuex](https://www.redux.org.cn/)
+- [Redux](https://www.redux.org.cn/)
 - [Ant Design](https://ant.design/index-cn)
 - [axios](https://github.com/axios/axios)
 - [less](http://lesscss.org)
