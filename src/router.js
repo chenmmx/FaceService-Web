@@ -1,6 +1,13 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-18 11:36:12
+ * @LastEditTime: 2019-09-18 11:36:12
+ * @LastEditors: your name
+ */
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import Application from './pages/application';
 import ApplicationCreateForm from './pages/application/form/create';
 import Callback from './pages/callback';
@@ -11,7 +18,6 @@ import Person from './pages/person';
 import AddPerson from './pages/person/form/create';
 import Record from './pages/record';
 import Accredit from './pages/person/components/accredit';
-
 
 const AppRouter = () => {
   const routeConfig = [
@@ -49,6 +55,7 @@ const AppRouter = () => {
 
   return (
     <div className="routes">
+      <Route path="/" exact render={() => <Redirect to="/login" />} />
       {
         routeConfig.map((item) => (
           <Route
