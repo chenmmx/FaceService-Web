@@ -78,7 +78,7 @@ LoginForm.propTypes = {
 const mapStateToProps = (state) => {
   const { common } = state;
   return {
-    isLogin: common.value
+    isLogin: common.isLogin
   };
 };
 

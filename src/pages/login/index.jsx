@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { logout } from '../../store/actions/common';
 import LoginForm from './components/loginForm';
 import RegisterForm from './components/registerForm';
 import './style.less';
@@ -9,6 +12,13 @@ class Login extends Component {
     this.state = {
       isRegister: false
     };
+  }
+
+  componentDidMount() {
+    const { isLogin, handleLogout } = this.props;
+    if (isLogin) {
+      handleLogout();
+    }
   }
 
   changeState = () => {
@@ -37,4 +47,21 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  const { common } = state;
+  return {
+    isLogin: common.isLogin
+  };
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+  console.log(props);
+  return {
+    handleLogout() {
+      const action = logout();
+      dispatch(action);
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

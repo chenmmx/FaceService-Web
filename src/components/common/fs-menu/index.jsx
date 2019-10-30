@@ -43,6 +43,12 @@ class FsMenu extends Component {
             <span>识别记录管理</span>
           </Link>
         </Menu.Item>
+        <Menu.Item key="/account">
+          <Link to="/account">
+            <Icon type="file-search" />
+            <span>账号管理</span>
+          </Link>
+        </Menu.Item>
       </Menu>
     );
   }

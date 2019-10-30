@@ -18,6 +18,7 @@ import Person from './pages/person';
 import AddPerson from './pages/person/form/create';
 import Record from './pages/record';
 import Accredit from './pages/person/components/accredit';
+import Account from './pages/account';
 
 const AppRouter = () => {
   const routeConfig = [
@@ -50,6 +51,9 @@ const AppRouter = () => {
     },
     {
       id: '4', path: '/record', title: '识别记录管理', exact: false, component: Record
+    },
+    {
+      id: '10', path: '/account', title: '账号管理', exact: false, component: Account
     }
   ];
 

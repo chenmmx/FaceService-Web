@@ -14,8 +14,9 @@ export function login() {
 }
 
 export function logout() {
+  console.log('logout');
   return {
-    type: LOGIN,
+    type: LOGOUT,
     name
   };
 }
