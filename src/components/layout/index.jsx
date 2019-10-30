@@ -15,7 +15,7 @@ function BasicLayout(props) {
   console.log('props------', props);
   const [collapsed, setCollapsed] = useState(false);
 
-  const { handleLogout, isLogin, history } = props;
+  const { isLogin, history } = props;
 
   if (!isLogin) {
     history.push('/login');
@@ -43,7 +43,7 @@ function BasicLayout(props) {
           <Dropdown overlay={(
             <Menu>
               <Menu.Item>
-                <a rel="noopener noreferrer" href="/#/login" onClick={() => { handleLogout(); }}>
+                <a rel="noopener noreferrer" href="/#/login">
                   退出登录
                 </a>
               </Menu.Item>
@@ -82,10 +82,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => {
   console.log(props);
   return {
-    handleLogout() {
-      const action = logout();
-      dispatch(action);
-    }
+    handleLogout: () => { dispatch(logout()); }
   };
 };
 

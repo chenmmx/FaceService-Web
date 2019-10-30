@@ -85,10 +85,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, props) => {
   console.log(props);
   return {
-    handleLogin() {
-      const action = login();
-      dispatch(action);
-    }
+    handleLogin: () => { dispatch(login()); }
   };
 };
 
