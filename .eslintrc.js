@@ -47,6 +47,8 @@ module.exports = {
       "react/jsx-props-no-spreading": "off",
       "jsx-a11y/click-events-have-key-events":"off",
       "jsx-a11y/no-noninteractive-element-interactions":"off",
-      'max-len':'off'
+      'max-len':'off',
+      "no-unused-vars":"warn",
+      "import/no-cycle": "off"
     }
   };
