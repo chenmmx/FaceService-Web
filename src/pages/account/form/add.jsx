@@ -15,7 +15,7 @@ const formItemLayout = {
   }
 };
 
-function AccountFormAdd({ form }) {
+const AccountFormAdd = ({ form }) => {
   const { setLoading, setVisible } = useContext(AccountContext);
   const { getFieldDecorator } = form;
 
@@ -56,7 +56,7 @@ function AccountFormAdd({ form }) {
       </Form>
     </div>
   );
-}
+};
 
 const WrappedAccountFormAdd = Form.create({ name: 'account_form_add' })(AccountFormAdd);
 

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Button } from 'antd';
 import { AccountContext } from '../index';
 
-function AccountFormDelete() {
+const AccountFormDelete = () => {
   const { setLoading, setVisible, accountId } = useContext(AccountContext);
 
   const onSubmit = () => {
@@ -22,6 +22,6 @@ function AccountFormDelete() {
       </div>
     </div>
   );
-}
+};
 
 export default AccountFormDelete;

@@ -11,7 +11,7 @@ const { Search } = Input;
 
 export const AccountContext = createContext();
 
-function Account() {
+const Account = () => {
   // table数据
   const [dataSource, setDataSource] = useState([]);
   // table数据总条数
@@ -124,5 +124,5 @@ function Account() {
       </Modal>
     </div>
   );
-}
+};
 export default Account;
