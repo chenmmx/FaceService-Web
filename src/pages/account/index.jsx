@@ -44,6 +44,13 @@ function Account() {
     setTotal(2);
   }, []);
 
+  // 新增
+  const handleAdd = () => {
+    setVisible(true);
+    setModalTitle('新增');
+    setModalType('add');
+  };
+
   // 编辑
   const handleUpdate = (id) => {
     setAccountId(id);
@@ -80,7 +87,7 @@ function Account() {
       <div className="account-header">
         <div className="account-header-left">
           <Search style={{ width: 200 }} placeholder="请输入账号" onSearch={(value) => console.log(value)} />
-          <Button type="primary">新增</Button>
+          <Button type="primary" onClick={handleAdd}>新增</Button>
         </div>
       </div>
       <Table dataSource={dataSource} rowKey="id" pagination={false} style={{ paddingTop: '30px' }}>
