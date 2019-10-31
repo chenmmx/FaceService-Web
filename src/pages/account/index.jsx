@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import {
-  Table, Button, Pagination, Divider, Input, Modal
+  Table, Button, Pagination, Divider, Input, Modal, Spin
 } from 'antd';
 import FsTitle from '../../components/common/title';
 import { AccountFormAdd, AccountFormDelete, AccountFormUpdate } from './form';
@@ -26,6 +26,8 @@ function Account() {
   const [modalType, setModalType] = useState('');
   // Loading
   const [loading, setLoading] = useState(false);
+  // ID
+  const [accountId, setAccountId] = useState('');
 
   // 副作用函数
   useEffect(() => {
@@ -39,25 +41,26 @@ function Account() {
       account: '胡彦祖',
       password: '345'
     }]);
+    setTotal(2);
   }, []);
 
   // 编辑
   const handleUpdate = (id) => {
-    console.log(id);
+    setAccountId(id);
     setVisible(true);
     setModalTitle('编辑');
     setModalType('update');
   };
   // 删除
   const handleDelete = (id) => {
-    console.log(id);
+    setAccountId(id);
     setVisible(true);
     setModalTitle('删除');
     setModalType('delete');
   };
 
   // 页码改变
-  const onPageChange = (pageIndex, pageSize) => {
+  const onPageChange = (pageIndex) => {
     setCurrentPage(pageIndex);
   };
 
@@ -106,8 +109,10 @@ function Account() {
         closable={false}
         className="account-form"
       >
-        <AccountContext.Provider value={{ setVisible, setLoading }}>
-          <AccountForm />
+        <AccountContext.Provider value={{ setVisible, setLoading, accountId }}>
+          <Spin spinning={loading}>
+            <AccountForm />
+          </Spin>
         </AccountContext.Provider>
       </Modal>
     </div>
