@@ -15,7 +15,7 @@ function Account() {
   // table数据
   const [dataSource, setDataSource] = useState([]);
   // table数据总条数
-  const [total, setTotal] = useState(20);
+  const [total, setTotal] = useState(0);
   // 当前页码
   const [currentPage, setCurrentPage] = useState(1);
   // 模态框标题
@@ -26,10 +26,10 @@ function Account() {
   const [modalType, setModalType] = useState('');
   // Loading
   const [loading, setLoading] = useState(false);
-  // ID
+  // 账号ID
   const [accountId, setAccountId] = useState('');
 
-  // 副作用函数
+  // 副作用函数----componentDidMount componentDidUpdate componentWillUnmount
   useEffect(() => {
     setDataSource([{
       id: '1',
@@ -67,7 +67,7 @@ function Account() {
   };
 
   // 页码改变
-  const onPageChange = (pageIndex) => {
+  const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex);
   };
 
@@ -107,7 +107,7 @@ function Account() {
         />
       </Table>
       <div className="account-pagination" style={{ paddingTop: 30, textAlign: 'right' }}>
-        <Pagination total={total} defaultCurrent={currentPage} onChange={onPageChange} />
+        <Pagination total={total} defaultCurrent={currentPage} onChange={handlePageChange} />
       </div>
       <Modal
         title={modalTitle}
