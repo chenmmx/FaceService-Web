@@ -66,6 +66,11 @@ const Account = () => {
     setModalType('delete');
   };
 
+  // 搜索
+  const handleSearch = (value) => {
+    console.log(value);
+  };
+
   // 页码改变
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex);
@@ -86,7 +91,7 @@ const Account = () => {
       <FsTitle title="账号管理" />
       <div className="account-header">
         <div className="account-header-left">
-          <Search style={{ width: 200 }} placeholder="请输入账号" onSearch={(value) => console.log(value)} />
+          <Search style={{ width: 200 }} placeholder="请输入账号" onSearch={handleSearch} />
           <Button type="primary" onClick={handleAdd}>新增</Button>
         </div>
       </div>
