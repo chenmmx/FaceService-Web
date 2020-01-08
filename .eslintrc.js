@@ -49,6 +49,7 @@ module.exports = {
       "jsx-a11y/no-noninteractive-element-interactions":"off",
       'max-len':'off',
       "no-unused-vars":"warn",
-      "import/no-cycle": "off"
+      "import/no-cycle": "off",
+      "import/no-unresolved": "off"
     }
   };
