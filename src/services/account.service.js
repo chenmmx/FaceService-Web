@@ -15,15 +15,15 @@ export default {
     return handleService(url.add, data, 'POST');
   },
   update(data) {
-    handleService(url.update, data, 'PUT');
+    return handleService(url.update, data, 'PUT');
   },
   delete(data) {
-    handleService(url.delete, data, 'DELETE');
+    return handleService(url.delete, data, 'DELETE');
   },
   getInfo(data) {
-    handleService(url.getInfo, data);
+    return handleService(url.getInfo, data);
   },
   getListByPage(data) {
-    handleService(url.getListByPage, data);
+    return handleService(url.getListByPage, data);
   }
 };

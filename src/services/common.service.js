@@ -1,18 +1,12 @@
 import axios from 'axios';
 import router from '../router';
 
-const service = axios.create({
-  // 设置超时时间
-  timeout: 60000
-});
-
 /**
  * 请求前拦截
  * 用于处理需要在请求前的操作
  */
-service.interceptors.request.use((config) => {
+axios.interceptors.request.use((config) => {
   const config1 = config;
-  console.log('config', config1);
   const token = localStorage.getItem('token');
   if (token) {
     config1.headers.Authorization = token;
@@ -23,13 +17,12 @@ service.interceptors.request.use((config) => {
  * 请求响应拦截
  * 用于处理需要在请求返回后的操作
  */
-service.interceptors.response.use((response) => {
-  console.log('response', response);
+axios.interceptors.response.use((response) => {
   const responseCode = response.status;
   // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
   // 否则的话抛出错误
   if (responseCode === 200) {
-    return Promise.resolve(response);
+    return Promise.resolve(response.data);
   }
   return Promise.reject(response);
 }, (error) => {
