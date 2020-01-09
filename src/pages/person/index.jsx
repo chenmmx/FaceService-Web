@@ -289,7 +289,7 @@ class Person extends Component {
                 <span>人员
                   <span style={{ color: '#0099ff' }}>{this.state.dataSource.length}</span>
                 </span>
-                <Link to="/person/addPerson" className="addPeron">添加人员</Link>
+                <Link type="primary" to="/person/addPerson" className="addPeron">添加人员</Link>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
