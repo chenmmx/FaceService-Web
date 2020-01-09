@@ -1,9 +1,9 @@
 /*
  * @Description: In User Settings Edit
- * @Author: your name
+ * @Author: chenmmx
  * @Date: 2019-09-18 11:36:12
  * @LastEditTime: 2019-09-18 11:36:12
- * @LastEditors: your name
+ * @LastEditors: chenmmx
  */
 /* eslint-disable no-unused-vars */
 import React from 'react';

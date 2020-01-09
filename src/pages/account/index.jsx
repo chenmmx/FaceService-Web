@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
+// import axios from 'axios';
 import {
   Table, Button, Pagination, Divider, Input, Modal, Spin
 } from 'antd';
@@ -6,6 +7,7 @@ import FsTitle from '../../components/common/title';
 import { AccountFormAdd, AccountFormDelete, AccountFormUpdate } from './form';
 import './style.less';
 import accountService from '@/services/account.service';
+
 
 const { Column } = Table;
 const { Search } = Input;
@@ -33,11 +35,11 @@ const Account = () => {
   // 副作用函数----componentDidMount componentDidUpdate componentWillUnmount
   useEffect(() => {
     const fetchData = async () => {
-      const res = await accountService.getListByPage({
+      const data = await accountService.getListByPage({
         pageIndex: 1,
         pageSize: 10
       });
-      console.log(res);
+      console.log('data', data);
     };
     fetchData();
     setDataSource([{

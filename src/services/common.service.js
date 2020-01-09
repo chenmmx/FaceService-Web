@@ -1,5 +1,5 @@
 import axios from 'axios';
-import router from '../router';
+import { message } from 'antd';
 
 /**
  * 请求前拦截
@@ -33,27 +33,17 @@ axios.interceptors.response.use((response) => {
     // 401：未登录
     case 401:
       // 跳转登录页
-      router.replace({
-        path: '/login',
-        query: {
-          redirect: router.currentRoute.fullPath
-        }
-      });
+      window.location.href = '/login';
       break;
     // 403: token过期
     case 403:
       // 弹出错误信息
-
+      message.error('登录已过期，正在跳转至登录页...');
       // 清除token
       localStorage.removeItem('token');
       // 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面
       setTimeout(() => {
-        router.replace({
-          path: '/login',
-          query: {
-            redirect: router.currentRoute.fullPath
-          }
-        });
+        window.location.href = '/login';
       }, 1000);
       break;
     // 404请求不存在
@@ -62,7 +52,7 @@ axios.interceptors.response.use((response) => {
       break;
     // 其他错误，直接抛出错误提示
     default:
-      console.log('error:', error.response.data.message);
+      console.log('error:', error);
   }
   return Promise.reject(error);
 });

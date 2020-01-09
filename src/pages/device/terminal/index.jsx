@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import { withRouter } from 'react-router-dom';
 import DeviceFormDelete from '../form/delete';
+import redpupilService from '@/services/redpupil.service';
 
 const { Column } = Table;
 class Terminal extends Component {
@@ -12,8 +13,15 @@ class Terminal extends Component {
     this.state = {
       modalType: '',
       modalTitle: '',
+      pageIndex: 1,
+      pageSize: 10,
+      total: 0,
       visible: false
     };
+  }
+
+  componentDidMount() {
+    this.getTerminalList();
   }
 
     // 编辑
@@ -40,14 +48,29 @@ class Terminal extends Component {
       });
     }
 
+    getTerminalList = async () => {
+      const { pageIndex, pageSize } = this.state;
+      const data = await redpupilService.getListByPage({
+        pageSize,
+        pageIndex,
+        appId: '7551f009-d4b2-4afd-bab5-782dd0521050',
+        name: ''
+      });
+      console.log(data);
+    }
+
     // 页码改变
     onPageChange = (pageIndex, pageSize) => {
-      console.log('pageIndex', pageIndex);
-      console.log('pageSize', pageSize);
+      this.setState({
+        pageIndex,
+        pageSize
+      });
     };
 
     render() {
-      const { modalType, modalTitle, visible } = this.state;
+      const {
+        modalType, modalTitle, visible, total, pageIndex
+      } = this.state;
       const { bindList } = this.props;
       return (
         <div className="terminal">
@@ -71,7 +94,7 @@ class Terminal extends Component {
             />
           </Table>
           <div className="terminal-pagination" style={{ paddingTop: 30, textAlign: 'right' }}>
-            <Pagination total={200} defaultCurrent={1} onChange={this.onPageChange} />
+            <Pagination total={total} defaultCurrent={pageIndex} onChange={this.onPageChange} />
           </div>
           <Modal
             title={modalTitle}
