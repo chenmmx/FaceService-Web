@@ -12,15 +12,6 @@ export const CameraContext = createContext();
 const { Column } = Table;
 
 const Camera = () => {
-  // 摄像机列表数据
-//   const [dataList, setDataList] = useImmer([]);
-//   const [total, setTotal] = useImmer(0);
-//   const [pageIndex, setPageIndex] = useImmer(1);
-//   const [loading, setLoading] = useImmer(false);
-//   const [modalType, setModalType] = useImmer('');
-//   const [modalTitle, setModalTitle] = useImmer('');
-//   const [visible, setVisible] = useImmer(false);
-//   const [cameraId, setCameraId] = useImmer('');
   const [data, setData] = useImmer({
     dataList: [],
     total: 0,
@@ -38,15 +29,19 @@ const Camera = () => {
       draft.loading = true;
     });
     try {
-      const result = await cameraService.getListByPage({
+      const res = await cameraService.getListByPage({
         pageIndex: data.pageIndex,
         pageSize: 10,
         applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
       });
-      setData((draft) => {
-        draft.dataList = result.list;
-        draft.loading = false;
-      });
+      if (res.status === 0) {
+        setData((draft) => {
+          draft.dataList = res.result.list;
+          draft.loading = false;
+        });
+      } else {
+        console.log('error:', res.errorMsg);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -72,17 +67,36 @@ const Camera = () => {
       default: return (null);
     }
   };
-  const handleUpdate = (id) => {
+  // 新增
+  const handleAdd = () => {
     setData((draft) => {
       draft.modalType = 'add';
-      draft.modalTitle = '编辑摄像机';
+      draft.modalTitle = '新增';
       draft.visible = true;
+    });
+  };
+  // 编辑
+  const handleUpdate = (id) => {
+    setData((draft) => {
+      draft.modalType = 'update';
+      draft.modalTitle = '编辑';
+      draft.visible = true;
+      draft.cameraId = id;
+    });
+  };
+  // 删除
+  const handleDelete = (id) => {
+    setData((draft) => {
+      draft.modalType = 'delete';
+      draft.modalTitle = '删除';
+      draft.visible = true;
+      draft.cameraId = id;
     });
   };
   return (
     <div className="camera">
       <div className="camera-header">
-        <Button type="primary">新增</Button>
+        <Button type="primary" onClick={handleAdd}>新增</Button>
       </div>
       <Spin spinning={data.loading} delay={100}>
         <Table dataSource={data.dataList} rowKey="id" pagination={false}>
@@ -93,11 +107,17 @@ const Camera = () => {
           <Column
             title="操作"
             key="action"
-            render={(text) => (
+            render={(text, record) => (
               <span>
-                <Button type="primary" onClick={handleUpdate.bind(text.id)}>编辑</Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    handleUpdate(record.id);
+                  }}
+                >编辑
+                </Button>
                 <Divider type="vertical" />
-                <Button>删除</Button>
+                <Button onClick={() => handleDelete(record.id)}>删除</Button>
               </span>
             )}
           />
@@ -111,12 +131,10 @@ const Camera = () => {
         visible={data.visible}
         footer={null}
         closable={false}
-        className="account-form"
+        className="camera-form"
       >
-        <CameraContext.Provider value={{ setData, data }}>
-          <Spin spinning={data.loading}>
-            <CameraForm />
-          </Spin>
+        <CameraContext.Provider value={{ setData, data, getCameraList }}>
+          <CameraForm />
         </CameraContext.Provider>
       </Modal>
     </div>
