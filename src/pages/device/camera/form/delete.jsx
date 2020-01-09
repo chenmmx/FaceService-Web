@@ -38,7 +38,7 @@ const CameraFormDelete = () => {
   return (
     <Spin spinning={loading}>
       <div className="camera-form-delete">
-        <div className="camera-form-delete-title">确认删除当前选中账号？</div>
+        <div className="camera-form-delete-title">确认删除当前选中摄像机？</div>
         <div className="camera-form-delete-btn">
           <Button type="primary" onClick={onSubmit}>确认</Button>
           <Button onClick={() => { setData((draft) => { draft.visible = false; }); }}>取消</Button>
