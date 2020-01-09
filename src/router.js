@@ -17,7 +17,7 @@ import DeviceFormUpdate from './pages/device/terminal/form/update';
 import Person from './pages/person';
 import AddPerson from './pages/person/form/create';
 import Record from './pages/record';
-import Accredit from './pages/person/components/accredit';
+import Accredit from './pages/person/accredit/accredit';
 import Account from './pages/account';
 
 const AppRouter = () => {
