@@ -3,7 +3,7 @@ import {
   Table, Button, Divider, Pagination, Modal
 } from 'antd';
 import { withRouter } from 'react-router-dom';
-import DeviceFormDelete from '../form/delete';
+import DeviceFormDelete from './form/delete';
 import redpupilService from '@/services/redpupil.service';
 
 const { Column } = Table;

@@ -18,11 +18,15 @@ const Camera = () => {
 
   // 获取摄像机列表
   const getCameraList = async () => {
-    const data = await cameraService.getListByPage({
-      pageIndex,
-      pageSize,
-      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
-    });
+    try {
+      const data = await cameraService.getListByPage({
+        pageIndex,
+        pageSize,
+        applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
+      });
+    } catch (error) {
+      console.log(error);
+    }
     // if()
   };
 

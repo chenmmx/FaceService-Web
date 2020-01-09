@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Form, Input, Button, Select, Row, Col, InputNumber, Slider, DatePicker
 } from 'antd';
-import FsTitle from '../../../../components/common/fs-title';
+import FsTitle from '@/components/common/fs-title';
 import './style.less';
 
 const { Option } = Select;

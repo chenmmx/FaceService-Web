@@ -52,7 +52,7 @@ axios.interceptors.response.use((response) => {
       break;
     // 其他错误，直接抛出错误提示
     default:
-      console.log('error:', error);
+      console.log(`error request status ${responseCode}.`);
   }
   return Promise.reject(error);
 });
