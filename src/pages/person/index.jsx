@@ -45,10 +45,11 @@ class Person extends Component {
 
   // 页码改变
   onIndexChange(val) {
-    this.setState({
-      pagination: {
-        current: val
-      }
+    this.setState((state) => {
+      state.pagination.current = val;
+      return {
+        pagination: state.pagination
+      };
     });
     this.getList();
   }
