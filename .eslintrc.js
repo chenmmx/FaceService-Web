@@ -50,6 +50,7 @@ module.exports = {
       'max-len':'off',
       "no-unused-vars":"warn",
       "import/no-cycle": "off",
-      "import/no-unresolved": "off"
+      "import/no-unresolved": "off",
+      "no-param-reassign": "off"
     }
   };

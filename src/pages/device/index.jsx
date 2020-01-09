@@ -71,19 +71,13 @@ class Device extends Component {
         <div className="content-right">
           <Tabs defaultActiveKey="terminal" onChange={this.onTabChange}>
             <TabPane tab="赤眸列表" key="terminal">
-              <Spin spinning={loading} delay={100}>
-                <Terminal />
-              </Spin>
+              <Terminal />
             </TabPane>
             <TabPane tab="未绑定赤眸" key="unbound">
-              <Spin spinning={loading} delay={100}>
-                <UnboundTerminal />
-              </Spin>
+              <UnboundTerminal />
             </TabPane>
             <TabPane tab="摄像机" key="camera">
-              <Spin spinning={loading} delay={100}>
-                <Camera />
-              </Spin>
+              <Camera />
             </TabPane>
           </Tabs>
         </div>
