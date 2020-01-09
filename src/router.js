@@ -35,7 +35,7 @@ const AppRouter = () => {
       id: '2', path: '/device', title: '设备管理', exact: true, component: Device
     },
     {
-      id: '8', path: '/device/add/:data', title: '绑定设备', exact: false, component: DeviceFormAdd
+      id: '8', path: '/device/add', title: '绑定设备', exact: false, component: DeviceFormAdd
     },
     {
       id: '9', path: '/device/update/:id', title: '编辑设备', exact: false, component: DeviceFormUpdate
