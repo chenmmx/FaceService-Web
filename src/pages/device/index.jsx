@@ -3,6 +3,7 @@ import { Input, Tabs, Spin } from 'antd';
 import Terminal from './terminal';
 import UnboundTerminal from './unboundTerminal';
 import Camera from './camera';
+import Node from './node';
 import './style.less';
 
 const { Search } = Input;
@@ -78,6 +79,9 @@ class Device extends Component {
             </TabPane>
             <TabPane tab="摄像机" key="camera">
               <Camera />
+            </TabPane>
+            <TabPane tab="节点" key="node">
+              <Node />
             </TabPane>
           </Tabs>
         </div>

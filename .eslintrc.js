@@ -51,6 +51,7 @@ module.exports = {
       "no-unused-vars":"warn",
       "import/no-cycle": "off",
       "import/no-unresolved": "off",
-      "no-param-reassign": "off"
+      "no-param-reassign": "off",
+      "prefer-const": "off"
     }
   };

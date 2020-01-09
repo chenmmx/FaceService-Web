@@ -28,10 +28,10 @@ const CameraFormAdd = ({ form }) => {
       if (!err) {
         const res = await cameraService.add(values);
         if (res.status === 0) {
-          getCameraList();
           setData((draft) => {
             draft.visible = false;
           });
+          getCameraList();
           notification.success({
             message: '成功',
             description: '新增摄像机成功'
