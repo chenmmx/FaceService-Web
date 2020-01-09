@@ -1,16 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { Button, Spin, notification } from 'antd';
-import { CameraContext } from '../index';
-import cameraService from '@/services/camera.service';
+import { NodeContext } from '../index';
+import nodeService from '@/services/node.service';
 
-const CameraFormDelete = () => {
-  const { data, setData, getCameraList } = useContext(CameraContext);
+const NodeFormDelete = () => {
+  const { data, setData, getNodeList } = useContext(NodeContext);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const res = await cameraService.delete([data.cameraId]);
+      const res = await nodeService.delete([data.nodeId]);
       setLoading(false);
       if (res.status === 0) {
         setData((draft) => {
@@ -19,9 +19,9 @@ const CameraFormDelete = () => {
         });
         notification.success({
           message: '成功',
-          description: '删除摄像机成功'
+          description: '删除节点成功'
         });
-        getCameraList();
+        getNodeList();
       } else {
         notification.error({
           message: '失败',
@@ -37,9 +37,9 @@ const CameraFormDelete = () => {
   }
   return (
     <Spin spinning={loading}>
-      <div className="camera-form-delete">
-        <div className="camera-form-delete-title">确认删除当前选中摄像机？</div>
-        <div className="camera-form-delete-btn">
+      <div className="node-form-delete">
+        <div className="node-form-delete-title">确认删除当前选中节点？</div>
+        <div className="node-form-delete-btn">
           <Button type="primary" onClick={onSubmit}>确认</Button>
           <Button onClick={() => { setData((draft) => { draft.visible = false; }); }}>取消</Button>
         </div>
@@ -48,4 +48,4 @@ const CameraFormDelete = () => {
   );
 };
 
-export default CameraFormDelete;
+export default NodeFormDelete;

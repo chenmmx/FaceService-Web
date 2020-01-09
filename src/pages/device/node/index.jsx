@@ -3,15 +3,15 @@ import { useImmer } from 'use-immer';
 import {
   Button, Table, Divider, Pagination, Spin, Modal
 } from 'antd';
-import { CameraFormAdd, CameraFormDelete, CameraFormUpdate } from './form';
-import cameraService from '@/services/camera.service';
+import { NodeFormAdd, NodeFormDelete, NodeFormUpdate } from './form';
+import nodeService from '@/services/node.service';
 import './style.less';
 
-export const CameraContext = createContext();
+export const NodeContext = createContext();
 
 const { Column } = Table;
 
-const Camera = () => {
+const Node = () => {
   const [data, setData] = useImmer({
     dataList: [],
     total: 0,
@@ -20,16 +20,16 @@ const Camera = () => {
     modalTitle: '',
     modalType: '',
     visible: false,
-    cameraId: ''
+    nodeId: ''
   });
 
   // 获取摄像机列表
-  const getCameraList = async () => {
+  const getNodeList = async () => {
     setData((draft) => {
       draft.loading = true;
     });
     try {
-      const res = await cameraService.getListByPage({
+      const res = await nodeService.getListByPage({
         pageIndex: data.pageIndex,
         pageSize: 10,
         applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
@@ -49,7 +49,7 @@ const Camera = () => {
   };
 
   useEffect(() => {
-    getCameraList();
+    getNodeList();
   }, []);
 
   // 页码改变
@@ -57,14 +57,14 @@ const Camera = () => {
     setData((draft) => {
       draft.pageIndex = currentPage;
     });
-    getCameraList();
+    getNodeList();
   };
 
-  const CameraForm = () => {
+  const NodeForm = () => {
     switch (data.modalType) {
-      case 'add': return (<CameraFormAdd />);
-      case 'update': return (<CameraFormUpdate />);
-      case 'delete': return (<CameraFormDelete />);
+      case 'add': return (<NodeFormAdd />);
+      case 'update': return (<NodeFormUpdate />);
+      case 'delete': return (<NodeFormDelete />);
       default: return (null);
     }
   };
@@ -82,7 +82,7 @@ const Camera = () => {
       draft.modalType = 'update';
       draft.modalTitle = '编辑';
       draft.visible = true;
-      draft.cameraId = id;
+      draft.nodeId = id;
     });
   };
   // 删除
@@ -91,20 +91,18 @@ const Camera = () => {
       draft.modalType = 'delete';
       draft.modalTitle = '删除';
       draft.visible = true;
-      draft.cameraId = id;
+      draft.nodeId = id;
     });
   };
   return (
-    <div className="camera">
-      <div className="camera-header">
+    <div className="node">
+      <div className="node-header">
         <Button type="primary" onClick={handleAdd}>新增</Button>
       </div>
       <Spin spinning={data.loading} delay={100}>
         <Table dataSource={data.dataList} rowKey="id" pagination={false}>
-          <Column title="设备名称" dataIndex="name" key="name" />
-          <Column title="用户名" dataIndex="username" key="username" />
-          <Column title="密码" dataIndex="password" key="password" />
-          <Column title="IP" dataIndex="ip" key="ip" />
+          <Column title="节点名称" dataIndex="name" key="name" />
+          <Column title="节点ID" dataIndex="id" key="username" />
           <Column
             title="操作"
             key="action"
@@ -132,14 +130,14 @@ const Camera = () => {
         visible={data.visible}
         footer={null}
         closable={false}
-        className="camera-form"
+        className="node-form"
       >
-        <CameraContext.Provider value={{ setData, data, getCameraList }}>
-          <CameraForm />
-        </CameraContext.Provider>
+        <NodeContext.Provider value={{ setData, data, getNodeList }}>
+          <NodeForm />
+        </NodeContext.Provider>
       </Modal>
     </div>
   );
 };
 
-export default Camera;
+export default Node;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, notification } from 'antd';
+import redpupilService from '@/services/redpupil.service';
 import './style.less';
 
 class DeviceFormDelete extends Component {
@@ -14,13 +15,22 @@ class DeviceFormDelete extends Component {
     console.log(this.props);
   }
 
-  handleSubmit = () => {
-    const { handleClose } = this.props;
-    notification.success({
-      message: '成功',
-      description: '删除成功'
-    });
-    handleClose();
+  handleSubmit = async () => {
+    const { handleClose, redpupilId, getTerminalList } = this.props;
+    let res = await redpupilService.delete([redpupilId]);
+    if (res.status === 0) {
+      getTerminalList();
+      handleClose();
+      notification.success({
+        message: '成功',
+        description: '删除成功'
+      });
+    } else {
+      notification.error({
+        message: '失败',
+        description: res.errorMsg
+      });
+    }
   }
 
   render() {
