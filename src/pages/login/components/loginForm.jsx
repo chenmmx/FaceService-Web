@@ -4,32 +4,54 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Form, Icon, Input, Button, Checkbox
+  Form, Icon, Input, Button, Checkbox, notification
 } from 'antd';
 import { login } from '../../../store/actions/common';
+import loginService from '@/services/login.service';
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {
+      loading: false
+    };
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        console.log(this.props);
         const { handleLogin, history } = this.props;
-        history.push('/application');
+        this.setState({
+          loading: true
+        });
+        let res = await loginService.login(values);
+        if (res.status === 0) {
+          console.log(res.result);
+          notification.success({
+            message: '成功',
+            description: '登录成功'
+          });
+        } else {
+          notification.error({
+            message: '失败',
+            description: res.errorMsg
+          });
+        }
+        this.setState({
+          loading: false
+        });
         handleLogin();
+        history.push('/application');
       }
     });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { changeState } = this.props;
+    // const { changeState } = this.props;
+    const { loading } = this.state;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
@@ -61,10 +83,10 @@ class LoginForm extends Component {
           <a className="login-form-forgot" href="">
                 忘记密码
           </a>
-          <Button size="large" type="primary" htmlType="submit" className="login-form-button">
+          <Button size="large" type="primary" htmlType="submit" className="login-form-button" loading={loading}>
                 登录
           </Button>
-          <Button onClick={() => { changeState(); }} type="link" className="login-form-register">立即注册</Button>
+          {/* <Button onClick={() => { changeState(); }} type="link" className="login-form-register">立即注册</Button> */}
         </Form.Item>
       </Form>
     );
