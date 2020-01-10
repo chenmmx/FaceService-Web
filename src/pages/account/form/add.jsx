@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
 import {
-  Form, Input, Button
+  Form, Input, Button, notification
 } from 'antd';
 import { AccountContext } from '../index';
+import accountService from '@/services/account.service';
 
 const formItemLayout = {
   labelCol: {
@@ -16,14 +17,33 @@ const formItemLayout = {
 };
 
 const AccountFormAdd = ({ form }) => {
-  const { setLoading, setVisible } = useContext(AccountContext);
+  const {
+    setLoading, setVisible, setDataList, refreshData
+  } = useContext(AccountContext);
   const { getFieldDecorator } = form;
 
   // 表单确认
   const handleSubmit = () => {
-    form.validateFields((err, values) => {
+    form.validateFields(async (err, values) => {
       if (!err) {
-        console.log(values);
+        setLoading(true);
+        let data = await accountService.add(values);
+        if (data.status === 0) {
+          notification.success({
+            message: '成功',
+            description: '新增成功'
+          });
+          setDataList(!refreshData);
+          setLoading(false);
+          setVisible(false);
+        } else {
+          setLoading(false);
+          setVisible(false);
+          notification.error({
+            message: '失败',
+            description: data.errorMsg
+          });
+        }
       }
     });
   };
@@ -32,8 +52,8 @@ const AccountFormAdd = ({ form }) => {
     <div className="account-form-add">
       <Form {...formItemLayout}>
         <Form.Item label="用户名">
-          {getFieldDecorator('username', {
-            rules: [{ required: true, message: '请输入用户名' }]
+          {getFieldDecorator('userName', {
+            rules: [{ required: true, message: '至少8-20个字符，包含字符数字', pattern: /^(?=.*[0-9])(?=.*[a-zA-Z])(.{8,20})$/ }]
           })(
             <Input
               placeholder="请输入用户名"
@@ -42,10 +62,19 @@ const AccountFormAdd = ({ form }) => {
         </Form.Item>
         <Form.Item label="密码">
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: '请输入密码' }]
+            rules: [{ required: true, message: '至少8-20个字符，至少1个大写字母，1个小写字母和1个数字和1个特殊字符', pattern: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/ }]
           })(
             <Input
               placeholder="请输入密码"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item label="手机号">
+          {getFieldDecorator('phone', {
+            rules: [{ required: false, message: '请输入正确手机号', pattern: /^1[3456789]\d{9}$/ }]
+          })(
+            <Input
+              placeholder="手机号"
             />,
           )}
         </Form.Item>

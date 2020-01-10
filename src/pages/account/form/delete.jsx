@@ -1,16 +1,32 @@
 import React, { useContext } from 'react';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import { AccountContext } from '../index';
+import accountService from '@/services/account.service';
 
 const AccountFormDelete = () => {
-  const { setLoading, setVisible, accountId } = useContext(AccountContext);
+  const {
+    setLoading, setVisible, itemData, setDataList, refreshData
+  } = useContext(AccountContext);
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setLoading(true);
-    console.log(accountId);
-    setTimeout(() => {
+    let data = await accountService.delete([itemData.id]);
+    if (data.status === 0) {
+      notification.success({
+        message: '成功',
+        description: '删除成功'
+      });
+      setDataList(!refreshData);
       setLoading(false);
-    }, 500);
+      setVisible(false);
+    } else {
+      setLoading(false);
+      setVisible(false);
+      notification.error({
+        message: '失败',
+        description: data.errorMsg
+      });
+    }
   };
 
   return (

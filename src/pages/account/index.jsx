@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from 'react';
 // import axios from 'axios';
 import {
-  Table, Button, Pagination, Divider, Input, Modal, Spin
+  Table, Button, Pagination, Divider, Input, Modal, Spin, notification
 } from 'antd';
 import FsTitle from '../../components/common/title';
 import { AccountFormAdd, AccountFormDelete, AccountFormUpdate } from './form';
@@ -15,10 +15,14 @@ const { Search } = Input;
 export const AccountContext = createContext();
 
 const Account = () => {
+  // 刷新数据
+  const [refreshData, setDataList] = useState(false);
   // table数据
   const [dataSource, setDataSource] = useState([]);
   // table数据总条数
   const [total, setTotal] = useState(0);
+  // serch查询条件
+  const [serch, setSerch] = useState('');
   // 当前页码
   const [currentPage, setCurrentPage] = useState(1);
   // 模态框标题
@@ -30,31 +34,23 @@ const Account = () => {
   // Loading
   const [loading, setLoading] = useState(false);
   // 账号ID
-  const [accountId, setAccountId] = useState('');
-
-  // 副作用函数----componentDidMount componentDidUpdate componentWillUnmount
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await accountService.getListByPage({
-        pageIndex: 1,
-        pageSize: 10
+  const [itemData, setItemData] = useState({});
+  const fetchData = async () => {
+    const data = await accountService.getListByPage({
+      pageIndex: 1,
+      pageSize: 10,
+      name: serch
+    });
+    if (data.status === 0) {
+      setDataSource(data.result.list);
+      setTotal(data.result.total);
+    } else {
+      notification.error({
+        message: '失败',
+        description: data.errorMsg
       });
-      console.log('data', data);
-    };
-    fetchData();
-    setDataSource([{
-      id: '1',
-      account: '胡彦斌',
-      password: '1232'
-    },
-    {
-      id: '2',
-      account: '胡彦祖',
-      password: '345'
-    }]);
-    setTotal(2);
-  }, []);
-
+    }
+  };
   // 新增
   const handleAdd = () => {
     setVisible(true);
@@ -63,15 +59,15 @@ const Account = () => {
   };
 
   // 编辑
-  const handleUpdate = (id) => {
-    setAccountId(id);
+  const handleUpdate = (data) => {
+    setItemData(data);
     setVisible(true);
     setModalTitle('编辑');
     setModalType('update');
   };
   // 删除
-  const handleDelete = (id) => {
-    setAccountId(id);
+  const handleDelete = (data) => {
+    setItemData(data);
     setVisible(true);
     setModalTitle('删除');
     setModalType('delete');
@@ -79,12 +75,14 @@ const Account = () => {
 
   // 搜索
   const handleSearch = (value) => {
-    console.log(value);
+    setSerch(value);
+    setDataList(!refreshData);
   };
 
   // 页码改变
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex);
+    setDataList(!refreshData);
   };
 
   // 账号表单
@@ -96,6 +94,10 @@ const Account = () => {
       default: return (null);
     }
   };
+    // 副作用函数----componentDidMount componentDidUpdate componentWillUnmount
+  useEffect(() => {
+    fetchData();
+  }, [refreshData]);
 
   return (
     <div id="account">
@@ -107,7 +109,7 @@ const Account = () => {
         </div>
       </div>
       <Table dataSource={dataSource} rowKey="id" pagination={false} style={{ paddingTop: '30px' }}>
-        <Column title="账号" dataIndex="account" key="account" />
+        <Column title="账号" dataIndex="userName" key="userName" />
         <Column title="密码" dataIndex="password" key="password" />
         <Column
           title="操作"
@@ -115,9 +117,9 @@ const Account = () => {
           width={230}
           render={(text, data) => (
             <span>
-              <Button type="primary" onClick={handleUpdate.bind(this, data.id)}>编辑</Button>
+              <Button type="primary" onClick={handleUpdate.bind(this, data)}>编辑</Button>
               <Divider type="vertical" />
-              <Button onClick={handleDelete.bind(this, data.id)}>删除</Button>
+              <Button onClick={handleDelete.bind(this, data)}>删除</Button>
             </span>
           )}
         />
@@ -132,7 +134,10 @@ const Account = () => {
         closable={false}
         className="account-form"
       >
-        <AccountContext.Provider value={{ setVisible, setLoading, accountId }}>
+        <AccountContext.Provider value={{
+          setVisible, setLoading, itemData, setDataList, refreshData, setSerch
+        }}
+        >
           <Spin spinning={loading}>
             <AccountForm />
           </Spin>
