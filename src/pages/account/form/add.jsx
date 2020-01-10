@@ -18,7 +18,7 @@ const formItemLayout = {
 
 const AccountFormAdd = ({ form }) => {
   const {
-    setLoading, setVisible, setDataList, refreshData
+    setLoading, setVisible, setDataList, refreshData, setSerch
   } = useContext(AccountContext);
   const { getFieldDecorator } = form;
 
@@ -33,6 +33,7 @@ const AccountFormAdd = ({ form }) => {
             message: '成功',
             description: '新增成功'
           });
+          setSerch('');
           setDataList(!refreshData);
           setLoading(false);
           setVisible(false);

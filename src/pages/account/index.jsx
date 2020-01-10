@@ -94,6 +94,10 @@ const Account = () => {
       default: return (null);
     }
   };
+    // 值变化
+  const onChange = (e) => {
+    setSerch(e.target.value);
+  };
     // 副作用函数----componentDidMount componentDidUpdate componentWillUnmount
   useEffect(() => {
     fetchData();
@@ -104,7 +108,7 @@ const Account = () => {
       <FsTitle title="账号管理" />
       <div className="account-header">
         <div className="account-header-left">
-          <Search style={{ width: 200 }} placeholder="请输入账号" onSearch={handleSearch} />
+          <Search style={{ width: 200 }} placeholder="请输入账号" onChange={onChange} onSearch={handleSearch} value={serch} />
           <Button type="primary" onClick={handleAdd}>新增</Button>
         </div>
       </div>
