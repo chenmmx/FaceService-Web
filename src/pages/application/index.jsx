@@ -4,6 +4,7 @@ import FsTitle from '../../components/common/fs-title';
 import ApplicationCreate from './components/create';
 import ApplicationList from './components/list';
 import ApplicationBottom from './components/bottom';
+import applyService from '@/services/apply.service';
 import './style.less';
 
 class Application extends Component {
@@ -17,8 +18,20 @@ class Application extends Component {
 
   componentDidMount() {
     // console.log(this.context);
+    this.getApplyList();
   }
 
+  // 获取应用列表
+  getApplyList = async () => {
+    let res = await applyService.getListByPage({
+      pageIndex: 1,
+      pageSize: 999,
+      userId: 'ba06ae67-d1df-4434-9d80-65aa441aec03'
+    });
+    if (res.status === 0) {
+      console.log(res.result.list);
+    }
+  }
 
   render() {
     const { dataList, loading } = this.state;
@@ -30,7 +43,7 @@ class Application extends Component {
           {
                 dataList.length === 0
                   ? <ApplicationCreate history={history} />
-                  : dataList.map((item, index) => <ApplicationList key={item + index} />)
+                  : dataList.map((item, index) => <ApplicationList key={item + index} item={item} />)
             }
           {
                 dataList.length === 0 ? null : <ApplicationBottom history={history} />

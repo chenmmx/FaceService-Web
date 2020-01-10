@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, Button, Select, Row, Col, InputNumber, Slider, DatePicker, Spin
+  Form, Input, Button, Select, Row, Col, InputNumber, Slider, DatePicker, Spin, notification
 } from 'antd';
+import moment from 'moment';
 import FsTitle from '@/components/common/fs-title';
+import redpupilService from '@/services/redpupil.service';
 import './style.less';
 
 const { Option } = Select;
@@ -18,24 +20,96 @@ class DeviceFormUpdate extends Component {
   }
 
   componentDidMount() {
-    this.props.form.setFieldsValue({
-      name: '测试'
+    this.getRedpupilInfo();
+  }
+
+  getRedpupilInfo = async () => {
+    this.setState({
+      formLoading: true
     });
+    let res = await redpupilService.getInfo({
+      id: this.props.match.params.id
+    });
+    this.setState({
+      formLoading: false
+    });
+    if (res.status === 0) {
+      let { result } = res;
+      result.thresholdSetting = JSON.parse(result.thresholdSetting);
+      result.systemSetting = JSON.parse(result.systemSetting);
+      let fieldsValues = {
+        name: result.name,
+        applyId: result.applyId,
+        warranty: [moment(result.warrantyStartTime), moment(result.warrantyEndTime)],
+        password: result.systemSetting.password,
+        recognizeThreshold: result.thresholdSetting.recognizeThreshold,
+        liveThreshould: result.thresholdSetting.liveThreshould,
+        detectWindow: result.thresholdSetting.detectWindow,
+        recognizeTimeSpan: result.thresholdSetting.recognizeTimeSpan,
+        screenLockTime: result.thresholdSetting.screenLockTime,
+        screenLightTime: result.thresholdSetting.screenLightTime,
+        fillLightTime: result.thresholdSetting.fillLightTime,
+        volume: result.thresholdSetting.volume,
+        operateTime: [moment(result.thresholdSetting.operateStartTime), moment(result.thresholdSetting.operateEndTime)]
+      };
+      this.props.form.setFieldsValue(fieldsValues);
+    } else {
+      notification.error({
+        message: '失败',
+        description: res.errorMsg
+      });
+    }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
+      console.log(values);
       if (!err) {
         this.setState({
           loading: true
         });
-        setTimeout(() => {
-          this.setState({
-            loading: false
+        let formData = {
+          id: this.props.match.params.id,
+          name: values.name,
+          warrantyStartTime: values.warranty[0].format('YYYY-MM-DD'),
+          warrantyEndTime: values.warranty[1].format('YYYY-MM-DD'),
+          applyId: values.applyId,
+          systemSetting: {
+            password: values.password
+          },
+          thresholdSetting: {
+            recognizeThreshold: values.recognizeThreshold,
+            liveThreshould: values.liveThreshould,
+            detectWindow: values.detectWindow,
+            recognizeTimeSpan: values.recognizeTimeSpan,
+            screenLockTime: values.screenLockTime,
+            screenLightTime: values.screenLightTime,
+            fillLightTime: values.fillLightTime,
+            volume: values.volume,
+            operateStartTime: values.operateTime[0].format('YYYY-MM-DD'),
+            operateEndTime: values.operateTime[1].format('YYYY-MM-DD')
+          }
+        };
+        formData.systemSetting = JSON.stringify(formData.systemSetting);
+        formData.thresholdSetting = JSON.stringify(formData.thresholdSetting);
+        const res = await redpupilService.update(formData);
+        this.setState({
+          loading: false
+        });
+        if (res.status === 0) {
+          const { history } = this.props;
+          history.push('/device');
+          notification.success({
+            message: '成功',
+            description: '修改成功'
           });
-        }, 500);
-        console.log(values);
+        } else {
+          notification.error({
+            message: '失败',
+            description: res.errorMsg
+          });
+        }
       }
     });
   }

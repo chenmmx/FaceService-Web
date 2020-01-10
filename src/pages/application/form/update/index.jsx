@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, Button, Select
+  Form, Input, Button, notification
 } from 'antd';
+import applyService from '@/services/apply.service';
 import './style.less';
-
-const { Option } = Select;
 
 class ApplicationUpdateForm extends Component {
   constructor(props) {
@@ -18,23 +17,38 @@ class ApplicationUpdateForm extends Component {
   componentDidMount() {
     this.props.form.setFieldsValue({
       appId: '1243243asfase2432sf1e3sda',
-      appKey: '1243243asfase2432sf1e3sda',
       appSecret: '1243243asfase2432sf1e3sda'
     });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
+        const { applyId } = this.props;
         this.setState({
           loading: true
         });
-        setTimeout(() => {
-          this.setState({
-            loading: false
+        let res = await applyService.add({
+          id: applyId,
+          userId: window.localStorage.getItem('userId'),
+          name: values.name,
+          remark: values.remark
+        });
+        this.setState({
+          loading: false
+        });
+        if (res.status === 0) {
+          notification.success({
+            message: '成功',
+            description: '新增成功'
           });
-        }, 500);
+        } else {
+          notification.error({
+            message: '失败',
+            description: res.errorMsg
+          });
+        }
         console.log(values);
       }
     });
@@ -75,7 +89,7 @@ class ApplicationUpdateForm extends Component {
               />,
             )}
           </Form.Item>
-          <Form.Item label="识别回调">
+          {/* <Form.Item label="识别回调">
             {getFieldDecorator('callback', {
               rules: [{ required: false, message: 'Please input your username!' }]
             })(
@@ -103,9 +117,9 @@ class ApplicationUpdateForm extends Component {
                 disabled
               />,
             )}
-          </Form.Item>
-          <Form.Item label="appSecret">
-            {getFieldDecorator('appSecret', {
+          </Form.Item> */}
+          <Form.Item label="secret">
+            {getFieldDecorator('secret', {
             })(
               <Input
                 placeholder=""
