@@ -10,17 +10,19 @@ class ApplicationList extends Component {
       showSecret: false,
       visible: false,
       modalTitle: '',
-      modalType: ''
+      modalType: '',
+      applyId: ''
     };
   }
 
 
   // 编辑
-  onUpdate = () => {
+  onUpdate = (id) => {
     this.setState({
       modalType: 'update',
       modalTitle: '编辑',
-      visible: true
+      visible: true,
+      applyId: id
     });
   }
 
@@ -49,19 +51,20 @@ class ApplicationList extends Component {
 
   render() {
     const {
-      showSecret, modalType, modalTitle
+      showSecret, modalType, modalTitle, applyId
     } = this.state;
+    const { item } = this.props;
     return (
       <div className="application-list">
         <h3 className="application-list--title">测试</h3>
         <div className="application-list-content">
           <div className="application-list-content--item">
-            <p>appId：7B8B850FFB894CE6A4D9AF31B494D345</p>
-            <p>appKey：7B8B850FFB894CE6A4D9AF31B494D345</p>
+            <p>appId：{item.id}</p>
+            <p>appKey：{item.secret}</p>
             <p>appSecret：
               {
                   !showSecret ? <Button type="link" onClick={() => { this.setState({ showSecret: !showSecret }); }}>显示</Button>
-                    : <span>94F6460D57D1470E92C965522827DB11<Button type="link" onClick={() => { this.setState({ showSecret: !showSecret }); }}>隐藏</Button></span>
+                    : <span>{item.secret}<Button type="link" onClick={() => { this.setState({ showSecret: !showSecret }); }}>隐藏</Button></span>
               }
             </p>
           </div>
@@ -72,10 +75,10 @@ class ApplicationList extends Component {
           <div className="application-list-content--item">
             <div className="application-list-content--item-text">
               <p>回调名称：</p>
-              <p>应用说明：</p>
+              <p>应用说明：{item.remark}</p>
             </div>
             <div className="application-list-content--item-btn">
-              <Button type="primary" onClick={this.onUpdate}>编辑</Button>
+              <Button type="primary" onClick={this.onUpdate.bind(item.id)}>编辑</Button>
               <Button onClick={this.onOffline}>下线</Button>
             </div>
           </div>
@@ -87,7 +90,7 @@ class ApplicationList extends Component {
           closable={false}
         >
           {
-                modalType === 'update' ? <ApplicationUpdateForm handleClose={this.handleClose} /> : <ApplicationDeleteForm handleClose={this.handleClose} />
+                modalType === 'update' ? <ApplicationUpdateForm applyId={applyId} handleClose={this.handleClose} /> : <ApplicationDeleteForm applyId={applyId} handleClose={this.handleClose} />
             }
         </Modal>
       </div>

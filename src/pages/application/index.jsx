@@ -25,7 +25,8 @@ class Application extends Component {
   getApplyList = async () => {
     let res = await applyService.getListByPage({
       pageIndex: 1,
-      pageSize: 999
+      pageSize: 999,
+      userId: 'ba06ae67-d1df-4434-9d80-65aa441aec03'
     });
     if (res.status === 0) {
       console.log(res.result.list);
@@ -42,7 +43,7 @@ class Application extends Component {
           {
                 dataList.length === 0
                   ? <ApplicationCreate history={history} />
-                  : dataList.map((item, index) => <ApplicationList key={item + index} />)
+                  : dataList.map((item, index) => <ApplicationList key={item + index} item={item} />)
             }
           {
                 dataList.length === 0 ? null : <ApplicationBottom history={history} />

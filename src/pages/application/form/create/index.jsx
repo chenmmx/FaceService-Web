@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, Button, Select
+  Form, Input, Button, notification
 } from 'antd';
 import FsTitle from '../../../../components/common/fs-title';
+import applyService from '@/services/apply.service';
 import './style.less';
-
-const { Option } = Select;
 
 class ApplicationCreateForm extends Component {
   constructor(props) {
@@ -17,17 +16,31 @@ class ApplicationCreateForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
+        const { history } = this.props;
         this.setState({
           loading: true
         });
-        setTimeout(() => {
-          this.setState({
-            loading: false
+        let res = await applyService.add({
+          userId: window.localStorage.getItem('userId'),
+          ...values
+        });
+        this.setState({
+          loading: false
+        });
+        if (res.status === 0) {
+          notification.success({
+            message: '成功',
+            description: '新增成功'
           });
-        }, 500);
-        console.log(values);
+          history.push('/application');
+        } else {
+          notification.error({
+            message: '失败',
+            description: res.errorMsg
+          });
+        }
       }
     });
   }
@@ -59,7 +72,7 @@ class ApplicationCreateForm extends Component {
               />,
             )}
           </Form.Item>
-          <Form.Item label="识别回调">
+          {/* <Form.Item label="识别回调">
             {getFieldDecorator('callback', {
               rules: [{ required: false, message: 'Please input your username!' }]
             })(
@@ -78,7 +91,7 @@ class ApplicationCreateForm extends Component {
                 <Option value="jack">jack</Option>
               </Select>
             )}
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item label="应用说明">
             {getFieldDecorator('remark', {
               rules: [{ required: false, message: 'Please input your username!' }]
