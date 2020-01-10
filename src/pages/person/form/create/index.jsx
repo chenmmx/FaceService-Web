@@ -1,33 +1,86 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, Button, Select
+  Form, Input, Button, Select, notification
 } from 'antd';
 import FsTitle from '../../../../components/common/fs-title';
 import './style.less';
+import personService from '@/services/person.service';
 
 const { Option } = Select;
 
 class AddPerson extends Component {
   constructor(props) {
     super(props);
+    this.pageType = false;
     this.state = {
-      loading: false
+      id: '',
+      loading: false,
+      phone: '',
+      tag: {
+        name: '',
+        personName: '',
+        idNo: '',
+        idNumber: '',
+        personType: ''
+      }
     };
+  }
+
+  componentDidMount() {
+    if (this.props.location.state) {
+      const data = this.props.location.state;
+      this.pageType = true;
+      this.setState({
+        phone: data.phone,
+        id: data.id,
+        tag: data.tag ? JSON.parse(data.tag) : {
+          name: '',
+          personName: '',
+          idNo: '',
+          idNumber: '',
+          personType: ''
+        }
+      });
+    }
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields(async (err, val) => {
       if (!err) {
-        this.setState({
-          loading: true
-        });
-        setTimeout(() => {
-          this.setState({
-            loading: false
+        if (!this.pageType) {
+          const res = await personService.add({
+            phone: val.phone, faceUrl: 'http://192.168.1.222///group1/M00/01/56/wKgB3l4UNYCATQVEAACa6ReMoCI77.jpeg', applyId: '7551f009-d4b2-4afd-bab5-782dd0521050', tag: JSON.stringify(val.tag)
           });
-        }, 500);
-        console.log(values);
+          if (res.status === 0) {
+            notification.success({
+              message: '成功',
+              description: '添加成功'
+            });
+            this.props.history.push('/person');
+          } else {
+            notification.error({
+              message: '错误',
+              description: res.errorMsg
+            });
+          }
+        } else {
+          const res = await personService.update({
+            id: this.state.id, phone: val.phone, faceUrl: 'http://192.168.1.222///group1/M00/01/56/wKgB3l4UNYCATQVEAACa6ReMoCI77.jpeg', applyId: '7551f009-d4b2-4afd-bab5-782dd0521050', tag: JSON.stringify(val.tag)
+          });
+          if (res.status === 0) {
+            notification.success({
+              message: '成功',
+              description: '修改成功'
+            });
+            this.props.history.push('/person');
+          } else {
+            notification.error({
+              message: '错误',
+              description: res.errorMsg
+            });
+          }
+        }
       }
     });
   }
@@ -52,8 +105,9 @@ class AddPerson extends Component {
         <div style={{ padding: '0px 24px 0px', fontSize: 14, color: 'black' }}>基本信息</div>
         <Form {...formItemLayout} onSubmit={this.handleSubmit} className="application-form-main">
           <Form.Item label="应用名称">
-            {getFieldDecorator('name', {
-              rules: [{ required: true, message: '请输入应用名称' }]
+            {getFieldDecorator('tag.name', {
+              rules: [{ required: true, message: '请输入应用名称' }],
+              initialValue: this.state.tag.name
             })(
               <Select allowClear placeholder="请选择应用名称">
                 <Option value="123">123</Option>
@@ -62,8 +116,9 @@ class AddPerson extends Component {
             )}
           </Form.Item>
           <Form.Item label="姓名">
-            {getFieldDecorator('personName', {
-              rules: [{ required: true, message: '请输入姓名' }]
+            {getFieldDecorator('tag.personName', {
+              rules: [{ required: true, message: '请输入姓名' }],
+              initialValue: this.state.tag.personName
             })(
               <Input
                 placeholder="请输入姓名"
@@ -71,8 +126,9 @@ class AddPerson extends Component {
             )}
           </Form.Item>
           <Form.Item label="卡号(idNo)">
-            {getFieldDecorator('idNo', {
-              rules: [{ required: false, message: 'Please input your username!' }]
+            {getFieldDecorator('tag.idNo', {
+              rules: [{ required: false, message: 'Please input your username!' }],
+              initialValue: this.state.tag.idNo
             })(
               <Input
                 placeholder="请输入卡号"
@@ -80,17 +136,9 @@ class AddPerson extends Component {
             )}
           </Form.Item>
           <Form.Item label="身份证号">
-            {getFieldDecorator('idNumber', {
-              rules: [{ required: false, message: 'Please input your username!' }]
-            })(
-              <Input
-                placeholder="请输入身份证号"
-              />,
-            )}
-          </Form.Item>
-          <Form.Item label="身份证号">
-            {getFieldDecorator('idNumber', {
-              rules: [{ required: false, message: 'Please input your username!' }]
+            {getFieldDecorator('tag.idNumber', {
+              rules: [{ required: false, message: '请输入正确身份证', pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/ }],
+              initialValue: this.state.tag.idNumber
             })(
               <Input
                 placeholder="请输入身份证号"
@@ -99,7 +147,8 @@ class AddPerson extends Component {
           </Form.Item>
           <Form.Item label="手机号">
             {getFieldDecorator('phone', {
-              rules: [{ required: false, message: 'Please input your username!' }]
+              rules: [{ required: false, message: '请输入正确手机号', pattern: /^1[3456789]\d{9}$/ }],
+              initialValue: this.state.phone
             })(
               <Input
                 placeholder="请输入手机号"
@@ -107,8 +156,9 @@ class AddPerson extends Component {
             )}
           </Form.Item>
           <Form.Item label="人员类型" className="personType">
-            {getFieldDecorator('personType', {
-              rules: [{ required: false, message: 'Please input your username!' }]
+            {getFieldDecorator('tag.personType', {
+              rules: [{ required: false, message: 'Please input your username!' }],
+              initialValue: this.state.tag.personType
             })(
               <Input
                 placeholder="请输入人员类型"
