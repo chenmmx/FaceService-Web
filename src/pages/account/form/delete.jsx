@@ -5,11 +5,14 @@ import accountService from '@/services/account.service';
 
 const AccountFormDelete = () => {
   const {
-    setLoading, setVisible, itemData, setDataList, refreshData
+    setLoading, setVisible, itemData, setDataList, refreshData, dataSource, currentPage, setCurrentPage
   } = useContext(AccountContext);
 
   const onSubmit = async () => {
     setLoading(true);
+    if (dataSource.length <= 1 && currentPage >= 1) {
+      setCurrentPage(currentPage - 1);
+    }
     let data = await accountService.delete([itemData.id]);
     if (data.status === 0) {
       notification.success({

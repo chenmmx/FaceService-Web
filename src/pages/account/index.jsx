@@ -140,7 +140,7 @@ const Account = () => {
         className="account-form"
       >
         <AccountContext.Provider value={{
-          setVisible, setLoading, itemData, setDataList, refreshData, textInput, setSerch
+          setVisible, setLoading, itemData, setDataList, refreshData, textInput, setSerch, dataSource, currentPage, setCurrentPage
         }}
         >
           <Spin spinning={loading}>
