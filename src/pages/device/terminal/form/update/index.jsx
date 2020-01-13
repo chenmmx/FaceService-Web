@@ -43,7 +43,7 @@ class DeviceFormUpdate extends Component {
         warranty: [moment(result.warrantyStartTime), moment(result.warrantyEndTime)],
         password: result.systemSetting.password,
         recognizeThreshold: result.thresholdSetting.recognizeThreshold,
-        liveThreshould: result.thresholdSetting.liveThreshould,
+        liveThreshold: result.thresholdSetting.liveThreshold,
         detectWindow: result.thresholdSetting.detectWindow,
         recognizeTimeSpan: result.thresholdSetting.recognizeTimeSpan,
         screenLockTime: result.thresholdSetting.screenLockTime,
@@ -80,7 +80,7 @@ class DeviceFormUpdate extends Component {
           },
           thresholdSetting: {
             recognizeThreshold: values.recognizeThreshold,
-            liveThreshould: values.liveThreshould,
+            liveThreshold: values.liveThreshold,
             detectWindow: values.detectWindow,
             recognizeTimeSpan: values.recognizeTimeSpan,
             screenLockTime: values.screenLockTime,
@@ -219,7 +219,7 @@ class DeviceFormUpdate extends Component {
             <Row>
               <Col span={wrapperCol}>
                 <Form.Item label="识别阈值">
-                  {getFieldDecorator('recognizeThreshould', {
+                  {getFieldDecorator('recognizeThreshold', {
                     initialValue: '0.57',
                     rules: [{ required: true, message: '请输入识别阈值' }]
                   })(
@@ -235,7 +235,7 @@ class DeviceFormUpdate extends Component {
               </Col>
               <Col span={wrapperCol}>
                 <Form.Item label="活体阈值">
-                  {getFieldDecorator('liveThreshould', {
+                  {getFieldDecorator('liveThreshold', {
                     initialValue: '0.86',
                     rules: [{ required: true, message: '请输入活体阈值' }]
                   })(

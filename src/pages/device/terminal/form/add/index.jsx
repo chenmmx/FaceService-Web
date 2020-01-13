@@ -35,7 +35,7 @@ class DeviceFormAdd extends Component {
           },
           thresholdSetting: {
             recognizeThreshold: values.recognizeThreshold,
-            liveThreshould: values.liveThreshould,
+            liveThreshold: values.liveThreshold,
             detectWindow: values.detectWindow,
             recognizeTimeSpan: values.recognizeTimeSpan,
             screenLockTime: values.screenLockTime,
@@ -190,7 +190,7 @@ class DeviceFormAdd extends Component {
             </Col>
             <Col span={wrapperCol}>
               <Form.Item label="活体阈值">
-                {getFieldDecorator('liveThreshould', {
+                {getFieldDecorator('liveThreshold', {
                   initialValue: '0.86',
                   rules: [{ required: true, message: '请输入活体阈值' }]
                 })(
