@@ -12,7 +12,6 @@ import AppRouter from '../../router';
 const { Header, Sider, Content } = Layout;
 
 function BasicLayout(props) {
-  console.log('props------', props);
   const [collapsed, setCollapsed] = useState(false);
 
   const { isLogin, history } = props;
@@ -37,7 +36,6 @@ function BasicLayout(props) {
             type={collapsed ? 'menu-unfold' : 'menu-fold'}
             onClick={() => {
               setCollapsed(!collapsed);
-              console.log(collapsed);
             }}
           />
           <Dropdown overlay={(
@@ -79,11 +77,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, props) => {
-  console.log(props);
-  return {
-    handleLogout: () => { dispatch(logout()); }
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  handleLogout: () => { dispatch(logout()); }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(BasicLayout));
