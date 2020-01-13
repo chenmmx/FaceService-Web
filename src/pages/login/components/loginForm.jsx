@@ -50,7 +50,7 @@ class LoginForm extends Component {
           } else {
             window.localStorage.removeItem('username', values.username);
             window.localStorage.removeItem('password', values.password);
-            window.localStorage.setItem('checked', 0);
+            window.localStorage.removeItem('checked');
           }
           handleLogin();
           history.push('/application');
