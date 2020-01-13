@@ -392,7 +392,7 @@ class Record extends Component {
                 </Spin>
               </TabPane>
               <TabPane tab="摄像机记录" key="failed">
-                <Spin spinning={this.state.loading} delay={2000}>
+                <Spin spinning={this.state.loading} delay={200}>
                   <FailedTable formateDate={this.formateDate} cameraHandleDelete={this.cameraHandleDelete} dataSource={this.state.fieldList} pagination={this.state.pagination} />
                 </Spin>
               </TabPane>
