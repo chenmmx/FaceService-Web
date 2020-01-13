@@ -39,10 +39,10 @@ class LoginForm extends Component {
           loading: true
         });
         let res = await loginService.login(values);
+        this.setState({
+          loading: false
+        });
         if (res.status === 0) {
-          this.setState({
-            loading: false
-          });
           if (values.checked) {
             window.localStorage.setItem('username', values.username);
             window.localStorage.setItem('password', values.password);
