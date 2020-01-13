@@ -13,10 +13,13 @@ const { Column } = Table;
 const { Search } = Input;
 
 export const AccountContext = createContext();
+const textInput = React.createRef();
 
 const Account = () => {
   // 刷新数据
   const [refreshData, setDataList] = useState(false);
+  // tableLoading
+  const [tableLoading, setTableLoading] = useState(false);
   // table数据
   const [dataSource, setDataSource] = useState([]);
   // table数据总条数
@@ -36,11 +39,13 @@ const Account = () => {
   // 账号ID
   const [itemData, setItemData] = useState({});
   const fetchData = async () => {
+    setTableLoading(true);
     const data = await accountService.getListByPage({
       pageIndex: 1,
       pageSize: 10,
       name: serch
     });
+    setTableLoading(false);
     if (data.status === 0) {
       setDataSource(data.result.list);
       setTotal(data.result.total);
@@ -94,10 +99,6 @@ const Account = () => {
       default: return (null);
     }
   };
-    // 值变化
-  const onChange = (e) => {
-    setSerch(e.target.value);
-  };
     // 副作用函数----componentDidMount componentDidUpdate componentWillUnmount
   useEffect(() => {
     fetchData();
@@ -108,11 +109,11 @@ const Account = () => {
       <FsTitle title="账号管理" />
       <div className="account-header">
         <div className="account-header-left">
-          <Search style={{ width: 200 }} placeholder="请输入账号" onChange={onChange} onSearch={handleSearch} value={serch} />
+          <Search ref={textInput} style={{ width: 200 }} placeholder="请输入账号" onSearch={handleSearch} />
           <Button type="primary" onClick={handleAdd}>新增</Button>
         </div>
       </div>
-      <Table dataSource={dataSource} rowKey="id" pagination={false} style={{ paddingTop: '30px' }}>
+      <Table loading={tableLoading} dataSource={dataSource} rowKey="id" pagination={false} style={{ paddingTop: '30px' }}>
         <Column title="账号" dataIndex="userName" key="userName" />
         <Column title="密码" dataIndex="password" key="password" />
         <Column
@@ -139,7 +140,7 @@ const Account = () => {
         className="account-form"
       >
         <AccountContext.Provider value={{
-          setVisible, setLoading, itemData, setDataList, refreshData, setSerch
+          setVisible, setLoading, itemData, setDataList, refreshData, textInput, setSerch
         }}
         >
           <Spin spinning={loading}>

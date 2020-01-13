@@ -1,5 +1,7 @@
 import React from 'react';
-import { Table } from 'antd';
+import {
+  Table, Avatar, Divider, Button
+} from 'antd';
 
 export default class successTable extends React.Component {
   constructor(props) {
@@ -7,44 +9,49 @@ export default class successTable extends React.Component {
     this.state = {
       columns: [
         {
-          title: '姓名',
-          dataIndex: 'name',
-          key: 'name'
+          title: '人脸抓拍',
+          render: (row) => (
+            <div>
+              <Avatar shape="square" size={64} icon="user" src={row.sourceUrl} />
+              <Divider type="vertical" />
+              <Avatar shape="square" size={64} icon="user" src={row.faceUrl} />
+            </div>
+          ),
+          key: '4'
         },
         {
-          title: 'guid',
-          dataIndex: 'guid',
-          key: 'guid'
-        },
-        {
-          title: '应用名称',
-          dataIndex: 'address',
-          key: '1'
-        },
-        {
-          title: '设备序列号',
-          dataIndex: 'address',
+          title: '相似度',
+          dataIndex: 'similarity',
           key: '2'
         },
         {
           title: '设备名称',
-          dataIndex: 'address',
-          key: '3'
+          dataIndex: 'redpupilName',
+          key: 'name'
         },
         {
-          title: '识别模式',
-          dataIndex: 'address',
-          key: '4'
+          title: '手机号',
+          dataIndex: 'phone',
+          key: 'guid'
         },
         {
           title: '识别时间',
-          dataIndex: 'address',
-          key: '5'
+          dataIndex: 'recordTime',
+          render: (text, row) => (
+            <>
+              {this.props.formateDate(row.recordTime)}
+            </>
+          ),
+          key: '1'
         },
         {
-          title: '人脸抓拍',
-          dataIndex: 'address',
-          key: 'address'
+          title: '操作',
+          key: '5',
+          render: (text, row) => (
+            <>
+              <Button onClick={() => { this.props.redpupilHandleDelete(row.id); }}>删除</Button>
+            </>
+          )
         }
       ]
     };
@@ -52,7 +59,7 @@ export default class successTable extends React.Component {
 
   render() {
     return (
-      <Table dataSource={this.props.dataSource} columns={this.state.columns} />
+      <Table rowKey="id" pagination={this.props.pagination} dataSource={this.props.dataSource} columns={this.state.columns} />
     );
   }
 }

@@ -50,8 +50,9 @@ class Person extends Component {
       return {
         pagination: state.pagination
       };
+    }, () => {
+      this.getList();
     });
-    this.getList();
   }
 
   // 获取列表
@@ -59,9 +60,9 @@ class Person extends Component {
     this.setState({
       loading: true
     });
-    const { pageSize } = this.state.pagination;
+    const { current } = this.state.pagination;
     const { pageIndex } = this.state.pagination;
-    const res = await personService.getListByPage({ pageSize, pageIndex, applyId: '7551f009-d4b2-4afd-bab5-782dd0521050' });
+    const res = await personService.getListByPage({ pageSize: current, pageIndex, applyId: '7551f009-d4b2-4afd-bab5-782dd0521050' });
     if (res.status === 0) {
       this.setState((state) => {
         state.pagination.total = res.result.total;
