@@ -17,6 +17,18 @@ class LoginForm extends Component {
     };
   }
 
+  componentDidMount() {
+    if (window.localStorage.getItem('checked') && window.localStorage.getItem('checked') === '1') {
+      let username = window.localStorage.getItem('username');
+      let password = window.localStorage.getItem('password');
+      this.props.form.setFieldsValue({
+        username,
+        password,
+        checked: true
+      });
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
@@ -27,8 +39,21 @@ class LoginForm extends Component {
           loading: true
         });
         let res = await loginService.login(values);
+        this.setState({
+          loading: false
+        });
         if (res.status === 0) {
-          console.log(res.result);
+          if (values.checked) {
+            window.localStorage.setItem('username', values.username);
+            window.localStorage.setItem('password', values.password);
+            window.localStorage.setItem('checked', 1);
+          } else {
+            window.localStorage.removeItem('username', values.username);
+            window.localStorage.removeItem('password', values.password);
+            window.localStorage.setItem('checked', 0);
+          }
+          handleLogin();
+          history.push('/application');
           notification.success({
             message: '成功',
             description: '登录成功'
@@ -39,11 +64,6 @@ class LoginForm extends Component {
             description: res.errorMsg
           });
         }
-        this.setState({
-          loading: false
-        });
-        handleLogin();
-        history.push('/application');
       }
     });
   };
@@ -76,9 +96,9 @@ class LoginForm extends Component {
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator('remember', {
+          {getFieldDecorator('checked', {
             valuePropName: 'checked',
-            initialValue: true
+            initialValue: false
           })(<Checkbox>记住密码</Checkbox>)}
           <a className="login-form-forgot" href="">
                 忘记密码
