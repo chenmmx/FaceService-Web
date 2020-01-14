@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Input, Tabs, Spin } from 'antd';
+import { Input, Tabs } from 'antd';
 import Terminal from './terminal';
-import UnboundTerminal from './unboundTerminal';
 import Camera from './camera';
 import Node from './node';
 import './style.less';
@@ -17,16 +16,19 @@ class Device extends Component {
         { id: 123, name: '测试' }
       ],
       selectApplicationId: '',
-      tabIndex: 'terminal',
-      loading: false
+      tabIndex: 'terminal'
     };
+    // this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleSearch = (value) => {
+    console.log(value);
   }
 
   // Tab切换
   onTabChange = async (key) => {
     this.setState({
-      tabIndex: key,
-      loading: false
+      tabIndex: key
     });
   }
 
@@ -42,7 +44,7 @@ class Device extends Component {
 
   render() {
     const {
-      applicationList, selectApplicationId, loading
+      applicationList, selectApplicationId
     } = this.state;
     return (
       <div id="device" style={{ display: 'flex', minHeight: 857, position: 'relative' }}>
@@ -54,7 +56,7 @@ class Device extends Component {
         >
           <div>
             <p style={{ fontSize: 12, color: 'black', margin: '0px 12px 10px' }}>请选择应用</p>
-            <Search style={{ margin: '0px 10px', width: 162 }} placeholder="搜索应用" onSearch={(value) => console.log(value)} />
+            <Search style={{ margin: '0px 10px', width: 162 }} placeholder="搜索应用" onSearch={this.handleSearch} />
             <ul className="content-left-list">
               <li className={`content-left-list-item ${selectApplicationId === '' ? 'active' : ''}`} onClick={this.handleApplicationSelect.bind(this, '')}>
                 全部
@@ -74,9 +76,6 @@ class Device extends Component {
             <TabPane tab="赤眸" key="terminal">
               <Terminal />
             </TabPane>
-            {/* <TabPane tab="未绑定赤眸" key="unbound">
-              <UnboundTerminal />
-            </TabPane> */}
             <TabPane tab="摄像机" key="camera">
               <Camera />
             </TabPane>

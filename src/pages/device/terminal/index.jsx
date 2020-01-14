@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import {
   Table, Button, Divider, Pagination, Modal
 } from 'antd';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import DeviceFormDelete from './form/delete';
-import redpupilService from '@/services/redpupil.service';
+import { getRedpupilList } from '@/store/actions/redpupil';
 
 const { Column } = Table;
 class Terminal extends Component {
@@ -15,8 +16,6 @@ class Terminal extends Component {
       modalTitle: '',
       pageIndex: 1,
       pageSize: 10,
-      total: 0,
-      dataList: [],
       visible: false,
       redpupilId: ''
     };
@@ -59,19 +58,14 @@ class Terminal extends Component {
 
   // 获取设备列表
   getTerminalList = async () => {
-    const { pageIndex, pageSize, redpupilId } = this.state;
-    const res = await redpupilService.getListByPage({
-      pageSize,
+    const { getList } = this.props;
+    const { pageIndex, pageSize } = this.state;
+    getList({
       pageIndex,
-      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050',
-      name: ''
+      pageSize,
+      name: '',
+      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
     });
-    if (res.status === 0) {
-      this.setState({
-        dataList: res.result.list,
-        total: res.result.total
-      });
-    }
   };
 
   // 页码改变
@@ -80,12 +74,14 @@ class Terminal extends Component {
       pageIndex,
       pageSize
     });
+    this.getTerminalList();
   };
 
   render() {
     const {
-      modalType, modalTitle, visible, total, pageIndex, dataList, redpupilId
+      modalType, modalTitle, visible, pageIndex, redpupilId
     } = this.state;
+    const { redpupilList, total } = this.props;
     return (
       <div className="terminal">
         <div className="node-header" style={{ paddingBottom: '20px' }}>
@@ -93,7 +89,7 @@ class Terminal extends Component {
             新增
           </Button>
         </div>
-        <Table dataSource={dataList} rowKey="id" pagination={false}>
+        <Table dataSource={redpupilList} rowKey="id" pagination={false}>
           <Column
             title="设备名称"
             dataIndex="name"
@@ -165,4 +161,16 @@ class Terminal extends Component {
   }
 }
 
-export default withRouter(Terminal);
+const mapStateToProps = (state) => {
+  const { redpupilList, total } = state.redpupil;
+  return {
+    redpupilList,
+    total
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getList: (formData) => { dispatch(getRedpupilList(formData)); }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Terminal));
