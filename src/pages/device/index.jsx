@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Input, Tabs } from 'antd';
 import Terminal from './terminal';
 import Camera from './camera';
 import Node from './node';
+import * as redpupilActionTypes from '@/store/actions/redpupil';
+import * as cameraActionTypes from '@/store/actions/camera';
+import * as nodeActionTypes from '@/store/actions/node';
 import './style.less';
 
 const { Search } = Input;
@@ -15,15 +19,49 @@ class Device extends Component {
       applicationList: [
         { id: 123, name: '测试' }
       ],
-      selectApplicationId: '',
-      tabIndex: 'terminal'
+      selectApplicationId: '7551f009-d4b2-4afd-bab5-782dd0521050',
+      tabIndex: 'terminal',
+      searchValue: ''
     };
     // this.handleSearch = this.handleSearch.bind(this);
   }
 
+  // 搜索
   handleSearch = (value) => {
-    console.log(value);
+    const { getRedpupilListDispatch, getCameraListDispatch, getNodeListDispatch } = this.props;
+    this.setState({
+      searchValue: value
+    });
+    const { tabIndex, selectApplicationId } = this.state;
+    switch (tabIndex) {
+      case 'terminal':
+        getRedpupilListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: value,
+          applyId: selectApplicationId
+        });
+        break;
+      case 'camera':
+        getCameraListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: value,
+          applyId: selectApplicationId
+        });
+        break;
+      case 'node':
+        getNodeListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: value,
+          applyId: selectApplicationId
+        });
+        break;
+      default: console.log('error');
+    }
   }
+
 
   // Tab切换
   onTabChange = async (key) => {
@@ -34,11 +72,38 @@ class Device extends Component {
 
   // 应用选择
   handleApplicationSelect = (id) => {
-    const { tabIndex } = this.state;
+    const { getRedpupilListDispatch, getCameraListDispatch, getNodeListDispatch } = this.props;
+    const { tabIndex, searchValue } = this.state;
     this.setState({
       selectApplicationId: id
     });
-    console.log(tabIndex);
+    switch (tabIndex) {
+      case 'terminal':
+        getRedpupilListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: searchValue,
+          applyId: id
+        });
+        break;
+      case 'camera':
+        getCameraListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: searchValue,
+          applyId: id
+        });
+        break;
+      case 'node':
+        getNodeListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: searchValue,
+          applyId: id
+        });
+        break;
+      default: console.log('error');
+    }
   }
 
 
@@ -89,4 +154,21 @@ class Device extends Component {
   }
 }
 
-export default Device;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+  // 获取赤眸列表
+  getRedpupilListDispatch: (formData) => {
+    dispatch(redpupilActionTypes.getRedpupilList(formData));
+  },
+  // 获取摄像机列表
+  getCameraListDispatch: (formData) => {
+    dispatch(cameraActionTypes.getCameraList(formData));
+  },
+  // 获取节点列表
+  getNodeListDispatch: (formData) => {
+    dispatch(nodeActionTypes.getNodeList(formData));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Device);
