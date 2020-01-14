@@ -15,12 +15,16 @@ export const getNodeList = (formData) => async (dispatch) => {
   const {
     pageIndex, pageSize, applyId, name
   } = formData;
-  let res = await nodeService.getListByPage({
-    pageIndex, pageSize, applyId, name
-  });
-  if (res.status === 0) {
-    dispatch(getNodeListAction(res.result));
-  } else {
-    console.log('error', res.errorMsg);
+  try {
+    let res = await nodeService.getListByPage({
+      pageIndex, pageSize, applyId, name
+    });
+    if (res.status === 0) {
+      dispatch(getNodeListAction(res.result));
+    } else {
+      console.log('error', res.errorMsg);
+    }
+  } catch (error) {
+    console.log('error', error);
   }
 };

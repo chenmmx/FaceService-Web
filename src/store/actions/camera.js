@@ -15,12 +15,16 @@ export const getCameraList = (formData) => async (dispatch) => {
   const {
     pageIndex, pageSize, applyId, name
   } = formData;
-  let res = await cameraService.getListByPage({
-    pageIndex, pageSize, applyId, name
-  });
-  if (res.status === 0) {
-    dispatch(getCameraListAction(res.result));
-  } else {
-    console.log('error', res.errorMsg);
+  try {
+    let res = await cameraService.getListByPage({
+      pageIndex, pageSize, applyId, name
+    });
+    if (res.status === 0) {
+      dispatch(getCameraListAction(res.result));
+    } else {
+      console.log('error', res.errorMsg);
+    }
+  } catch (error) {
+    console.log('error', error);
   }
 };

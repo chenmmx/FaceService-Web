@@ -15,12 +15,16 @@ export const getRedpupilList = (formData) => async (dispatch) => {
   const {
     pageIndex, pageSize, applyId, name
   } = formData;
-  let res = await redpupilService.getListByPage({
-    pageIndex, pageSize, applyId, name
-  });
-  if (res.status === 0) {
-    dispatch(getRedpupilListAction(res.result));
-  } else {
-    console.log('error', res.errorMsg);
+  try {
+    let res = await redpupilService.getListByPage({
+      pageIndex, pageSize, applyId, name
+    });
+    if (res.status === 0) {
+      dispatch(getRedpupilListAction(res.result));
+    } else {
+      console.log('error', res.errorMsg);
+    }
+  } catch (error) {
+    console.log('error', error);
   }
 };
