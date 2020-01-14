@@ -1,20 +1,19 @@
 import React, { useEffect, createContext } from 'react';
 import { useImmer } from 'use-immer';
+import { connect } from 'react-redux';
 import {
   Button, Table, Divider, Pagination, Spin, Modal
 } from 'antd';
 import { CameraFormAdd, CameraFormDelete, CameraFormUpdate } from './form';
-import cameraService from '@/services/camera.service';
+import * as actionTypes from '@/store/actions/camera';
 import './style.less';
 
 export const CameraContext = createContext();
 
 const { Column } = Table;
 
-const Camera = () => {
+const Camera = (props) => {
   const [data, setData] = useImmer({
-    dataList: [],
-    total: 0,
     pageIndex: 1,
     loading: false,
     modalTitle: '',
@@ -23,29 +22,19 @@ const Camera = () => {
     cameraId: ''
   });
 
+  const { cameraList, total, getCameraListDispatch } = props;
+
   // 获取摄像机列表
   const getCameraList = async () => {
-    setData((draft) => {
-      draft.loading = true;
+    // setData((draft) => {
+    //   draft.loading = true;
+    // });
+    getCameraListDispatch({
+      pageIndex: data.pageIndex,
+      pageSize: 10,
+      name: '',
+      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
     });
-    try {
-      const res = await cameraService.getListByPage({
-        pageIndex: data.pageIndex,
-        pageSize: 10,
-        applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
-      });
-      if (res.status === 0) {
-        setData((draft) => {
-          draft.dataList = res.result.list;
-          draft.total = res.result.total;
-          draft.loading = false;
-        });
-      } else {
-        console.log('error:', res.errorMsg);
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   useEffect(() => {
@@ -100,7 +89,7 @@ const Camera = () => {
         <Button type="primary" onClick={handleAdd}>新增</Button>
       </div>
       <Spin spinning={data.loading} delay={100}>
-        <Table dataSource={data.dataList} rowKey="id" pagination={false}>
+        <Table dataSource={cameraList} rowKey="id" pagination={false}>
           <Column title="设备名称" dataIndex="name" key="name" />
           <Column title="用户名" dataIndex="username" key="username" />
           <Column title="密码" dataIndex="password" key="password" />
@@ -125,7 +114,7 @@ const Camera = () => {
         </Table>
       </Spin>
       <div className="terminal-pagination" style={{ paddingTop: 30, textAlign: 'right' }}>
-        <Pagination total={data.total} defaultCurrent={data.pageIndex} onChange={onPageChange} />
+        <Pagination total={total} defaultCurrent={data.pageIndex} onChange={onPageChange} />
       </div>
       <Modal
         title={data.modalTitle}
@@ -142,4 +131,16 @@ const Camera = () => {
   );
 };
 
-export default Camera;
+const mapStateToProps = (state) => {
+  const { cameraList, total } = state.camera;
+  return {
+    cameraList,
+    total
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getCameraListDispatch: (formData) => { dispatch(actionTypes.getCameraList(formData)); }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Camera);

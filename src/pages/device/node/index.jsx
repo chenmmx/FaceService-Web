@@ -1,17 +1,18 @@
 import React, { useEffect, createContext } from 'react';
 import { useImmer } from 'use-immer';
+import { connect } from 'react-redux';
 import {
   Button, Table, Divider, Pagination, Spin, Modal
 } from 'antd';
 import { NodeFormAdd, NodeFormDelete, NodeFormUpdate } from './form';
-import nodeService from '@/services/node.service';
+import * as actionTypes from '@/store/actions/node';
 import './style.less';
 
 export const NodeContext = createContext();
 
 const { Column } = Table;
 
-const Node = () => {
+const Node = (props) => {
   const [data, setData] = useImmer({
     dataList: [],
     total: 0,
@@ -23,29 +24,16 @@ const Node = () => {
     nodeId: ''
   });
 
+  const { getNodeListDispatch, nodeList, total } = props;
+
   // 获取摄像机列表
   const getNodeList = async () => {
-    setData((draft) => {
-      draft.loading = true;
+    getNodeListDispatch({
+      pageIndex: data.pageIndex,
+      pageSize: 10,
+      name: '',
+      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
     });
-    try {
-      const res = await nodeService.getListByPage({
-        pageIndex: data.pageIndex,
-        pageSize: 10,
-        applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
-      });
-      if (res.status === 0) {
-        setData((draft) => {
-          draft.dataList = res.result.list;
-          draft.total = res.result.total;
-          draft.loading = false;
-        });
-      } else {
-        console.log('error:', res.errorMsg);
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   useEffect(() => {
@@ -100,7 +88,7 @@ const Node = () => {
         <Button type="primary" onClick={handleAdd}>新增</Button>
       </div>
       <Spin spinning={data.loading} delay={100}>
-        <Table dataSource={data.dataList} rowKey="id" pagination={false}>
+        <Table dataSource={nodeList} rowKey="id" pagination={false}>
           <Column title="节点名称" dataIndex="name" key="name" />
           <Column title="节点ID" dataIndex="id" key="username" />
           <Column
@@ -123,7 +111,7 @@ const Node = () => {
         </Table>
       </Spin>
       <div className="terminal-pagination" style={{ paddingTop: 30, textAlign: 'right' }}>
-        <Pagination total={data.total} defaultCurrent={data.pageIndex} onChange={onPageChange} />
+        <Pagination total={total} defaultCurrent={data.pageIndex} onChange={onPageChange} />
       </div>
       <Modal
         title={data.modalTitle}
@@ -140,4 +128,16 @@ const Node = () => {
   );
 };
 
-export default Node;
+const mapStateToProps = (state) => {
+  const { nodeList, total } = state.node;
+  return {
+    nodeList,
+    total
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getNodeListDispatch: (formData) => { dispatch(actionTypes.getNodeList(formData)); }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Node);
