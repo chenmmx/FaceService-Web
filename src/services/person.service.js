@@ -10,6 +10,7 @@ const url = {
   getInfo: `${prefix}/Get`,
   getListByPage: `${prefix}/GetListByPage`
 };
+const upload = '/upload/FaceBeacon/v2/Node/ImageUrl';
 
 export default {
   add(data) {
@@ -26,5 +27,8 @@ export default {
   },
   getListByPage(data) {
     return handleService(url.getListByPage, data);
+  },
+  upload(data) {
+    return handleService(upload, data, 'POST');
   }
 };

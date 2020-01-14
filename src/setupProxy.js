@@ -10,4 +10,13 @@ module.exports = (app) => {
       }
     })
   );
+  app.use(
+    proxy('/upload', {
+      target: 'http://192.168.1.236:22333',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/upload': ''
+      }
+    })
+  );
 };

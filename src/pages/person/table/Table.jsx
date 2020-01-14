@@ -29,8 +29,8 @@ export default class recordTable extends React.Component {
               <>
                 <Button type="primary" onClick={() => { this.props.history.push({ pathname: '/person/addPerson', state: row }); }}>编辑</Button>
                 <Divider type="vertical" />
-                <Button type="primary" onClick={() => { this.props.accredit(row.id); }}>授权</Button>
-                <Divider type="vertical" />
+                {/* <Button type="primary" onClick={() => { this.props.accredit(row.id); }}>授权</Button>
+                <Divider type="vertical" /> */}
                 <Button type="primary" onClick={() => { this.props.detail(row.tag); }}>详情</Button>
                 <Divider type="vertical" />
                 <Button onClick={() => { this.props.handleDelete(row.id); }}>删除</Button>
