@@ -6,6 +6,10 @@ export const LOGIN = 'LOGIN';
 // 注销
 export const LOGOUT = 'LOGOUT';
 
+export const SET_LOADING = 'SET_LOADING';
+
+export const CANCEL_LOADING = 'CANCEL_LOADING';
+
 export function login() {
   return {
     type: LOGIN,
@@ -14,9 +18,18 @@ export function login() {
 }
 
 export function logout() {
-  console.log('logout');
   return {
     type: LOGOUT,
     name
   };
 }
+
+export const setLoading = () => ({
+  type: SET_LOADING,
+  name
+});
+
+export const cancelLoading = () => ({
+  type: CANCEL_LOADING,
+  name
+});

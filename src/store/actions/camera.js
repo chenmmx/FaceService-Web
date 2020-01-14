@@ -1,4 +1,5 @@
 import cameraService from '@/services/camera.service';
+import { setLoading, cancelLoading } from './common';
 
 const actionName = 'camera';
 
@@ -16,9 +17,11 @@ export const getCameraList = (formData) => async (dispatch) => {
     pageIndex, pageSize, applyId, name
   } = formData;
   try {
+    dispatch(setLoading());
     let res = await cameraService.getListByPage({
       pageIndex, pageSize, applyId, name
     });
+    dispatch(cancelLoading());
     if (res.status === 0) {
       dispatch(getCameraListAction(res.result));
     } else {
