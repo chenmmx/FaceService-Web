@@ -235,6 +235,15 @@ class Record extends Component {
   // 确认删除
   onSubmit = async () => {
     if (this.state.key === 'success') {
+      if (this.state.successList.length <= 1 && this.state.pagination.current > 1) {
+        this.setState((state) => {
+          const current = state.pagination.current - 1;
+          state.pagination.current = current;
+          return {
+            pagination: state.pagination
+          };
+        });
+      }
       let res = await recordService.deleteRedpupil([this.state.recordId]);
       if (res.status === 0) {
         notification.success({
@@ -256,6 +265,15 @@ class Record extends Component {
         });
       }
     } else {
+      if (this.state.fieldList.length <= 1 && this.state.pagination.current > 1) {
+        this.setState((state) => {
+          const current = state.pagination.current - 1;
+          state.pagination.current = current;
+          return {
+            pagination: state.pagination
+          };
+        });
+      }
       let res = await recordService.deleteCamera([this.state.recordId]);
       if (res.status === 0) {
         notification.success({

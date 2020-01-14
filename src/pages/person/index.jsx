@@ -44,7 +44,7 @@ class Person extends Component {
   }
 
   // 页码改变
-  onIndexChange(val) {
+  onIndexChange=(val) => {
     this.setState((state) => {
       state.pagination.current = val;
       return {
@@ -60,9 +60,8 @@ class Person extends Component {
     this.setState({
       loading: true
     });
-    const { current } = this.state.pagination;
-    const { pageIndex } = this.state.pagination;
-    const res = await personService.getListByPage({ pageSize: current, pageIndex, applyId: '7551f009-d4b2-4afd-bab5-782dd0521050' });
+    const { current, pageSize } = this.state.pagination;
+    const res = await personService.getListByPage({ pageIndex: current, pageSize, applyId: '7551f009-d4b2-4afd-bab5-782dd0521050' });
     if (res.status === 0) {
       this.setState((state) => {
         state.pagination.total = res.result.total;
@@ -196,7 +195,7 @@ class Person extends Component {
     this.props.history.push(`/person/accredit/${id}`);
   }
 
-  // 删除行
+  // 删除
   handleDelete = (id) => {
     this.setState({
       deleteModal: true,
@@ -209,6 +208,15 @@ class Person extends Component {
     this.setState({
       confirmLoading: true
     });
+    if (this.state.dataSource.length <= 1 && this.state.pagination.current > 1) {
+      this.setState((state) => {
+        const current = state.pagination.current - 1;
+        state.pagination.current = current;
+        return {
+          pagination: state.pagination
+        };
+      });
+    }
     const res = await personService.delete([this.state.id]);
     if (res.status === 0) {
       notification.success({
@@ -288,7 +296,7 @@ class Person extends Component {
             <div>
               <div>
                 <span>人员
-                  <span style={{ color: '#0099ff' }}>{this.state.dataSource.length}</span>
+                  <span style={{ color: '#0099ff' }}>{this.state.pagination.total}</span>
                 </span>
                 <Link type="primary" to="/person/addPerson" className="addPeron">添加人员</Link>
               </div>
