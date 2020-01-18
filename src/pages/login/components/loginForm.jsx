@@ -52,6 +52,8 @@ class LoginForm extends Component {
             window.localStorage.removeItem('password', values.password);
             window.localStorage.removeItem('checked');
           }
+          let { token } = res.result;
+          window.localStorage.setItem('token', token);
           handleLogin();
           history.push('/application');
           notification.success({
