@@ -1,6 +1,15 @@
 import axios from 'axios';
 import { message } from 'antd';
+import crypto from 'crypto';
 
+function pad2(n) { return n < 10 ? `0${n}` : n; }
+// md5加密
+function getSign(token, time) {
+  const md5 = crypto.createHash('md5');
+  md5.update(`${token}${time}`);
+  const sign = md5.digest('hex');
+  return sign;
+}
 /**
  * 请求前拦截
  * 用于处理需要在请求前的操作
@@ -9,7 +18,11 @@ axios.interceptors.request.use((config) => {
   const config1 = config;
   const token = localStorage.getItem('token');
   if (token) {
+    let date = new Date();
+    let time = date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds());
     config1.headers.Authorization = token;
+    config1.headers.timespan = time;
+    config1.headers.sign = getSign(token, time);
   }
   return config1;
 }, (error) => Promise.reject(error));
@@ -28,7 +41,7 @@ axios.interceptors.response.use((response) => {
 }, (error) => {
   // 服务器返回不是 2 开头的情况，会进入这个回调
   // 可以根据后端返回的状态码进行不同的操作
-  const responseCode = error.response.status;
+  const responseCode = '';
   switch (responseCode) {
     // 401：未登录
     case 401:
