@@ -5,9 +5,10 @@ import crypto from 'crypto';
 function pad2(n) { return n < 10 ? `0${n}` : n; }
 // md5加密
 function getSign(token, time) {
-  const md5 = crypto.createHash('md5');
-  md5.update(`${token}${time}`);
-  const sign = md5.digest('hex');
+  const md = crypto.createHash('md5');
+  let code = `appId=${token}&timespan=${time}&key=dfadjslkajfiojdklasfjidosaufoiweqkjfdsakjlfhdjklsa`;
+  md.update(code);
+  const sign = md.digest('hex');
   return sign;
 }
 /**
