@@ -27,11 +27,12 @@ class ApplicationList extends Component {
   }
 
   // 下线
-  onOffline = () => {
+  onOffline = (id) => {
     this.setState({
       modalType: 'delete',
       modalTitle: '确认提示',
-      visible: true
+      visible: true,
+      applyId: id
     });
   }
 
@@ -78,8 +79,18 @@ class ApplicationList extends Component {
               <p>应用说明：{item.remark}</p>
             </div>
             <div className="application-list-content--item-btn">
-              <Button type="primary" onClick={this.onUpdate.bind(item.id)}>编辑</Button>
-              <Button onClick={this.onOffline}>下线</Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.onUpdate(item.id);
+                }}
+              >编辑
+              </Button>
+              <Button onClick={() => {
+                this.onOffline(item.id);
+              }}
+              >下线
+              </Button>
             </div>
           </div>
         </div>
@@ -90,7 +101,7 @@ class ApplicationList extends Component {
           closable={false}
         >
           {
-                modalType === 'update' ? <ApplicationUpdateForm applyId={applyId} handleClose={this.handleClose} /> : <ApplicationDeleteForm applyId={applyId} handleClose={this.handleClose} />
+                modalType === 'update' ? <ApplicationUpdateForm applyId={applyId} handleClose={this.handleClose} getApplyList={this.props.getApplyList} /> : <ApplicationDeleteForm applyId={applyId} handleClose={this.handleClose} getApplyList={this.props.getApplyList} />
             }
         </Modal>
       </div>

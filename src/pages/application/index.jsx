@@ -11,7 +11,7 @@ class Application extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataList: [1, 2, 3],
+      dataList: [],
       loading: false
     };
   }
@@ -26,10 +26,13 @@ class Application extends Component {
     let res = await applyService.getListByPage({
       pageIndex: 1,
       pageSize: 999,
-      userId: 'ba06ae67-d1df-4434-9d80-65aa441aec03'
+      name: ''
     });
     if (res.status === 0) {
       console.log(res.result.list);
+      this.setState({
+        dataList: res.result.list
+      });
     }
   }
 
@@ -43,7 +46,7 @@ class Application extends Component {
           {
                 dataList.length === 0
                   ? <ApplicationCreate history={history} />
-                  : dataList.map((item, index) => <ApplicationList key={item + index} item={item} />)
+                  : dataList.map((item, index) => <ApplicationList key={item + index} item={item} getApplyList={this.getApplyList} />)
             }
           {
                 dataList.length === 0 ? null : <ApplicationBottom history={history} />

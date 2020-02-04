@@ -23,7 +23,6 @@ class ApplicationCreateForm extends Component {
           loading: true
         });
         let res = await applyService.add({
-          userId: window.localStorage.getItem('userId'),
           ...values
         });
         this.setState({

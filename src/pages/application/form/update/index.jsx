@@ -14,11 +14,14 @@ class ApplicationUpdateForm extends Component {
   }
 
 
-  componentDidMount() {
-    this.props.form.setFieldsValue({
-      appId: '1243243asfase2432sf1e3sda',
-      appSecret: '1243243asfase2432sf1e3sda'
+  async componentDidMount() {
+    console.log(this.props);
+    let res = await applyService.getInfo({
+      id: this.props.applyId
     });
+    if (res.status === 0) {
+      this.props.form.setFieldsValue(res.result);
+    }
   }
 
   handleSubmit = (e) => {
@@ -29,9 +32,9 @@ class ApplicationUpdateForm extends Component {
         this.setState({
           loading: true
         });
-        let res = await applyService.add({
+        let res = await applyService.update({
           id: applyId,
-          userId: window.localStorage.getItem('userId'),
+          secret: values.secret,
           name: values.name,
           remark: values.remark
         });
@@ -41,8 +44,10 @@ class ApplicationUpdateForm extends Component {
         if (res.status === 0) {
           notification.success({
             message: '成功',
-            description: '新增成功'
+            description: '编辑成功'
           });
+          this.props.getApplyList();
+          this.props.handleClose();
         } else {
           notification.error({
             message: '失败',
@@ -71,8 +76,8 @@ class ApplicationUpdateForm extends Component {
     return (
       <div className="application-form-update">
         <Form {...formItemLayout} onSubmit={this.handleSubmit} className="application-form-update-main">
-          <Form.Item label="appId">
-            {getFieldDecorator('appId', {
+          <Form.Item label="id">
+            {getFieldDecorator('id', {
             })(
               <Input
                 placeholder=""

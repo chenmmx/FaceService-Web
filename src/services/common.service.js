@@ -42,7 +42,7 @@ axios.interceptors.response.use((response) => {
 }, (error) => {
   // 服务器返回不是 2 开头的情况，会进入这个回调
   // 可以根据后端返回的状态码进行不同的操作
-  console.log(error);
+  console.log('error', error);
   const responseCode = error;
   switch (responseCode) {
     // 401：未登录
