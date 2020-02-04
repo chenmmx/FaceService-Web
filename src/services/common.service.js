@@ -20,7 +20,7 @@ axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     let date = new Date();
-    let time = date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds());
+    let time = date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()) + date.getMilliseconds();
     config1.headers.Authorization = token;
     config1.headers.timespan = time;
     config1.headers.sign = getSign(token, time);
@@ -42,7 +42,8 @@ axios.interceptors.response.use((response) => {
 }, (error) => {
   // 服务器返回不是 2 开头的情况，会进入这个回调
   // 可以根据后端返回的状态码进行不同的操作
-  const responseCode = '';
+  console.log(error);
+  const responseCode = error;
   switch (responseCode) {
     // 401：未登录
     case 401:
