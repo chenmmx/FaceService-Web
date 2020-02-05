@@ -29,16 +29,17 @@ const Camera = (props) => {
     // setData((draft) => {
     //   draft.loading = true;
     // });
+    const { selectApplicationId } = props;
     getCameraListDispatch({
       pageIndex: data.pageIndex,
       pageSize: 10,
       name: '',
-      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
+      applyId: selectApplicationId
     });
   };
 
   useEffect(() => {
-    getCameraList();
+    // getCameraList();
   }, []);
 
   // 页码改变

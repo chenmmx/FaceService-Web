@@ -22,7 +22,7 @@ class Terminal extends Component {
   }
 
   componentDidMount() {
-    this.getTerminalList();
+    // this.getTerminalList();
   }
 
   // 新增
@@ -58,13 +58,14 @@ class Terminal extends Component {
 
   // 获取设备列表
   getTerminalList = async () => {
-    const { getList } = this.props;
+    const { getList, selectApplicationId } = this.props;
+    console.log('selectApplicationId.....', selectApplicationId);
     const { pageIndex, pageSize } = this.state;
     getList({
       pageIndex,
       pageSize,
       name: '',
-      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
+      applyId: selectApplicationId
     });
   };
 

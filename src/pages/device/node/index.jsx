@@ -28,16 +28,17 @@ const Node = (props) => {
 
   // 获取摄像机列表
   const getNodeList = async () => {
+    const { selectApplicationId } = props;
     getNodeListDispatch({
       pageIndex: data.pageIndex,
       pageSize: 10,
       name: '',
-      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
+      applyId: selectApplicationId
     });
   };
 
   useEffect(() => {
-    getNodeList();
+    // getNodeList();
   }, []);
 
   // 页码改变

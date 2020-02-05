@@ -7,6 +7,7 @@ import Node from './node';
 import * as redpupilActionTypes from '@/store/actions/redpupil';
 import * as cameraActionTypes from '@/store/actions/camera';
 import * as nodeActionTypes from '@/store/actions/node';
+import applyService from '@/services/apply.service';
 import './style.less';
 
 const { Search } = Input;
@@ -16,14 +17,32 @@ class Device extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      applicationList: [
-        { id: 123, name: '测试' }
-      ],
-      selectApplicationId: '7551f009-d4b2-4afd-bab5-782dd0521050',
+      applicationList: [],
+      selectApplicationId: '',
       tabIndex: 'terminal',
       searchValue: ''
     };
     // this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  componentWillMount() {
+    this.getApplyList();
+    this.handleSearch();
+  }
+
+  // 获取应用列表
+  getApplyList = async () => {
+    let res = await applyService.getListByPage({
+      pageIndex: 1,
+      pageSize: 999,
+      name: ''
+    });
+    if (res.status === 0) {
+      console.log(res.result.list);
+      this.setState({
+        applicationList: res.result.list
+      });
+    }
   }
 
   // 搜索
@@ -65,9 +84,38 @@ class Device extends Component {
 
   // Tab切换
   onTabChange = async (key) => {
+    const { getRedpupilListDispatch, getCameraListDispatch, getNodeListDispatch } = this.props;
     this.setState({
       tabIndex: key
     });
+    const { selectApplicationId } = this.state;
+    switch (key) {
+      case 'terminal':
+        getRedpupilListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: '',
+          applyId: selectApplicationId
+        });
+        break;
+      case 'camera':
+        getCameraListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: '',
+          applyId: selectApplicationId
+        });
+        break;
+      case 'node':
+        getNodeListDispatch({
+          pageIndex: 1,
+          pageSize: 10,
+          name: '',
+          applyId: selectApplicationId
+        });
+        break;
+      default: console.log('error');
+    }
   }
 
   // 应用选择
@@ -139,13 +187,13 @@ class Device extends Component {
         <div className="content-right">
           <Tabs defaultActiveKey="terminal" onChange={this.onTabChange}>
             <TabPane tab="赤眸" key="terminal">
-              <Terminal />
+              <Terminal selectApplicationId={selectApplicationId} />
             </TabPane>
             <TabPane tab="摄像机" key="camera">
-              <Camera />
+              <Camera selectApplicationId={selectApplicationId} />
             </TabPane>
             <TabPane tab="节点" key="node">
-              <Node />
+              <Node selectApplicationId={selectApplicationId} />
             </TabPane>
           </Tabs>
         </div>
