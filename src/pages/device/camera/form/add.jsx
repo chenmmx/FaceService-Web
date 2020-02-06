@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useImmer } from 'use-immer';
 import {
   Form, Input, Button, Select, notification
 } from 'antd';
@@ -21,7 +22,9 @@ const formItemLayout = {
 
 const CameraFormAdd = ({ form }) => {
   const { setData, getCameraList } = useContext(CameraContext);
-  const { applyList, setApplyList } = useState([]);
+  const [list, setList] = useImmer({
+    applyList: []
+  });
   const { getFieldDecorator } = form;
 
   const getApplyList = async () => {
@@ -32,11 +35,14 @@ const CameraFormAdd = ({ form }) => {
     });
     if (res.status === 0) {
       console.log(res.result.list);
-      setApplyList(res.result.list);
+      setList((draft) => {
+        draft.applyList = res.result.list;
+      });
     }
   };
   useEffect(() => {
     getApplyList();
+    console.log('applyList', list.applyList);
   }, []);
   // 表单确认
   const handleSubmit = () => {
@@ -107,7 +113,7 @@ const CameraFormAdd = ({ form }) => {
           })(
             <Select allowClear placeholder="请选择应用">
               {
-                applyList.map((item) => (
+                list.applyList.map((item) => (
                   <Option value={item.id} key={item.id}>{item.name}</Option>
                 ))
               }
