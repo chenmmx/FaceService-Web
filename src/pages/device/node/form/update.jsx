@@ -7,7 +7,7 @@ import { NodeContext } from '../index';
 import redpupilService from '@/services/redpupil.service';
 import cameraService from '@/services/camera.service';
 import nodeService from '@/services/node.service';
-
+import applyService from '@/services/apply.service';
 
 const { Option } = Select;
 
@@ -25,17 +25,32 @@ const formItemLayout = {
 const NodeFormUpdate = ({ form }) => {
   const [list, setList] = useImmer({
     redpupilList: [],
-    cameraList: []
+    cameraList: [],
+    applyList: []
   });
   const { setData, data, getNodeList } = useContext(NodeContext);
   const { getFieldDecorator } = form;
 
+  const getApplyList = async () => {
+    let res = await applyService.getListByPage({
+      pageIndex: 1,
+      pageSize: 999,
+      name: ''
+    });
+    if (res.status === 0) {
+      console.log(res.result.list);
+      setList((draft) => {
+        draft.applyList = res.result.list;
+      });
+    }
+  };
+
   // 获取赤眸列表
-  const getRedpupilList = async () => {
+  const getRedpupilList = async (applyId) => {
     const res = await redpupilService.getListByPage({
       pageIndex: 1,
       pageSize: 999,
-      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
+      applyId
     });
     if (res.status === 0) {
       setList((draft) => {
@@ -50,11 +65,11 @@ const NodeFormUpdate = ({ form }) => {
   };
 
   // 获取摄像机列表
-  const getCameraList = async () => {
+  const getCameraList = async (applyId) => {
     const res = await cameraService.getListByPage({
       pageIndex: 1,
       pageSize: 999,
-      applyId: '7551f009-d4b2-4afd-bab5-782dd0521050'
+      applyId
     });
     if (res.status === 0) {
       setList((draft) => {
@@ -66,6 +81,11 @@ const NodeFormUpdate = ({ form }) => {
         description: res.errorMsg
       });
     }
+  };
+
+  const handleApplySelectChange = (applyId) => {
+    getRedpupilList(applyId);
+    getCameraList(applyId);
   };
 
   useEffect(() => {
@@ -102,9 +122,10 @@ const NodeFormUpdate = ({ form }) => {
       }
     };
     if (data.visible) {
+      getApplyList();
       fetchData();
-      getRedpupilList();
-      getCameraList();
+      // getRedpupilList();
+      // getCameraList();
     }
   }, []);
 
@@ -159,6 +180,19 @@ const NodeFormUpdate = ({ form }) => {
             />,
           )}
         </Form.Item>
+        <Form.Item label="应用">
+          {getFieldDecorator('applyId', {
+            rules: [{ required: true, message: '请选择应用' }]
+          })(
+            <Select allowClear placeholder="请选择应用" onChange={handleApplySelectChange}>
+              {
+                list.applyList.map((item) => (
+                  <Option value={item.id} key={item.id}>{item.name}</Option>
+                ))
+              }
+            </Select>
+          )}
+        </Form.Item>
         <Form.Item label="赤眸">
           {getFieldDecorator('redpupilIds', {
             rules: [{ required: false, message: '请选择赤眸' }]
@@ -174,16 +208,6 @@ const NodeFormUpdate = ({ form }) => {
           })(
             <Select allowClear placeholder="请选择摄像机" mode="multiple">
               {list.cameraList.map((item) => (<Option value={item.id} key={item.id}>{item.name}</Option>))}
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item label="应用">
-          {getFieldDecorator('applyId', {
-            rules: [{ required: true, message: '请选择应用' }]
-          })(
-            <Select allowClear placeholder="请选择应用">
-              <Option value="7551f009-d4b2-4afd-bab5-782dd0521050">7551f009-d4b2-4afd-bab5-782dd0521050</Option>
-              <Option value="jack">jack</Option>
             </Select>
           )}
         </Form.Item>

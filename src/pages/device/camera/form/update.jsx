@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Form, Input, Button, Select, notification
 } from 'antd';
 import { CameraContext } from '../index';
 import cameraService from '@/services/camera.service';
-
+import applyService from '@/services/apply.service';
 
 const { Option } = Select;
 
@@ -21,7 +21,19 @@ const formItemLayout = {
 
 const CameraFormUpdate = ({ form }) => {
   const { setData, data, getCameraList } = useContext(CameraContext);
+  const { applyList, setApplyList } = useState([]);
   const { getFieldDecorator } = form;
+
+  const getApplyList = async () => {
+    let res = await applyService.getListByPage({
+      pageIndex: 1,
+      pageSize: 999,
+      name: ''
+    });
+    if (res.status === 0) {
+      setApplyList(res.result.list);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +56,7 @@ const CameraFormUpdate = ({ form }) => {
       }
     };
     if (data.visible) {
+      getApplyList();
       fetchData();
     }
   }, []);
@@ -119,8 +132,11 @@ const CameraFormUpdate = ({ form }) => {
             rules: [{ required: true, message: '请选择应用' }]
           })(
             <Select allowClear placeholder="请选择应用">
-              <Option value="7551f009-d4b2-4afd-bab5-782dd0521050">7551f009-d4b2-4afd-bab5-782dd0521050</Option>
-              <Option value="jack">jack</Option>
+              {
+                applyList.map((item) => (
+                  <Option value={item.id} key={item.id}>{item.name}</Option>
+                ))
+              }
             </Select>
           )}
         </Form.Item>

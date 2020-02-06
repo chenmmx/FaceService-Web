@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import FsTitle from '@/components/common/fs-title';
 import redpupilService from '@/services/redpupil.service';
+import applyService from '@/services/apply.service';
 import './style.less';
 
 const { Option } = Select;
@@ -13,8 +14,27 @@ class DeviceFormAdd extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      applyList: []
     };
+  }
+
+  componentDidMount() {
+    this.getApplyList();
+  }
+
+  getApplyList = async () => {
+    let res = await applyService.getListByPage({
+      pageIndex: 1,
+      pageSize: 999,
+      name: ''
+    });
+    if (res.status === 0) {
+      console.log(res.result.list);
+      this.setState({
+        applyList: res.result.list
+      });
+    }
   }
 
   handleSubmit = (e) => {
@@ -70,7 +90,7 @@ class DeviceFormAdd extends Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, applyList } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { history } = this.props;
     const formItemLayout = {
@@ -136,12 +156,14 @@ class DeviceFormAdd extends Component {
             <Col span={wrapperCol}>
               <Form.Item label="应用">
                 {getFieldDecorator('applyId', {
-                  initialValue: '7551f009-d4b2-4afd-bab5-782dd0521050',
                   rules: [{ required: true, message: '请选择应用' }]
                 })(
                   <Select allowClear placeholder="请选择应用">
-                    <Option value="7551f009-d4b2-4afd-bab5-782dd0521050">7551f009-d4b2-4afd-bab5-782dd0521050</Option>
-                    <Option value="jack">jack</Option>
+                    {
+                      applyList.map((item) => (
+                        <Option value={item.id} key={item.id}>{item.name}</Option>
+                      ))
+                    }
                   </Select>
                 )}
               </Form.Item>
