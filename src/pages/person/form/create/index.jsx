@@ -5,6 +5,7 @@ import {
 import FsTitle from '../../../../components/common/fs-title';
 import './style.less';
 import personService from '@/services/person.service';
+import applyService from '@/services/apply.service';
 import getCutImg from '@/utils/cutImage';
 
 const { Option } = Select;
@@ -23,6 +24,7 @@ class AddPerson extends Component {
       imgLoading: false,
       faceUrl: '',
       phone: '',
+      applicationList: [],
       tag: {
         name: '',
         personName: '',
@@ -34,6 +36,7 @@ class AddPerson extends Component {
   }
 
   componentDidMount() {
+    this.getApplyList();
     if (this.props.location.state) {
       const data = this.props.location.state;
       this.pageType = true;
@@ -52,6 +55,21 @@ class AddPerson extends Component {
     }
   }
 
+  // 获取应用列表
+  getApplyList = async () => {
+    let res = await applyService.getListByPage({
+      pageIndex: 1,
+      pageSize: 999,
+      name: ''
+    });
+    if (res.status === 0) {
+      console.log(res.result.list);
+      this.setState({
+        applicationList: res.result.list
+      });
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields(async (err, val) => {
@@ -61,7 +79,7 @@ class AddPerson extends Component {
         if (faceUrl) {
           if (!this.pageType) {
             const res = await personService.add({
-              phone: val.phone, applyId: '7551f009-d4b2-4afd-bab5-782dd0521050', tag: JSON.stringify(val.tag), faceUrl: this.state.faceUrl
+              phone: val.phone, applyId: val.applyId, tag: JSON.stringify(val.tag), faceUrl: this.state.faceUrl
             });
             if (res.status === 0) {
               notification.success({
@@ -77,7 +95,7 @@ class AddPerson extends Component {
             }
           } else {
             const res = await personService.update({
-              id: this.state.id, phone: val.phone, applyId: '7551f009-d4b2-4afd-bab5-782dd0521050', tag: JSON.stringify(val.tag), faceUrl: this.state.faceUrl
+              id: this.state.id, phone: val.phone, applyId: val.applyId, tag: JSON.stringify(val.tag), faceUrl: this.state.faceUrl
             });
             if (res.status === 0) {
               notification.success({
@@ -176,7 +194,7 @@ class AddPerson extends Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, applicationList } = this.state;
     const { getFieldDecorator } = this.props.form;
     const { history } = this.props;
     const formItemLayout = {
@@ -219,13 +237,16 @@ class AddPerson extends Component {
             )}
           </Form.Item>
           <Form.Item label="应用名称">
-            {getFieldDecorator('tag.name', {
+            {getFieldDecorator('applyId', {
               rules: [{ required: true, message: '请输入应用名称' }],
-              initialValue: this.state.tag.name
+              initialValue: this.state.applyId
             })(
               <Select allowClear placeholder="请选择应用名称">
-                <Option value="123">123</Option>
-                <Option value="jack">jack</Option>
+                {
+                  applicationList.map((item) => (
+                    <Option value={item.id} key={item.id}>{item.name}</Option>
+                  ))
+                }
               </Select>
             )}
           </Form.Item>
