@@ -6,6 +6,7 @@ import {
 import './style.less';
 import PersonTable from './table/Table';
 import personService from '@/services/person.service';
+import applyService from '@/services/apply.service';
 
 const { Search } = Input;
 const InputGroup = Input.Group;
@@ -16,6 +17,7 @@ class Person extends Component {
     super(props);
     this.state = {
       loading: false,
+      applyId: '',
       pagination: {
         current: 1,
         pageSize: 10,
@@ -25,8 +27,7 @@ class Person extends Component {
       confirmLoading: false,
       deleteModal: false,
       list: [
-        { name: '全部' },
-        { name: 'xx', appid: '4ABB802B0769438DA04EB1A3D616B035', check: '/' }
+        { name: '全部', id: '' }
       ],
       siderStyle: '全部',
       checkApp: { name: '全部' },
@@ -40,7 +41,23 @@ class Person extends Component {
   }
 
   componentDidMount() {
+    this.getApplyList();
     this.getList();
+  }
+
+  // 获取应用列表
+  getApplyList = async () => {
+    let res = await applyService.getListByPage({
+      pageIndex: 1,
+      pageSize: 999,
+      name: ''
+    });
+    if (res.status === 0) {
+      console.log(res.result.list);
+      this.setState({
+        list: [{ name: '全部', id: '' }, ...res.result.list]
+      });
+    }
   }
 
   // 页码改变
@@ -61,7 +78,7 @@ class Person extends Component {
       loading: true
     });
     const { current, pageSize } = this.state.pagination;
-    const res = await personService.getListByPage({ pageIndex: current, pageSize, applyId: '7551f009-d4b2-4afd-bab5-782dd0521050' });
+    const res = await personService.getListByPage({ pageIndex: current, pageSize, applyId: this.state.applyId });
     if (res.status === 0) {
       this.setState((state) => {
         state.pagination.total = res.result.total;
@@ -160,9 +177,15 @@ class Person extends Component {
   chooseApply = (e) => {
     const { list } = this.state;
     const a = list.filter((item) => item.name === e.target.innerText);
+    console.log(a[0]);
     this.setState({
       siderStyle: e.target.innerText,
       checkApp: a[0]
+    });
+    this.setState((state) => {
+      state.applyId = a[0].id;
+    }, () => {
+      this.getList();
     });
   }
 
