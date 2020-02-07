@@ -27,8 +27,7 @@ class Person extends Component {
       confirmLoading: false,
       deleteModal: false,
       list: [
-        { name: '全部' },
-        { name: 'xx', appid: '4ABB802B0769438DA04EB1A3D616B035', check: '/' }
+        { name: '全部', id: '' }
       ],
       siderStyle: '全部',
       checkApp: { name: '全部' },
