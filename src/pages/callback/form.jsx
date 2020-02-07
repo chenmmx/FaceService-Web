@@ -16,13 +16,6 @@ export class MyForm extends Component {
     };
   }
 
-  // 获取信息
-  getInfo = async () => {
-    let res = await CallbackService.Get({
-      id: this.props.id
-    });
-  }
-
   // 添加回调
   addCallback = async () => {
     const res = await CallbackService.add({
