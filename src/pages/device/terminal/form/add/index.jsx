@@ -50,6 +50,17 @@ class DeviceFormAdd extends Component {
           warrantyStartTime: values.warranty[0].format('YYYY-MM-DD'),
           warrantyEndTime: values.warranty[1].format('YYYY-MM-DD'),
           applyId: values.applyId,
+          password: values.password,
+          runTime: [values.operateTime[0].format('YYYY-MM-DD'), values.operateTime[1].format('YYYY-MM-DD')],
+          recognizeThreshold: Number(values.recognizeThreshold),
+          liveThreshold: Number(values.liveThreshold),
+          detectWindow: Number(values.detectWindow),
+          recognizeTimeSpan: Number(values.recognizeTimeSpan),
+          screenLockTime: Number(values.screenLockTime),
+          screenBrightness: Number(values.screenBrightness),
+          fillBrightness: Number(values.fillBrightness),
+          volume: Number(values.volume),
+          limitVisitorTime: [],
           systemSetting: {
             password: values.password
           },
@@ -59,8 +70,8 @@ class DeviceFormAdd extends Component {
             detectWindow: values.detectWindow,
             recognizeTimeSpan: values.recognizeTimeSpan,
             screenLockTime: values.screenLockTime,
-            screenLightTime: values.screenLightTime,
-            fillLightTime: values.fillLightTime,
+            screenBrightness: values.screenBrightness,
+            fillBrightness: values.fillBrightness,
             volume: values.volume,
             operateStartTime: values.operateTime[0].format('YYYY-MM-DD'),
             operateEndTime: values.operateTime[1].format('YYYY-MM-DD')
@@ -281,7 +292,7 @@ class DeviceFormAdd extends Component {
             </Col>
             <Col span={wrapperCol}>
               <Form.Item label="屏幕亮度">
-                {getFieldDecorator('screenLightTime', {
+                {getFieldDecorator('screenBrightness', {
                   initialValue: 100,
                   rules: [{ required: true, message: '请输入屏幕亮度' }]
                 })(
@@ -293,7 +304,7 @@ class DeviceFormAdd extends Component {
           <Row>
             <Col span={wrapperCol}>
               <Form.Item label="补光灯亮度">
-                {getFieldDecorator('fillLightTime', {
+                {getFieldDecorator('fillBrightness', {
                   initialValue: 100,
                   rules: [{ required: true, message: '请输入补光灯亮度' }]
                 })(
