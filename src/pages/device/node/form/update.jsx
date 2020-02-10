@@ -98,7 +98,8 @@ const NodeFormUpdate = ({ form }) => {
           const {
             name, ip, applyId
           } = res.result;
-          console.log(res.result.list);
+          getRedpupilList(applyId);
+          getCameraList(applyId);
           let redpupilIds = [];
           let cameraIds = [];
           if (res.result.list) {
@@ -124,8 +125,6 @@ const NodeFormUpdate = ({ form }) => {
     if (data.visible) {
       getApplyList();
       fetchData();
-      // getRedpupilList();
-      // getCameraList();
     }
   }, []);
 
