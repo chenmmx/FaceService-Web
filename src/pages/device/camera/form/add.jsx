@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import {
-  Form, Input, Button, Select, notification
+  Form, Input, Button, Select, notification, InputNumber
 } from 'antd';
 import { CameraContext } from '../index';
 import cameraService from '@/services/camera.service';
@@ -48,6 +48,10 @@ const CameraFormAdd = ({ form }) => {
   const handleSubmit = () => {
     form.validateFields(async (err, values) => {
       if (!err) {
+        values.recognizeTimeSpan = Number(values.recognizeTimeSpan);
+        values.liveThreshold = Number(values.liveThreshold);
+        values.recognizeThreshold = Number(values.recognizeThreshold);
+        values.detectWindow = Number(values.detectWindow);
         const res = await cameraService.add(values);
         if (res.status === 0) {
           setData((draft) => {
@@ -118,6 +122,60 @@ const CameraFormAdd = ({ form }) => {
                 ))
               }
             </Select>
+          )}
+        </Form.Item>
+        <Form.Item label="识别阈值">
+          {getFieldDecorator('recognizeThreshold', {
+            initialValue: '0.57',
+            rules: [{ required: true, message: '请输入识别阈值' }]
+          })(
+            <InputNumber
+              min={0}
+              max={1}
+              step={0.1}
+              placeholder="请输入识别阈值"
+              style={{ width: '100%' }}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item label="活体阈值">
+          {getFieldDecorator('liveThreshold', {
+            initialValue: '0.86',
+            rules: [{ required: true, message: '请输入活体阈值' }]
+          })(
+            <InputNumber
+              min={0}
+              max={1}
+              step={0.1}
+              placeholder="请输入活体阈值"
+              style={{ width: '100%' }}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item label="检测窗大小">
+          {getFieldDecorator('detectWindow', {
+            initialValue: '80',
+            rules: [{ required: true, message: '请输入检测窗大小' }]
+          })(
+            <InputNumber
+              min={0}
+              max={100}
+              placeholder="请输入检测窗大小"
+              style={{ width: '100%' }}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item label="识别间隔">
+          {getFieldDecorator('recognizeTimeSpan', {
+            initialValue: '5',
+            rules: [{ required: true, message: '请输入识别间隔' }]
+          })(
+            <InputNumber
+              min={0}
+              max={100}
+              placeholder="请输入识别间隔"
+              style={{ width: '100%' }}
+            />,
           )}
         </Form.Item>
         <Form.Item wrapperCol={{ span: 12, offset: 8 }}>
