@@ -57,7 +57,7 @@ class ApplicationList extends Component {
     const { item } = this.props;
     return (
       <div className="application-list">
-        <h3 className="application-list--title">测试</h3>
+        <h3 className="application-list--title">{item.name}</h3>
         <div className="application-list-content">
           <div className="application-list-content--item">
             <p>appId：{item.id}</p>
@@ -70,8 +70,8 @@ class ApplicationList extends Component {
             </p>
           </div>
           <div className="application-list-content--item">
-            <p>创建时间：2019-09-16 14:15:26</p>
-            <p>应用状态：审核中</p>
+            <p>创建时间：{item.createTime || ''}</p>
+            <p>应用状态：已通过</p>
           </div>
           <div className="application-list-content--item">
             <div className="application-list-content--item-text">
