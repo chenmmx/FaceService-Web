@@ -31,7 +31,7 @@ class FsMenu extends Component {
             <span>设备管理</span>
           </Link>
         </Menu.Item>
-        <Menu.Item key="/person">
+        {/* <Menu.Item key="/person">
           <Link to="/person">
             <Icon type="user" />
             <span>人员管理</span>
@@ -42,7 +42,7 @@ class FsMenu extends Component {
             <Icon type="file-search" />
             <span>识别记录管理</span>
           </Link>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="/account">
           <Link to="/account">
             <Icon type="file-search" />

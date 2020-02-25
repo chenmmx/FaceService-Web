@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, Button, Select, Row, Col, InputNumber, Slider, DatePicker, Spin, notification
+  Form, Input, Button, Select, Row, Col, InputNumber, Slider, DatePicker, Spin, notification, TimePicker
 } from 'antd';
 import moment from 'moment';
 import FsTitle from '@/components/common/fs-title';
@@ -53,22 +53,25 @@ class DeviceFormUpdate extends Component {
     });
     if (res.status === 0) {
       let { result } = res;
-      result.thresholdSetting = JSON.parse(result.thresholdSetting);
-      result.systemSetting = JSON.parse(result.systemSetting);
+      // result.thresholdSetting = JSON.parse(result.thresholdSetting);
+      // result.systemSetting = JSON.parse(result.systemSetting);
+      let runTime = JSON.parse(result.runTime);
+      console.log(runTime);
       let fieldsValues = {
         name: result.name,
         applyId: result.applyId,
         warranty: [moment(result.warrantyStartTime), moment(result.warrantyEndTime)],
-        password: result.systemSetting.password,
-        recognizeThreshold: result.thresholdSetting.recognizeThreshold,
-        liveThreshold: result.thresholdSetting.liveThreshold,
-        detectWindow: result.thresholdSetting.detectWindow,
-        recognizeTimeSpan: result.thresholdSetting.recognizeTimeSpan,
-        screenLockTime: result.thresholdSetting.screenLockTime,
-        screenBrightness: result.thresholdSetting.screenBrightness,
-        fillBrightness: result.thresholdSetting.fillBrightness,
-        volume: result.thresholdSetting.volume,
-        operateTime: [moment(result.thresholdSetting.operateStartTime), moment(result.thresholdSetting.operateEndTime)]
+        password: result.password,
+        recognizeThreshold: result.recognizeThreshold,
+        liveThreshold: result.liveThreshold,
+        detectWindow: result.detectWindow,
+        recognizeTimeSpan: result.recognizeTimeSpan,
+        screenLockTime: result.screenLockTime,
+        screenBrightness: result.screenBrightness,
+        fillBrightness: result.fillBrightness,
+        volume: result.volume,
+        operateStartTime: moment(runTime[0], 'HH:mm:ss'),
+        operateEndTime: moment(runTime[1], 'HH:mm:ss')
       };
       this.props.form.setFieldsValue(fieldsValues);
     } else {
@@ -94,7 +97,7 @@ class DeviceFormUpdate extends Component {
           warrantyEndTime: values.warranty[1].format('YYYY-MM-DD'),
           applyId: values.applyId,
           password: values.password,
-          runTime: [values.operateTime[0].format('YYYY-MM-DD'), values.operateTime[1].format('YYYY-MM-DD')],
+          runTime: [values.operateStartTime.format('HH:mm:ss'), values.operateEndTime.format('HH:mm:ss')],
           recognizeThreshold: Number(values.recognizeThreshold),
           liveThreshold: Number(values.liveThreshold),
           detectWindow: Number(values.detectWindow),
@@ -102,26 +105,9 @@ class DeviceFormUpdate extends Component {
           screenLockTime: Number(values.screenLockTime),
           screenBrightness: Number(values.screenBrightness),
           fillBrightness: Number(values.fillBrightness),
-          volume: Number(values.volume),
-          limitVisitorTime: [],
-          systemSetting: {
-            password: values.password
-          },
-          thresholdSetting: {
-            recognizeThreshold: values.recognizeThreshold,
-            liveThreshold: values.liveThreshold,
-            detectWindow: values.detectWindow,
-            recognizeTimeSpan: values.recognizeTimeSpan,
-            screenLockTime: values.screenLockTime,
-            screenBrightness: values.screenBrightness,
-            fillBrightness: values.fillBrightness,
-            volume: values.volume,
-            operateStartTime: values.operateTime[0].format('YYYY-MM-DD'),
-            operateEndTime: values.operateTime[1].format('YYYY-MM-DD')
-          }
+          volume: Number(values.volume)
         };
-        formData.systemSetting = JSON.stringify(formData.systemSetting);
-        formData.thresholdSetting = JSON.stringify(formData.thresholdSetting);
+        formData.runTime = JSON.stringify(formData.runTime);
         const res = await redpupilService.update(formData);
         this.setState({
           loading: false
@@ -368,12 +354,28 @@ class DeviceFormUpdate extends Component {
             </Row>
             <Row>
               <Col span={wrapperCol}>
-                <Form.Item label="设备运行时间">
-                  {getFieldDecorator('operateTime', {
+                <Form.Item label="设备运行开始时间">
+                  {getFieldDecorator('operateStartTime', {
+                    initialValue: moment('00:00:00', 'HH:mm:ss'),
                     rules: [{ required: true, message: '请选择设备运行时间' }]
                   })(
-                    <RangePicker
-                      mode={['date', 'date']}
+                    <TimePicker
+                      style={{ width: '100%' }}
+                      format="HH:mm:ss"
+                      placeholder={['开始时间', '结束时间']}
+                    />,
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={wrapperCol}>
+                <Form.Item label="设备运行结束时间">
+                  {getFieldDecorator('operateEndTime', {
+                    initialValue: moment('23:59:59', 'HH:mm:ss'),
+                    rules: [{ required: true, message: '请选择设备运行时间' }]
+                  })(
+                    <TimePicker
+                      style={{ width: '100%' }}
+                      format="HH:mm:ss"
                       placeholder={['开始时间', '结束时间']}
                     />,
                   )}

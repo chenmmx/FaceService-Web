@@ -114,7 +114,7 @@ class Terminal extends Component {
             key="recognizeThreshold"
             render={(text, record) => (
               <div>
-                <span>{JSON.parse(record.thresholdSetting).recognizeThreshold}</span>
+                <span>{record.recognizeThreshold}</span>
               </div>
             )}
           />
