@@ -61,7 +61,7 @@ class ApplicationList extends Component {
         <div className="application-list-content">
           <div className="application-list-content--item">
             <p>appId：{item.id}</p>
-            <p>appKey：{item.secret}</p>
+            {/* <p>appKey：{item.secret}</p> */}
             <p>appSecret：
               {
                   !showSecret ? <Button type="link" onClick={() => { this.setState({ showSecret: !showSecret }); }}>显示</Button>
