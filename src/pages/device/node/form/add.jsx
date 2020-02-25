@@ -121,7 +121,7 @@ const NodeFormAdd = ({ form }) => {
           getNodeList();
           notification.success({
             message: '成功',
-            description: '新增摄像机成功'
+            description: '新增节点成功'
           });
         } else {
           notification.error({
