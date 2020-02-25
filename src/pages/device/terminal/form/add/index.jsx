@@ -317,7 +317,7 @@ class DeviceFormAdd extends Component {
                   <TimePicker
                     style={{ width: '100%' }}
                     format="HH:mm:ss"
-                    placeholder={['开始时间', '结束时间']}
+                    placeholder="请选择时间"
                   />,
                 )}
               </Form.Item>
@@ -331,7 +331,7 @@ class DeviceFormAdd extends Component {
                   <TimePicker
                     style={{ width: '100%' }}
                     format="HH:mm:ss"
-                    placeholder={['开始时间', '结束时间']}
+                    placeholder="请选择时间"
                   />,
                 )}
               </Form.Item>
