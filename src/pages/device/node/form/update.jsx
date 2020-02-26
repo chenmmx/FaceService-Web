@@ -96,24 +96,25 @@ const NodeFormUpdate = ({ form }) => {
         });
         if (res.status === 0) {
           const {
-            name, ip, applyId
+            name, ip, applyId, id
           } = res.result;
           getRedpupilList(applyId);
           getCameraList(applyId);
           let redpupilIds = [];
           let cameraIds = [];
-          if (res.result.list) {
-            res.result.list.map((item) => {
-              if (item.type === 0) {
-                redpupilIds.push(item.deviceId);
+          if (res.result.devices) {
+            res.result.devices.map((item) => {
+              if (item.type !== 'IPC摄像机') {
+                redpupilIds.push(item.id);
               } else {
-                cameraIds.push(item.deviceId);
+                cameraIds.push(item.id);
               }
               return item;
             });
           }
+          console.log('ids', cameraIds);
           form.setFieldsValue({
-            name, ip, applyId, redpupilIds, cameraIds
+            name, ip, applyId, redpupilIds, cameraIds, id
           });
         } else {
           console.log('error');
@@ -136,17 +137,17 @@ const NodeFormUpdate = ({ form }) => {
         const redpupilIdsList = values.redpupilIds || [];
         const cameraIdsList = values.cameraIds || [];
         const deviceList = [...redpupilIdsList.map((item) => ({
-          type: 0,
-          deviceId: item
+          // type: 0,
+          id: item
         })), ...cameraIdsList.map((item) => ({
-          type: 1,
-          deviceId: item
+          // type: 1,
+          id: item
         }))];
         const res = await nodeService.update({
           id: data.nodeId,
           name: values.name,
           applyId: values.applyId,
-          list: deviceList
+          devices: deviceList
         });
         if (res.status === 0) {
           setData((draft) => {
@@ -170,6 +171,16 @@ const NodeFormUpdate = ({ form }) => {
   return (
     <div className="node-form-update">
       <Form {...formItemLayout}>
+        <Form.Item label="节点id">
+          {getFieldDecorator('id', {
+            rules: [{ required: true, message: '请输入节点ID' }]
+          })(
+            <Input
+              placeholder="请输入节点id"
+              disabled
+            />,
+          )}
+        </Form.Item>
         <Form.Item label="节点名称">
           {getFieldDecorator('name', {
             rules: [{ required: true, message: '请输入节点名称' }]

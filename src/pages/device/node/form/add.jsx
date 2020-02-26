@@ -103,16 +103,17 @@ const NodeFormAdd = ({ form }) => {
         const redpupilIdsList = values.redpupilIds || [];
         const cameraIdsList = values.cameraIds || [];
         const deviceList = [...redpupilIdsList.map((item) => ({
-          type: 0,
+          // type: 0,
           deviceId: item
         })), ...cameraIdsList.map((item) => ({
-          type: 1,
-          deviceId: item
+          // type: 1,
+          id: item
         }))];
         const res = await nodeService.add({
+          id: values.id,
           name: values.name,
           applyId: values.applyId,
-          list: deviceList
+          devices: deviceList
         });
         if (res.status === 0) {
           setData((draft) => {
@@ -136,6 +137,15 @@ const NodeFormAdd = ({ form }) => {
   return (
     <div className="node-form-add">
       <Form {...formItemLayout}>
+        <Form.Item label="节点id">
+          {getFieldDecorator('id', {
+            rules: [{ required: true, message: '请输入节点ID' }]
+          })(
+            <Input
+              placeholder="请输入节点id"
+            />,
+          )}
+        </Form.Item>
         <Form.Item label="节点名称">
           {getFieldDecorator('name', {
             rules: [{ required: true, message: '请输入节点名称' }]
