@@ -69,11 +69,11 @@ const cutColorFace = (x, y, width, height) => {
 const toBase64 = (file) => new Promise((resolve, reject) => {
   let reader = new FileReader();
 
-  reader.onload = function (e) {
+  reader.onload = (e) => {
     resolve(e.target.result);
   };
 
-  reader.onerror = function (e) {
+  reader.onerror = (e) => {
     reject(e);
   };
 
