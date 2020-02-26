@@ -92,6 +92,11 @@ class Terminal extends Component {
         </div>
         <Table dataSource={redpupilList} rowKey="id" pagination={false}>
           <Column
+            title="设备id"
+            dataIndex="id"
+            key="id"
+          />
+          <Column
             title="设备名称"
             dataIndex="name"
             key="name"

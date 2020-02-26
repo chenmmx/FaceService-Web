@@ -47,6 +47,7 @@ class DeviceFormAdd extends Component {
           loading: true
         });
         let formData = {
+          id: values.id,
           name: values.name,
           warrantyStartTime: values.warranty[0].format('YYYY-MM-DD'),
           warrantyEndTime: values.warranty[1].format('YYYY-MM-DD'),
@@ -135,19 +136,17 @@ class DeviceFormAdd extends Component {
             </Col>
           </Row>
           <Row>
-            {/* <Col span={wrapperCol}>
-              <Form.Item label="进出标识">
-                {getFieldDecorator('direction', {
-                  initialValue: '进',
-                  rules: [{ required: true, message: '请选择进出标识' }]
+            <Col span={wrapperCol}>
+              <Form.Item label="设备id">
+                {getFieldDecorator('id', {
+                  rules: [{ required: true, message: '请输入设备id' }]
                 })(
-                  <Select allowClear placeholder="请选择进出标识">
-                    <Option value="进">进</Option>
-                    <Option value="出">出</Option>
-                  </Select>
+                  <Input
+                    placeholder="请输入设备id"
+                  />,
                 )}
               </Form.Item>
-            </Col> */}
+            </Col>
             <Col span={wrapperCol}>
               <Form.Item label="应用">
                 {getFieldDecorator('applyId', {
