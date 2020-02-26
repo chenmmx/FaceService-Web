@@ -48,10 +48,10 @@ const CameraFormUpdate = ({ form }) => {
         });
         if (res.status === 0) {
           const {
-            name, ip, username, password, applyId, recognizeTimeSpan, liveThreshold, recognizeThreshold, detectWindow
+            id, name, ip, username, password, applyId, recognizeTimeSpan, liveThreshold, recognizeThreshold, detectWindow
           } = res.result;
           form.setFieldsValue({
-            name, ip, username, password, applyId, recognizeTimeSpan, liveThreshold, recognizeThreshold, detectWindow
+            id, name, ip, username, password, applyId, recognizeTimeSpan, liveThreshold, recognizeThreshold, detectWindow
           });
         } else {
           console.log('error');
@@ -106,6 +106,16 @@ const CameraFormUpdate = ({ form }) => {
           })(
             <Input
               placeholder="请输入设备名称"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item label="设备id">
+          {getFieldDecorator('id', {
+            rules: [{ required: true, message: '请输入设备id' }]
+          })(
+            <Input
+              disabled
+              placeholder="请输入设备id"
             />,
           )}
         </Form.Item>

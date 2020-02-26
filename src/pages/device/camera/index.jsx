@@ -91,6 +91,7 @@ const Camera = (props) => {
       </div>
       <Spin spinning={data.loading} delay={100}>
         <Table dataSource={cameraList} rowKey="id" pagination={false}>
+          <Column title="设备id" dataIndex="id" key="id" />
           <Column title="设备名称" dataIndex="name" key="name" />
           <Column title="用户名" dataIndex="username" key="username" />
           <Column title="密码" dataIndex="password" key="password" />

@@ -84,6 +84,15 @@ const CameraFormAdd = ({ form }) => {
             />,
           )}
         </Form.Item>
+        <Form.Item label="设备id">
+          {getFieldDecorator('id', {
+            rules: [{ required: true, message: '请输入设备id' }]
+          })(
+            <Input
+              placeholder="请输入设备id"
+            />,
+          )}
+        </Form.Item>
         <Form.Item label="用户名">
           {getFieldDecorator('username', {
             rules: [{ required: true, message: '请输入用户名' }]

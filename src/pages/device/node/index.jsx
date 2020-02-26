@@ -90,6 +90,7 @@ const Node = (props) => {
       </div>
       <Spin spinning={data.loading} delay={100}>
         <Table dataSource={nodeList} rowKey="id" pagination={false}>
+          <Column title="节点id" dataIndex="id" key="id" />
           <Column title="节点名称" dataIndex="name" key="name" />
           <Column title="节点ID" dataIndex="id" key="username" />
           <Column
