@@ -23,6 +23,9 @@ class Application extends Component {
 
   // 获取应用列表
   getApplyList = async () => {
+    this.setState({
+      loading: true
+    });
     let res = await applyService.getListByPage({
       pageIndex: 1,
       pageSize: 999,
@@ -31,7 +34,8 @@ class Application extends Component {
     if (res.status === 0) {
       console.log(res.result.list);
       this.setState({
-        dataList: res.result.list
+        dataList: res.result.list,
+        loading: false
       });
     }
   }

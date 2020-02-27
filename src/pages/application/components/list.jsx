@@ -74,7 +74,7 @@ class ApplicationList extends Component {
             <p>应用状态：已通过</p>
           </div>
           <div className="application-list-content--item">
-            <div className="application-list-content--item-text">
+            <div className="application-list-content--item-text" style={{ width: '500px' }}>
               <p>回调名称：</p>
               <p>应用说明：{item.remark}</p>
             </div>
