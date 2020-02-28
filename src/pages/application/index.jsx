@@ -50,7 +50,7 @@ class Application extends Component {
           {
                 dataList.length === 0
                   ? <ApplicationCreate history={history} />
-                  : dataList.map((item, index) => <ApplicationList key={item + index} item={item} getApplyList={this.getApplyList} />)
+                  : dataList.map((item) => <ApplicationList key={item.id} item={item} getApplyList={this.getApplyList} />)
             }
           {
                 dataList.length === 0 ? null : <ApplicationBottom history={history} />
