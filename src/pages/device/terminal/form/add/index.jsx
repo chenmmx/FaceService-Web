@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, Button, Select, Row, Col, InputNumber, Slider, DatePicker, notification, TimePicker
+  Form, Input, Button, Select, Row, Col, InputNumber, Slider, DatePicker, notification, TimePicker, message
 } from 'antd';
 import moment from 'moment';
 import FsTitle from '@/components/common/fs-title';
@@ -41,7 +41,10 @@ class DeviceFormAdd extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {
-      console.log(values);
+      if (values.operateStartTime > values.operateEndTime) {
+        message.error('设备运行开始时间应小于设备运行结束时间');
+        return;
+      }
       if (!err) {
         this.setState({
           loading: true
