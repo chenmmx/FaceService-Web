@@ -15,7 +15,7 @@ class Terminal extends Component {
       modalType: '',
       modalTitle: '',
       pageIndex: 1,
-      pageSize: 10,
+      // pageSize: 10,
       visible: false,
       redpupilId: ''
     };
@@ -57,10 +57,8 @@ class Terminal extends Component {
   };
 
   // 获取设备列表
-  getTerminalList = async () => {
+  getTerminalList = async (pageIndex = 1, pageSize = 10) => {
     const { getList, selectApplicationId } = this.props;
-    console.log('selectApplicationId.....', selectApplicationId);
-    const { pageIndex, pageSize } = this.state;
     getList({
       pageIndex,
       pageSize,
@@ -71,11 +69,7 @@ class Terminal extends Component {
 
   // 页码改变
   onPageChange = (pageIndex, pageSize) => {
-    this.setState({
-      pageIndex,
-      pageSize
-    });
-    this.getTerminalList();
+    this.getTerminalList(pageIndex, pageSize);
   };
 
   render() {

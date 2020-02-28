@@ -27,10 +27,10 @@ const Node = (props) => {
   const { getNodeListDispatch, nodeList, total } = props;
 
   // 获取摄像机列表
-  const getNodeList = async () => {
+  const getNodeList = async (pageIndex = 1) => {
     const { selectApplicationId } = props;
     getNodeListDispatch({
-      pageIndex: data.pageIndex,
+      pageIndex,
       pageSize: 10,
       name: '',
       applyId: selectApplicationId
@@ -46,7 +46,7 @@ const Node = (props) => {
     setData((draft) => {
       draft.pageIndex = currentPage;
     });
-    getNodeList();
+    getNodeList(currentPage);
   };
 
   const NodeForm = () => {
@@ -92,7 +92,6 @@ const Node = (props) => {
         <Table dataSource={nodeList} rowKey="id" pagination={false}>
           <Column title="节点id" dataIndex="id" key="id" />
           <Column title="节点名称" dataIndex="name" key="name" />
-          <Column title="节点ID" dataIndex="id" key="username" />
           <Column
             title="操作"
             key="action"

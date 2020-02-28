@@ -25,13 +25,13 @@ const Camera = (props) => {
   const { cameraList, total, getCameraListDispatch } = props;
 
   // 获取摄像机列表
-  const getCameraList = async () => {
+  const getCameraList = async (pageIndex = 1) => {
     // setData((draft) => {
     //   draft.loading = true;
     // });
     const { selectApplicationId } = props;
     getCameraListDispatch({
-      pageIndex: data.pageIndex,
+      pageIndex,
       pageSize: 10,
       name: '',
       applyId: selectApplicationId
@@ -47,7 +47,7 @@ const Camera = (props) => {
     setData((draft) => {
       draft.pageIndex = currentPage;
     });
-    getCameraList();
+    getCameraList(currentPage);
   };
 
   const CameraForm = () => {

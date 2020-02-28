@@ -166,7 +166,7 @@ const NodeFormAdd = ({ form }) => {
           {getFieldDecorator('redpupilIds', {
             rules: [{ required: false, message: '请选择赤眸' }]
           })(
-            <Select allowClear placeholder="请选赤眸" mode="multiple">
+            <Select allowClear placeholder="请选择赤眸" mode="multiple">
               {list.redpupilList.map((item) => (<Option value={item.id} key={item.id}>{item.name}</Option>))}
             </Select>
           )}
