@@ -84,6 +84,10 @@ const NodeFormAdd = ({ form }) => {
   };
 
   const handleApplySelectChange = (applyId) => {
+    form.setFieldsValue({
+      redpupilIds: [],
+      cameraIds: []
+    });
     getRedpupilList(applyId);
     getCameraList(applyId);
   };
