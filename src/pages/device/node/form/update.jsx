@@ -102,8 +102,8 @@ const NodeFormUpdate = ({ form }) => {
           getCameraList(applyId);
           let redpupilIds = [];
           let cameraIds = [];
-          if (res.result.devices) {
-            res.result.devices.map((item) => {
+          if (res.result.deviceIds) {
+            res.result.deviceIds.map((item) => {
               if (item.type !== 'IPC摄像机') {
                 redpupilIds.push(item.id);
               } else {
@@ -136,18 +136,12 @@ const NodeFormUpdate = ({ form }) => {
       if (!err) {
         const redpupilIdsList = values.redpupilIds || [];
         const cameraIdsList = values.cameraIds || [];
-        const deviceList = [...redpupilIdsList.map((item) => ({
-          // type: 0,
-          id: item
-        })), ...cameraIdsList.map((item) => ({
-          // type: 1,
-          id: item
-        }))];
+        const deviceList = [...redpupilIdsList, ...cameraIdsList];
         const res = await nodeService.update({
           id: data.nodeId,
           name: values.name,
           applyId: values.applyId,
-          devices: deviceList
+          deviceIds: deviceList
         });
         if (res.status === 0) {
           setData((draft) => {

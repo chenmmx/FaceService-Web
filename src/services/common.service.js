@@ -3,6 +3,15 @@ import { message } from 'antd';
 import crypto from 'crypto';
 
 function pad2(n) { return n < 10 ? `0${n}` : n; }
+function padMillseconds(n) {
+  n += '';
+  if (n.length === 1) {
+    return `00${n}`;
+  } if (n.length === 2) {
+    return `0${n}`;
+  }
+  return n;
+}
 // md5加密
 function getSign(token, time) {
   const md = crypto.createHash('md5');
@@ -20,7 +29,7 @@ axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     let date = new Date();
-    let time = date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()) + date.getMilliseconds();
+    let time = date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()) + padMillseconds(date.getMilliseconds());
     config1.headers.Authorization = token;
     config1.headers.timespan = time;
     config1.headers.sign = getSign(token, time);
@@ -43,7 +52,7 @@ axios.interceptors.response.use((response) => {
         // 清除token
         localStorage.removeItem('token');
         setTimeout(() => {
-          window.location.href = '/login';
+          window.location.href = '/#/login';
         }, 1000);
         break;
       case -3:
@@ -62,7 +71,7 @@ axios.interceptors.response.use((response) => {
     // 401：未登录
     case 401:
       // 跳转登录页
-      window.location.href = '/login';
+      window.location.href = '/#/login';
       break;
     // 403: token过期
     case 403:
@@ -71,7 +80,7 @@ axios.interceptors.response.use((response) => {
       // 清除token
       localStorage.removeItem('token');
       setTimeout(() => {
-        window.location.href = '/login';
+        window.location.href = '/#/login';
       }, 1000);
       break;
     // 404请求不存在

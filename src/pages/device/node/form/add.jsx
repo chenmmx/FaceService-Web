@@ -102,18 +102,12 @@ const NodeFormAdd = ({ form }) => {
       if (!err) {
         const redpupilIdsList = values.redpupilIds || [];
         const cameraIdsList = values.cameraIds || [];
-        const deviceList = [...redpupilIdsList.map((item) => ({
-          // type: 0,
-          deviceId: item
-        })), ...cameraIdsList.map((item) => ({
-          // type: 1,
-          id: item
-        }))];
+        const deviceList = [...redpupilIdsList, ...cameraIdsList];
         const res = await nodeService.add({
           id: values.id,
           name: values.name,
           applyId: values.applyId,
-          devices: deviceList
+          deviceIds: deviceList
         });
         if (res.status === 0) {
           setData((draft) => {

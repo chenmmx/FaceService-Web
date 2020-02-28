@@ -160,7 +160,7 @@ class Device extends Component {
       applicationList, selectApplicationId
     } = this.state;
     return (
-      <div id="device" style={{ display: 'flex', minHeight: 857, position: 'relative' }}>
+      <div id="device" style={{ display: 'flex', minHeight: 807, position: 'relative' }}>
         <div
           className="content-left"
           style={{
@@ -169,7 +169,7 @@ class Device extends Component {
         >
           <div>
             <p style={{ fontSize: 12, color: 'black', margin: '0px 12px 10px' }}>请选择应用</p>
-            <Search style={{ margin: '0px 10px', width: 162 }} placeholder="搜索应用" onSearch={this.handleSearch} />
+            <Search style={{ margin: '0px 10px', width: 162 }} placeholder="搜索设备" onSearch={this.handleSearch} />
             <ul className="content-left-list">
               <li className={`content-left-list-item ${selectApplicationId === '' ? 'active' : ''}`} onClick={this.handleApplicationSelect.bind(this, '')}>
                 全部
