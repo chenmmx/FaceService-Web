@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Spin } from 'antd';
+import { Button } from 'antd';
 import FsTitle from '../../components/common/fs-title';
-import ApplicationCreate from './components/create';
 import ApplicationList from './components/list';
-import ApplicationBottom from './components/bottom';
 import applyService from '@/services/apply.service';
 import './style.less';
 
@@ -12,50 +10,55 @@ class Application extends Component {
     super(props);
     this.state = {
       dataList: [],
-      loading: false
+      total: 0,
+      pageIndex: 1
     };
   }
 
   componentDidMount() {
-    // console.log(this.context);
-    this.getApplyList();
+    // this.getApplyList();
   }
 
   // 获取应用列表
   getApplyList = async () => {
-    this.setState({
-      loading: true
-    });
+    const { pageIndex } = this.state;
     let res = await applyService.getListByPage({
-      pageIndex: 1,
-      pageSize: 999,
+      pageIndex,
+      pageSize: 10,
       name: ''
     });
     if (res.status === 0) {
-      console.log(res.result.list);
       this.setState({
         dataList: res.result.list,
-        loading: false
+        total: res.result.total
       });
     }
   }
 
+  async handlePageChange(pageIndex) {
+    const that = this;
+    this.setState({
+      pageIndex
+    }, () => {
+      that.getApplyList();
+    });
+  }
+
   render() {
-    const { dataList, loading } = this.state;
-    const { history } = this.props;
+    const { dataList, total } = this.state;
     return (
       <div id="application">
         <FsTitle title="应用管理" />
-        <Spin spinning={loading}>
-          {
-                dataList.length === 0
-                  ? <ApplicationCreate history={history} />
-                  : dataList.map((item) => <ApplicationList key={item.id} item={item} getApplyList={this.getApplyList} />)
-            }
-          {
-                dataList.length === 0 ? null : <ApplicationBottom history={history} />
-            }
-        </Spin>
+        <Button
+          style={{ marginLeft: '25px' }}
+          type="primary"
+          onClick={() => {
+            const { history } = this.props;
+            history.push('/application/create');
+          }}
+        >新增
+        </Button>
+        <ApplicationList dataList={dataList} getApplyList={this.getApplyList} handlePageChange={this.handlePageChange} total={total} />
       </div>
     );
   }
