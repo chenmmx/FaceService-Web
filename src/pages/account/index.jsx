@@ -110,7 +110,7 @@ const Account = () => {
       <div className="account-header">
         <div className="account-header-left">
           <Search ref={textInput} style={{ width: 200 }} placeholder="请输入账号" onSearch={handleSearch} />
-          <Button type="primary" onClick={handleAdd}>新增</Button>
+          {/* <Button type="primary" onClick={handleAdd}>新增</Button> */}
         </div>
       </div>
       <Table loading={tableLoading} dataSource={dataSource} rowKey="id" pagination={false} style={{ paddingTop: '30px' }}>
