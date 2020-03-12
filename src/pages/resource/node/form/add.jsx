@@ -4,8 +4,6 @@ import {
   Form, Input, Button, Select, notification
 } from 'antd';
 import { NodeContext } from '../index';
-import redpupilService from '@/services/redpupil.service';
-import cameraService from '@/services/camera.service';
 import nodeService from '@/services/node.service';
 import applyService from '@/services/apply.service';
 
@@ -24,6 +22,7 @@ const formItemLayout = {
 
 const NodeFormAdd = ({ form }) => {
   const [list, setList] = useImmer({
+    loading: false,
     redpupilList: [],
     cameraList: [],
     applyList: []
@@ -45,57 +44,8 @@ const NodeFormAdd = ({ form }) => {
     }
   };
 
-  // 获取赤眸列表
-  const getRedpupilList = async (applyId) => {
-    const res = await redpupilService.getListByPage({
-      pageIndex: 1,
-      pageSize: 999,
-      applyId
-    });
-    if (res.status === 0) {
-      setList((draft) => {
-        draft.redpupilList = res.result.list;
-      });
-    } else {
-      notification.error({
-        message: '失败',
-        description: res.errorMsg
-      });
-    }
-  };
-
-  // 获取摄像机列表
-  const getCameraList = async (applyId) => {
-    const res = await cameraService.getListByPage({
-      pageIndex: 1,
-      pageSize: 999,
-      applyId
-    });
-    if (res.status === 0) {
-      setList((draft) => {
-        draft.cameraList = res.result.list;
-      });
-    } else {
-      notification.error({
-        message: '失败',
-        description: res.errorMsg
-      });
-    }
-  };
-
-  const handleApplySelectChange = (applyId) => {
-    form.setFieldsValue({
-      redpupilIds: [],
-      cameraIds: []
-    });
-    getRedpupilList(applyId);
-    getCameraList(applyId);
-  };
-
   useEffect(() => {
     if (data.visible) {
-      // getRedpupilList();
-      // getCameraList();
       getApplyList();
     }
   }, []);
@@ -104,14 +54,17 @@ const NodeFormAdd = ({ form }) => {
   const handleSubmit = () => {
     form.validateFields(async (err, values) => {
       if (!err) {
-        const redpupilIdsList = values.redpupilIds || [];
-        const cameraIdsList = values.cameraIds || [];
-        const deviceList = [...redpupilIdsList, ...cameraIdsList];
+        setList((draft) => {
+          draft.loading = true;
+        });
         const res = await nodeService.add({
           id: values.id,
           name: values.name,
-          applyId: values.applyId,
-          deviceIds: deviceList
+          applyId: values.applyId
+          // deviceIds: deviceList
+        });
+        setList((draft) => {
+          draft.loading = false;
         });
         if (res.status === 0) {
           setData((draft) => {
@@ -157,30 +110,12 @@ const NodeFormAdd = ({ form }) => {
           {getFieldDecorator('applyId', {
             rules: [{ required: true, message: '请选择应用' }]
           })(
-            <Select allowClear placeholder="请选择应用" onChange={handleApplySelectChange}>
+            <Select allowClear placeholder="请选择应用">
               {
                 list.applyList.map((item) => (
                   <Option value={item.id} key={item.id}>{item.name}</Option>
                 ))
               }
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item label="赤眸">
-          {getFieldDecorator('redpupilIds', {
-            rules: [{ required: false, message: '请选择赤眸' }]
-          })(
-            <Select allowClear placeholder="请选择赤眸" mode="multiple">
-              {list.redpupilList.map((item) => (<Option value={item.id} key={item.id}>{item.name}</Option>))}
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item label="摄像机">
-          {getFieldDecorator('cameraIds', {
-            rules: [{ required: false, message: '请选择摄像机' }]
-          })(
-            <Select allowClear placeholder="请选择摄像机" mode="multiple">
-              {list.cameraList.map((item) => (<Option value={item.id} key={item.id}>{item.name}</Option>))}
             </Select>
           )}
         </Form.Item>

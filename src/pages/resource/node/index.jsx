@@ -29,13 +29,20 @@ const Node = (props) => {
 
   // 获取摄像机列表
   const getNodeList = async (pageIndex = 1) => {
-    const { selectApplicationId } = props;
+    setData((draft) => {
+      draft.loading = true;
+    });
     getNodeListDispatch({
       pageIndex,
       pageSize: 10,
       name: '',
-      applyId: selectApplicationId
+      applyId: ''
     });
+    setTimeout(() => {
+      setData((draft) => {
+        draft.loading = false;
+      });
+    }, 300);
   };
 
   useEffect(() => {
@@ -86,7 +93,7 @@ const Node = (props) => {
   };
   return (
     <div className="node">
-      <FsTitle title="账号管理" />
+      <FsTitle title="边缘节点管理" />
       <div className="node-header">
         <Button type="primary" onClick={handleAdd}>新增</Button>
       </div>
@@ -95,6 +102,7 @@ const Node = (props) => {
           <Column title="节点id" dataIndex="id" key="id" />
           <Column title="节点名称" dataIndex="name" key="name" />
           <Column
+            width={300}
             title="操作"
             key="action"
             render={(text, record) => (
@@ -105,6 +113,14 @@ const Node = (props) => {
                     handleUpdate(record.id);
                   }}
                 >编辑
+                </Button>
+                <Divider type="vertical" />
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    handleUpdate(record.id);
+                  }}
+                >参数设置
                 </Button>
                 <Divider type="vertical" />
                 <Button onClick={() => handleDelete(record.id)}>删除</Button>

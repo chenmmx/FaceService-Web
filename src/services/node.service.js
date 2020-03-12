@@ -1,30 +1,23 @@
 import handleService from './common.service';
 
 
-const prefix = '/api/Node';
+const prefix = '/api/Nodes';
 
-const url = {
-  add: `${prefix}/Add`,
-  update: `${prefix}/Update`,
-  delete: `${prefix}/Delete`,
-  getInfo: `${prefix}/Get`,
-  getListByPage: `${prefix}/GetListByPage`
-};
 
 export default {
   add(data) {
-    return handleService(url.add, data, 'POST');
+    return handleService(prefix, data, 'POST');
   },
   update(data) {
-    return handleService(url.update, data, 'PUT');
+    return handleService(prefix, data, 'PUT');
   },
   delete(data) {
-    return handleService(url.delete, data, 'DELETE');
+    return handleService(prefix, data, 'DELETE');
   },
-  getInfo(data) {
-    return handleService(url.getInfo, data);
+  getInfo(data, id) {
+    return handleService(`${prefix}/${id}`, data);
   },
   getListByPage(data) {
-    return handleService(url.getListByPage, data);
+    return handleService(prefix, data);
   }
 };
