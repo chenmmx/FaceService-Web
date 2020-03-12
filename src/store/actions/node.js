@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import nodeService from '@/services/node.service';
 
 const actionName = 'node';
@@ -13,12 +14,13 @@ export const getNodeListAction = (data) => ({
 // 获取摄像机列表
 export const getNodeList = (formData) => async (dispatch) => {
   const {
-    pageIndex, pageSize, applyId, name
+    pageIndex, pageSize, applyId, name, callback
   } = formData;
   try {
     let res = await nodeService.getListByPage({
       pageIndex, pageSize, applyId, name
     });
+    callback && callback();
     if (res.status === 0) {
       dispatch(getNodeListAction(res.result));
     } else {

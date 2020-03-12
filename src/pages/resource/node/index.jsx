@@ -39,13 +39,13 @@ const Node = (props) => {
       pageIndex,
       pageSize: 10,
       name: '',
-      applyId: ''
+      applyId: '',
+      callback() {
+        setData((draft) => {
+          draft.loading = false;
+        });
+      }
     });
-    setTimeout(() => {
-      setData((draft) => {
-        draft.loading = false;
-      });
-    }, 300);
   };
 
   useEffect(() => {
