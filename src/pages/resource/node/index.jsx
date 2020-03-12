@@ -5,7 +5,9 @@ import {
   Button, Table, Divider, Pagination, Spin, Modal
 } from 'antd';
 import FsTitle from '@/components/common/title';
-import { NodeFormAdd, NodeFormDelete, NodeFormUpdate } from './form';
+import {
+  NodeFormAdd, NodeFormDelete, NodeFormUpdate, NodeFormParams
+} from './form';
 import * as actionTypes from '@/store/actions/node';
 import './style.less';
 
@@ -22,7 +24,8 @@ const Node = (props) => {
     modalTitle: '',
     modalType: '',
     visible: false,
-    nodeId: ''
+    nodeId: '',
+    modalWidth: 500
   });
 
   const { getNodeListDispatch, nodeList, total } = props;
@@ -57,11 +60,18 @@ const Node = (props) => {
     getNodeList(currentPage);
   };
 
+  const hideModal = () => {
+    setData((draft) => {
+      draft.visible = false;
+    });
+  };
+
   const NodeForm = () => {
     switch (data.modalType) {
       case 'add': return (<NodeFormAdd />);
       case 'update': return (<NodeFormUpdate />);
       case 'delete': return (<NodeFormDelete />);
+      case 'setParams': return (<NodeFormParams hideModal={hideModal} />);
       default: return (null);
     }
   };
@@ -70,6 +80,7 @@ const Node = (props) => {
     setData((draft) => {
       draft.modalType = 'add';
       draft.modalTitle = '新增';
+      draft.modalWidth = 500;
       draft.visible = true;
     });
   };
@@ -78,6 +89,7 @@ const Node = (props) => {
     setData((draft) => {
       draft.modalType = 'update';
       draft.modalTitle = '编辑';
+      draft.modalWidth = 500;
       draft.visible = true;
       draft.nodeId = id;
     });
@@ -87,6 +99,17 @@ const Node = (props) => {
     setData((draft) => {
       draft.modalType = 'delete';
       draft.modalTitle = '删除';
+      draft.modalWidth = 500;
+      draft.visible = true;
+      draft.nodeId = id;
+    });
+  };
+  // 参数设置
+  const handleParamsSet = (id) => {
+    setData((draft) => {
+      draft.modalType = 'setParams';
+      draft.modalTitle = '参数设置';
+      draft.modalWidth = 800;
       draft.visible = true;
       draft.nodeId = id;
     });
@@ -118,7 +141,7 @@ const Node = (props) => {
                 <Button
                   type="primary"
                   onClick={() => {
-                    handleUpdate(record.id);
+                    handleParamsSet(record.id);
                   }}
                 >参数设置
                 </Button>
@@ -138,6 +161,7 @@ const Node = (props) => {
         footer={null}
         closable={false}
         className="node-form"
+        width={data.modalWidth}
       >
         <NodeContext.Provider value={{ setData, data, getNodeList }}>
           <NodeForm />
