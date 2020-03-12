@@ -30,8 +30,8 @@ axios.interceptors.request.use((config) => {
   if (token) {
     let date = new Date();
     let time = date.getFullYear().toString() + pad2(date.getMonth() + 1) + pad2(date.getDate()) + pad2(date.getHours()) + pad2(date.getMinutes()) + pad2(date.getSeconds()) + padMillseconds(date.getMilliseconds());
-    // config1.headers['X-Ca-Token'] = token;
-    config1.headers.Authorization = token;
+    config1.headers['X-Ca-Token'] = token;
+    // config1.headers.Authorization = token;
     config1.headers.timespan = time;
     config1.headers.sign = getSign(token, time);
   }
