@@ -20,12 +20,12 @@ class FsMenu extends Component {
             <span>应用管理</span>
           </Link>
         </Menu.Item>
-        <Menu.Item key="/callback">
+        {/* <Menu.Item key="/callback">
           <Link to="/callback">
             <Icon type="experiment" />
             <span>回调管理</span>
           </Link>
-        </Menu.Item>
+        </Menu.Item> */}
         <SubMenu
           key="sub3"
           title={(

@@ -7,7 +7,9 @@ const url = {
   update: `${prefix}/Update`,
   delete: `${prefix}/Delete`,
   getInfo: `${prefix}/Get`,
-  getListByPage: `${prefix}/GetListByPage`
+  getListByPage: `${prefix}/GetListByPage`,
+  getCallback: `${prefix}/GetCallback`,
+  setCallback: `${prefix}/setCallback`
 };
 
 export default {
@@ -25,5 +27,11 @@ export default {
   },
   getListByPage(data) {
     return handleService(url.getListByPage, data);
+  },
+  getCallback(data) {
+    return handleService(url.getCallback, data);
+  },
+  setCallback(data) {
+    return handleService(url.setCallback, data, 'XPOST');
   }
 };

@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import ApplicationUpdateForm from '../form/update';
 import ApplicationDeleteForm from '../form/delete';
+import ApplicationCallbackForm from '../form/callback';
 import applyService from '@/services/apply.service';
 
 const { Column } = Table;
@@ -66,6 +67,15 @@ class ApplicationList extends Component {
     });
   }
 
+  handleSetCallback = (id) => {
+    this.setState({
+      modalType: 'callback',
+      modalTitle: '回调设置',
+      visible: true,
+      applyId: id
+    });
+  }
+
   // 弹框确认
   handleClose = () => {
     this.setState({
@@ -104,7 +114,7 @@ class ApplicationList extends Component {
           <Column
             title="操作"
             key="action"
-            width={230}
+            width={330}
             render={(text) => (
               <span>
                 <Button
@@ -113,6 +123,14 @@ class ApplicationList extends Component {
                     this.onUpdate(text.id);
                   }}
                 >编辑
+                </Button>
+                <Divider type="vertical" />
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.handleSetCallback(text.id);
+                  }}
+                >回调管理
                 </Button>
                 <Divider type="vertical" />
                 <Button onClick={() => {
@@ -134,7 +152,13 @@ class ApplicationList extends Component {
           closable={false}
         >
           {
-                modalType === 'update' ? <ApplicationUpdateForm applyId={applyId} handleClose={this.handleClose} getApplyList={this.getApplyList} /> : <ApplicationDeleteForm applyId={applyId} handleClose={this.handleClose} getApplyList={this.getApplyList} />
+                modalType === 'update' ? <ApplicationUpdateForm applyId={applyId} handleClose={this.handleClose} getApplyList={this.getApplyList} /> : null
+            }
+          {
+                modalType === 'delete' ? <ApplicationDeleteForm applyId={applyId} handleClose={this.handleClose} getApplyList={this.getApplyList} /> : null
+            }
+          {
+                modalType === 'callback' ? <ApplicationCallbackForm applyId={applyId} handleClose={this.handleClose} getApplyList={this.getApplyList} /> : null
             }
         </Modal>
       </div>
