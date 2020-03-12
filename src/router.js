@@ -12,6 +12,7 @@ import Application from './pages/application';
 import ApplicationCreateForm from './pages/application/form/create';
 import Callback from './pages/callback';
 import Device from './pages/device';
+import ResourceNode from './pages/resource/node';
 import DeviceFormAdd from './pages/device/terminal/form/add';
 import DeviceFormUpdate from './pages/device/terminal/form/update';
 import Person from './pages/person';
@@ -33,6 +34,9 @@ const AppRouter = () => {
     },
     {
       id: '2', path: '/device', title: '设备管理', exact: true, component: Device
+    },
+    {
+      id: '11', path: '/resource/node', title: '边缘节点', exact: true, component: ResourceNode
     },
     {
       id: '8', path: '/device/add', title: '绑定设备', exact: false, component: DeviceFormAdd

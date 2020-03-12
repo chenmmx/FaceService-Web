@@ -42,7 +42,7 @@ class FsMenu extends Component {
           </Menu.Item>
           <Menu.Item key="/resource/node">
             <Link to="/resource/node">
-              <span>设备管理</span>
+              <span>边缘节点</span>
             </Link>
           </Menu.Item>
         </SubMenu>
