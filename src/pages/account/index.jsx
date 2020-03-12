@@ -56,12 +56,12 @@ const Account = () => {
       });
     }
   };
-  // 新增
-  const handleAdd = () => {
-    setVisible(true);
-    setModalTitle('新增');
-    setModalType('add');
-  };
+  // // 新增
+  // const handleAdd = () => {
+  //   setVisible(true);
+  //   setModalTitle('新增');
+  //   setModalType('add');
+  // };
 
   // 编辑
   const handleUpdate = (data) => {

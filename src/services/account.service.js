@@ -1,6 +1,6 @@
 import handleService from './common.service';
 
-const prefix = '/api/Users';
+const prefix = '/api/Account';
 
 const url = {
   add: `${prefix}/Add`,
