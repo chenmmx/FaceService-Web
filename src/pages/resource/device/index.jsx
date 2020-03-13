@@ -108,7 +108,7 @@ const Device = () => {
       case 'add': return (<DeviceFormAdd />);
       case 'update': return (<DeviceFormUpdate />);
       case 'delete': return (<DeviceFormDelete />);
-      case 'params': return (<DeviceFormParams hideModal={hideModal} />);
+      case 'params': return (<DeviceFormParams hideModal={hideModal} itemData={itemData} />);
       default: return (null);
     }
   };

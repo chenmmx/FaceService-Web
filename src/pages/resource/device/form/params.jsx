@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import {
   Table, Input, Button, Popconfirm, Form
 } from 'antd';
+import deviceService from '@/services/device.service';
 
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => (
@@ -132,8 +133,11 @@ class DeviceFormParams extends React.Component {
   }
 
   componentDidMount() {
-      console.log(this.props)
-  }
+      console.log(this.props.itemData.parameters)
+      this.setState({
+        // dataSource: this.props.itemData.parameters
+      })
+  };
 
   handleDelete = (key) => {
     const dataSource = [...this.state.dataSource];
@@ -166,9 +170,19 @@ class DeviceFormParams extends React.Component {
   };
 
   // 保存
-  handleSubmit = () => {
-    const {hideModal} = this.props
-    hideModal()
+  handleSubmit = async () => {
+    let submitObj = { ...this.props.itemData }
+    let obj = {};
+    this.state.dataSource.forEach(item => {
+      obj[item.name] = item.value
+    })
+    submitObj.parameters = obj
+    console.log(submitObj)
+    const res = await deviceService.setParam({
+      
+    })
+    // const {hideModal} = this.props
+    // hideModal()
   }
 
   render() {
@@ -205,10 +219,11 @@ class DeviceFormParams extends React.Component {
           columns={columns}
         />
         <div className="button-group" style={{paddingTop: '20px', textAlign: 'right'}}>
-        <Button onClick={this.handleAdd} type="primary" style={{ marginRight: 16 }}>
-          新增参数
-        </Button>
-        <Button type="primary" onClick={this.handleSubmit}>保存</Button>
+          <Button onClick={this.handleAdd} type="primary" style={{ marginRight: 16 }}>
+            新增参数
+          </Button>
+          <Button type="primary" onClick={this.handleSubmit} style={{ marginRight: 16 }}>保存</Button>
+          <Button onClick={this.props.hideModal}>取消</Button>
         </div>
       </div>
     );
