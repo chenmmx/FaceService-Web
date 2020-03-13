@@ -109,6 +109,13 @@ export default function handleService(url, data, method = 'GET') {
       method: 'POST',
       data: data.body
     });
+  } if (method === 'XPUT') {
+    return axios({
+      url,
+      params: data.params,
+      method: 'PUT',
+      data: data.body
+    });
   }
   return axios({
     url,

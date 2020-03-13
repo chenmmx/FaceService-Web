@@ -3,9 +3,9 @@
 import React, {useContext} from 'react';
 import ReactDOM from 'react-dom';
 import {
-  Table, Input, Button, Popconfirm, Form
+  Table, Input, Button, Popconfirm, Form, notification
 } from 'antd';
-import deviceService from '@/services/device.service';
+import deviceParameService from '@/services/devicesParame.service'
 
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => (
@@ -132,10 +132,21 @@ class DeviceFormParams extends React.Component {
     };
   }
 
-  componentDidMount() {
-      console.log(this.props.itemData.parameters)
+  async componentDidMount() {
+    console.log(this.props.itemData)
+    const {result} = await deviceParameService.getInfo({
+      deviceid: this.props.itemData.id
+    })
+    let list = []
+    Object.keys(result).forEach((item, index) => {
+      list.push({
+        key: index,
+        name: item,
+        value:result[item]
+      })
+    })
       this.setState({
-        // dataSource: this.props.itemData.parameters
+        dataSource: list
       })
   };
 
@@ -149,7 +160,6 @@ class DeviceFormParams extends React.Component {
     const newData = {
       key: count,
       name: `key`,
-      age: 32,
       value: `value`
     };
     this.setState({
@@ -171,18 +181,25 @@ class DeviceFormParams extends React.Component {
 
   // 保存
   handleSubmit = async () => {
-    let submitObj = { ...this.props.itemData }
+    let submitObj = { 
+      params: {
+        deviceid: this.props.itemData.id
+      },
+      body: {}
+     }
     let obj = {};
     this.state.dataSource.forEach(item => {
       obj[item.name] = item.value
     })
-    submitObj.parameters = obj
-    console.log(submitObj)
-    const res = await deviceService.setParam({
-      
-    })
-    // const {hideModal} = this.props
-    // hideModal()
+    submitObj.body = obj
+    const res = await deviceParameService.update(submitObj)
+    if(res.status === 0) {
+      notification.success({
+        message: '成功',
+        description: '新增参数成功'
+      });
+      this.props.hideModal()
+    }
   }
 
   render() {
