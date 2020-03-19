@@ -6,7 +6,7 @@ const url = {
   add: `${prefix}/Add`,
   update: `${prefix}/Update`,
   delete: `${prefix}/Delete`,
-  getInfo: `${prefix}/Get`,
+  getInfo: `${prefix}/GetInfo`,
   getListByPage: `${prefix}/GetListByPage`
 };
 

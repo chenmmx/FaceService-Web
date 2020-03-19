@@ -1,7 +1,7 @@
 import handleService from './common.service';
 
 
-const prefix = '/api/DevicesParame';
+const prefix = '/api/DevicesParameter';
 
 
 export default {

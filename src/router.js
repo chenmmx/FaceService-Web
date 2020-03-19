@@ -20,7 +20,7 @@ import Person from './pages/person';
 import AddPerson from './pages/person/form/create';
 import Record from './pages/record';
 import Accredit from './pages/person/accredit/accredit';
-import Account from './pages/account';
+import Account from './pages/account/form/update';
 
 const AppRouter = () => {
   const routeConfig = [
